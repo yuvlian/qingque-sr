@@ -17,3 +17,18 @@ tracing = "0.1.41"
 tracing-subscriber = "0.3.19"
 toml = "0.8.19"
 rbase64 = "2.0.3"
+
+[profile.release]
+strip = true
+lto = true
+opt-level = 3
+codegen-units = 1
+# set this shit to "abort"
+# if you want it to always crash
+# when theres a panic
+panic = "unwind"
+
+[profile.release.build-override]
+strip = true
+opt-level = 3
+codegen-units = 1
