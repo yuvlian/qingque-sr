@@ -19,11 +19,11 @@ pub struct AvatarConfig {
 impl Default for AvatarConfig {
     fn default() -> Self {
         Self {
-            lineup: vec![1201, 1001, 8002],
-            trailblazer_gender: String::from("Woman"),
+            lineup: vec![1201, 1001, 8001],
+            trailblazer_gender: String::from("Man"),
             march_element: String::from("Imaginary"),
             trailblazer_element: String::from("Imaginary"),
-            owned_avatars: vec![1201, 1001, 8002],
+            owned_avatars: vec![1201, 1001, 8001],
         }
     }
 }

@@ -17,7 +17,7 @@ impl Default for ServerConfig {
             sdk_server_host: String::from("127.0.0.1"),
             sdk_server_port: 21000,
             game_server_host: String::from("127.0.0.1"),
-            game_server_port: 7000,
+            game_server_port: 59584,
             dispatch_url: String::from("http://127.0.0.1:21000/query_gateway"),
         }
     }
