@@ -12,7 +12,6 @@ use tracing::info;
 #[tokio::main]
 async fn main() {
     let server_config = ServerConfig::from_file("server.toml");
-    let socket_addr = server_config.sdk_to_listen_at();
 
     tracing_subscriber::fmt().init();
 
@@ -21,12 +20,12 @@ async fn main() {
         .merge(dispatch_router())
         .layer(axum::middleware::from_fn(log_requests));
 
-    let addr = SocketAddr::from(socket_addr);
+    let addr = SocketAddr::from(server_config.sdk_to_listen_at());
 
     info!("Listening at {}", addr);
 
     axum_server::bind(addr)
         .serve(app.into_make_service())
         .await
-        .unwrap();
+        .expect("Failed to bind to address");
 }

@@ -1,16 +1,18 @@
 pub mod risky {
     pub mod api {
-        use axum::{http::StatusCode, Json};
-        use serde_json::{json, Value};
+        pub mod check {
+            use axum::{http::StatusCode, Json};
+            use serde_json::{json, Value};
 
-        pub async fn check() -> (StatusCode, Json<Value>) {
-            let rsp = Json(json!({
-                "data": {},
-                "message": "OK",
-                "retcode": 0
-            }));
+            pub async fn handle() -> (StatusCode, Json<Value>) {
+                let rsp = Json(json!({
+                    "data": {},
+                    "message": "OK",
+                    "retcode": 0
+                }));
 
-            (StatusCode::OK, rsp)
+                (StatusCode::OK, rsp)
+            }
         }
     }
 }

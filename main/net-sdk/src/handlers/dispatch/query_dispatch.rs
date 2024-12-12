@@ -1,9 +1,9 @@
 use axum::http::StatusCode;
 use cfg_server::address::ServerConfig;
 use net_msg::pb::{Dispatch, RegionInfo};
-use prost::Message;
+use net_msg::Trait;
 
-pub async fn query_dispatch() -> (StatusCode, String) {
+pub async fn handle() -> (StatusCode, String) {
     let server_config = ServerConfig::from_file("server.toml");
 
     let rsp = rbase64::encode(
@@ -18,6 +18,7 @@ pub async fn query_dispatch() -> (StatusCode, String) {
                 msg: String::from("OK"),
                 dispatch_url: String::from(server_config.gateway_dispatch()),
             }],
+            top_sever_region_name: String::from("smol"),
             ..Default::default()
         }
         .encode_to_vec(),
