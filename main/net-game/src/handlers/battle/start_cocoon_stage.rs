@@ -1,38 +1,19 @@
-use net_msg::pb::{StartCocoonStageCsReq, StartCocoonStageScRsp, SceneBattleInfo, SceneMonsterWave, SceneMonsterData, BattleAvatar, AvatarType, AmountInfo};
+use cfg_server::srtools::Config;
+use net_msg::pb::{SceneBattleInfo, StartCocoonStageCsReq, StartCocoonStageScRsp};
 use net_msg::Trait;
 
 pub async fn handle(req: &[u8]) -> Vec<u8> {
+    let cfg = Config::from_file("config.json");
     let dec = StartCocoonStageCsReq::decode(req).unwrap();
 
-    let qingque = BattleAvatar {
-        id: 1201,
-        hp: 10000,
-        level: 80,
-        rank: 6,
-        promotion: 6,
-        avatar_type: AvatarType::AvatarFormalType.into(),
-        sp: Some(AmountInfo {
-            cur_amount: 0,
-            max_amount: 10000,
-        }),
-        ..Default::default()
-    };
-
-    let wave = SceneMonsterWave {
-        monster_list: vec![SceneMonsterData{
-            monster_id: 3024020,
-            ..Default::default()
-        }],
-        ..Default::default()
-    };
-
     let battle_info = SceneBattleInfo {
-        buff_list: Vec::with_capacity(0),
-        battle_id: 1,
-        stage_id: 201012311,
+        buff_list: cfg.get_battle_buffs(),
+        battle_id: cfg.get_battle_id(),
+        stage_id: cfg.get_stage_id(),
+        cycle_count: cfg.get_cycle_count(),
+        monster_wave_list: cfg.get_battle_waves(),
+        battle_avatar_list: cfg.get_battle_avatars(),
         logic_random_seed: u32::MAX,
-        monster_wave_list:vec![wave],
-        battle_avatar_list:vec![qingque],
         ..Default::default()
     };
 

@@ -7,3 +7,4 @@ edition = "2021"
 serde.workspace = true
 serde_json.workspace = true
 toml.workspace = true
+net-msg.workspace = true
