@@ -1,4 +1,5 @@
 mod avatar;
+mod battle;
 mod item;
 mod lineup;
 mod login;
@@ -7,6 +8,7 @@ mod player;
 mod scene;
 
 pub use avatar::*;
+pub use battle::*;
 pub use item::*;
 pub use lineup::*;
 pub use login::*;

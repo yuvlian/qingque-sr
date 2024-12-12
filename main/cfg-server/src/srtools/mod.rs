@@ -1,9 +1,26 @@
 use serde::Deserialize;
+use std::fs;
 
 #[derive(Deserialize)]
 pub struct Config {
     pub avatar_config: Vec<AvatarConfig>,
     pub battle_config: BattleConfig,
+}
+
+impl Default for Config {
+    fn default() -> Self {
+        include!("./default_config.rs")
+    }
+}
+
+impl Config {
+    pub fn from_file(path: &str) -> Self {
+        let content = fs::read_to_string(path);
+        match content {
+            Ok(data) => serde_json::from_str(&data).unwrap_or_default(),
+            Err(_) => Self::default(),
+        }
+    }
 }
 
 #[derive(Deserialize)]

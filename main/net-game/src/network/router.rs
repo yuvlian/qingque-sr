@@ -1,5 +1,5 @@
-use crate::network::packet;
 use crate::handlers::*;
+use crate::network::packet;
 use net_msg::cmd::*;
 
 macro_rules! handle_packet {
@@ -61,6 +61,16 @@ pub async fn ping_pong(cmd: u16, body: &[u8]) -> Vec<u8> {
         }
         GET_CUR_SCENE_INFO_CS_REQ => {
             handle_packet!(body, GET_CUR_SCENE_INFO_SC_RSP, get_cur_scene_info::handle)
+        }
+        P_V_E_BATTLE_RESULT_CS_REQ => {
+            handle_packet!(
+                body,
+                P_V_E_BATTLE_RESULT_SC_RSP,
+                p_v_e_battle_result::handle
+            )
+        }
+        START_COCOON_STAGE_CS_REQ => {
+            handle_packet!(body, START_COCOON_STAGE_SC_RSP, start_cocoon_stage::handle)
         }
         _ => Vec::with_capacity(0),
     }

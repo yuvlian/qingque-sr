@@ -541,8 +541,6 @@ dependencies = [
  "bytes",
  "cfg-server",
  "net-msg",
- "serde",
- "serde_json",
  "tokio",
  "tracing",
  "tracing-subscriber",

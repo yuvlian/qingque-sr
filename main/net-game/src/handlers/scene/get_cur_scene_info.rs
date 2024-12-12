@@ -53,7 +53,7 @@ pub async fn handle(_req: &[u8]) -> Vec<u8> {
                         motion: Some(MotionInfo {
                             pos: Some(Vector {
                                 x: 4480,
-                                y: 19344,
+                                y: 18354,
                                 z: -570,
                             }),
                             rot: Some(Vector { x: 0, y: 0, z: 0 }),
