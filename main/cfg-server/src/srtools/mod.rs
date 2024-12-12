@@ -7,18 +7,18 @@ use std::collections::HashMap;
 use std::fs;
 
 #[derive(Deserialize)]
-pub struct Config {
+pub struct SrToolsConfig {
     pub avatar_config: Vec<AvatarConfig>,
     pub battle_config: BattleConfig,
 }
 
-impl Default for Config {
+impl Default for SrToolsConfig {
     fn default() -> Self {
         include!("./default_config.rs")
     }
 }
 
-impl Config {
+impl SrToolsConfig {
     pub fn from_file(path: &str) -> Self {
         let content = fs::read_to_string(path);
         match content {
@@ -49,6 +49,7 @@ impl Config {
                 owner_index: i as u32,
                 level: 1,
                 wave_flag: u32::MAX,
+                target_index_list: (0..=4).collect(),
                 dynamic_values: HashMap::from([(String::from("SkillIndex"), 0.0)]),
                 ..Default::default()
             })
@@ -174,7 +175,8 @@ impl Config {
             type RelicLv = u32;
             type RelicMAffix = u32;
             type RelicTotalSAffix = u32;
-            type RelicSAffix = (u32, u32, u32); // (SAffixId, SAffixCnt, SAffixStep)
+            // (SAffixId, SAffixCnt, SAffixStep)
+            type RelicSAffix = (u32, u32, u32);
 
             fn parse_relic_string(
                 relic_str: &str,
@@ -190,10 +192,18 @@ impl Config {
             ) {
                 let parts: Vec<&str> = relic_str.split(',').collect();
 
-                let relic_id = parts[0].parse::<RelicId>().unwrap();
-                let relic_lv = parts[1].parse::<RelicLv>().unwrap();
-                let relic_maffix = parts[2].parse::<RelicMAffix>().unwrap();
-                let relic_total_saffix = parts[3].parse::<RelicTotalSAffix>().unwrap();
+                let relic_id = parts[0]
+                    .parse::<RelicId>()
+                    .expect("Failed to parse RelicId");
+                let relic_lv = parts[1]
+                    .parse::<RelicLv>()
+                    .expect("Failed to parse RelicLv");
+                let relic_maffix = parts[2]
+                    .parse::<RelicMAffix>()
+                    .expect("Failed to parse RelicMAffix");
+                let relic_total_saffix = parts[3]
+                    .parse::<RelicTotalSAffix>()
+                    .expect("Failed to parse RelicTotalSAffix");
 
                 let saffix1: RelicSAffix = parse_saffix(parts[4]);
                 let saffix2: RelicSAffix = parse_saffix(parts[5]);
@@ -215,58 +225,63 @@ impl Config {
             fn parse_saffix(s: &str) -> RelicSAffix {
                 let parts: Vec<u32> = s
                     .split(':')
-                    .map(|part| part.parse::<u32>().unwrap())
+                    .map(|part| part.parse::<u32>().expect("Failed to parse RelicSAffix"))
                     .collect();
+                if parts.len() != 3 {
+                    panic!(
+                        "Expected exactly 3 components in saffix, found {}",
+                        parts.len()
+                    );
+                }
                 (parts[0], parts[1], parts[2])
             }
 
-            let mut relics = Vec::with_capacity(relic_strings.len());
+            relic_strings
+                .into_iter()
+                .map(|rstring| {
+                    let (
+                        relic_id,
+                        relic_lv,
+                        relic_maffix,
+                        _relic_total_saffix,
+                        saffix1,
+                        saffix2,
+                        saffix3,
+                        saffix4,
+                    ) = parse_relic_string(&rstring);
 
-            for rstring in relic_strings {
-                let (
-                    relic_id,
-                    relic_lv,
-                    relic_maffix,
-                    _relic_total_saffix,
-                    saffix1,
-                    saffix2,
-                    saffix3,
-                    saffix4,
-                ) = parse_relic_string(&rstring);
+                    let sub_affix_list = vec![
+                        RelicAffix {
+                            affix_id: saffix1.0,
+                            cnt: saffix1.1,
+                            step: saffix1.2,
+                        },
+                        RelicAffix {
+                            affix_id: saffix2.0,
+                            cnt: saffix2.1,
+                            step: saffix2.2,
+                        },
+                        RelicAffix {
+                            affix_id: saffix3.0,
+                            cnt: saffix3.1,
+                            step: saffix3.2,
+                        },
+                        RelicAffix {
+                            affix_id: saffix4.0,
+                            cnt: saffix4.1,
+                            step: saffix4.2,
+                        },
+                    ];
 
-                let sub_affix_list = vec![
-                    RelicAffix {
-                        affix_id: saffix1.0,
-                        cnt: saffix1.1,
-                        step: saffix1.2,
-                    },
-                    RelicAffix {
-                        affix_id: saffix2.0,
-                        cnt: saffix2.1,
-                        step: saffix2.2,
-                    },
-                    RelicAffix {
-                        affix_id: saffix3.0,
-                        cnt: saffix3.1,
-                        step: saffix3.2,
-                    },
-                    RelicAffix {
-                        affix_id: saffix4.0,
-                        cnt: saffix4.1,
-                        step: saffix4.2,
-                    },
-                ];
-
-                relics.push(BattleRelic {
-                    id: relic_id,
-                    level: relic_lv,
-                    main_affix_id: relic_maffix,
-                    sub_affix_list: sub_affix_list,
-                    ..Default::default()
-                });
-            }
-
-            relics
+                    BattleRelic {
+                        id: relic_id,
+                        level: relic_lv,
+                        main_affix_id: relic_maffix,
+                        sub_affix_list,
+                        ..Default::default()
+                    }
+                })
+                .collect()
         }
 
         fn create_energy(sp: u32) -> AmountInfo {
@@ -276,15 +291,15 @@ impl Config {
             }
         }
 
-        let mut battle_avatars = Vec::new();
-
-        for (index, av) in self.avatar_config.iter().enumerate() {
-            battle_avatars.push(BattleAvatar {
+        self.avatar_config
+            .iter()
+            .enumerate()
+            .map(|(i, av)| BattleAvatar {
                 avatar_type: AvatarType::AvatarFormalType.into(),
                 id: av.id,
                 level: av.level,
                 rank: av.rank,
-                index: index as u32,
+                index: i as u32,
                 skilltree_list: create_max_trace(av.id),
                 equipment_list: create_lightcone(
                     av.lightcone.id,
@@ -292,16 +307,14 @@ impl Config {
                     av.lightcone.level,
                     av.lightcone.promotion,
                 ),
-                hp: (av.hp * 100),
+                hp: av.hp * 100,
                 sp: Some(create_energy(av.sp)),
                 promotion: av.promotion,
                 // Clone to avoid borrowing issues
                 relic_list: create_relics(av.relics.clone()),
                 ..Default::default()
-            });
-        }
-
-        battle_avatars
+            })
+            .collect()
     }
 }
 

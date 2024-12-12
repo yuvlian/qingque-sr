@@ -35,7 +35,7 @@ impl ServerConfig {
     pub fn sdk_to_listen_at(&self) -> SocketAddr {
         format!("{}:{}", self.sdk_server_host, self.sdk_server_port)
             .parse()
-            .unwrap()
+            .expect("Failed parsing SDK SocketAddr")
     }
 
     pub fn gateway_dispatch(&self) -> &str {

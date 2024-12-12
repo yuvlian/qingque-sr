@@ -1,0 +1,15 @@
+# note: you will need to restart the game for 
+# these changes to take effect
+
+# for lineup & owned avatar,
+# dont put multipath id, use real id
+# stelle = 8002, caelus = 8001, march = 1001
+
+lineup = [1201, 1001, 8001]
+# currently stelle doesnt work
+trailblazer_gender = "Man"
+
+march_element = "Imaginary"
+trailblazer_element = "Imaginary"
+
+owned_avatars = [1201, 1001, 8001]

@@ -1,24 +1,12 @@
-use net_msg::pb::{AmountInfo, AvatarType, GetAllLineupDataScRsp, LineupAvatar, LineupInfo};
+use cfg_server::avatar::AvatarConfig;
+use net_msg::pb::GetAllLineupDataScRsp;
 use net_msg::Trait;
 
 pub async fn handle(_req: &[u8]) -> Vec<u8> {
+    let cfg = AvatarConfig::from_file("avatar.toml");
+    
     GetAllLineupDataScRsp {
-        lineup_list: vec![LineupInfo {
-            name: String::from("smolteam"),
-            avatar_list: vec![LineupAvatar {
-                id: 1201,
-                hp: 10000,
-                slot_type: 0,
-                satiety: 0,
-                sp: Some(AmountInfo {
-                    cur_amount: 0,
-                    max_amount: 10000,
-                }),
-                avatar_type: AvatarType::AvatarFormalType.into(),
-            }],
-            plane_id: 20101,
-            ..Default::default()
-        }],
+        lineup_list: vec![cfg.get_cur_lineup()],
         cur_index: 0,
         retcode: 0,
     }
