@@ -14,7 +14,7 @@ pub async fn handle(req: &[u8]) -> Vec<u8> {
         cycle_count: cfg.get_cycle_count(),
         monster_wave_list: cfg.get_battle_waves(),
         battle_avatar_list: cfg.get_battle_avatars(),
-        logic_random_seed: time::cur_timestamp_sec(),
+        logic_random_seed: time::cur_timestamp_for_seed(),
         ..Default::default()
     };
 

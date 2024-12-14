@@ -7,12 +7,12 @@ pub fn cur_timestamp_ms() -> u64 {
         .as_millis() as u64
 }
 
-pub fn cur_timestamp_sec() -> u32 {
+pub fn cur_timestamp_for_seed() -> u32 {
     (SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .expect("Time error")
         .as_secs()
-        / 2)
+        / 5)
     .try_into()
     .expect("Timestamp integer overflow")
 }
