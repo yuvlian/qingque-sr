@@ -1,12 +1,11 @@
-# note: you will need to restart the game for 
-# these changes to take effect
+# Note: Any changes to this config will only take effect
+# after restarting the game.
 
-# for lineup & owned avatar,
-# dont put multipath id, use real id:
+# For character IDs in lineup & owned_avatars
+# Do not put multipath id. Use real id:
 # trailblazer = 8001, march = 1001
 
-# this does not affect battle
-# only overworld.
+# Editing this lineup only affects overworld lineup
 lineup = [1201, 1001, 8001]
 
 trailblazer_gender = "Woman"
