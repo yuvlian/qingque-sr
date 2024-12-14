@@ -43,15 +43,26 @@ impl SrToolsConfig {
         self.avatar_config
             .iter()
             .enumerate()
-            .filter(|(_, av)| av.use_technique)
-            .map(|(i, av)| BattleBuff {
-                id: ((av.id * 100) + 1),
-                owner_index: i as u32,
-                level: 1,
-                wave_flag: u32::MAX,
-                target_index_list: (0..=4).collect(),
-                dynamic_values: HashMap::from([(String::from("SkillIndex"), 0.0)]),
-                ..Default::default()
+            .flat_map(|(i, av)| {
+                av.buff_id_list.iter().map(move |&buff_id| {
+                    let dynamic_val = match buff_id {
+                        122401 | 122402 | 122403 => HashMap::from([
+                            (String::from("SkillIndex"), 0.0),
+                            (String::from("#ADF_1"), 3.0),
+                            (String::from("#ADF_2"), 3.0),
+                        ]),
+                        _ => HashMap::from([(String::from("SkillIndex"), 0.0)]),
+                    };
+                    BattleBuff {
+                        id: buff_id,
+                        owner_index: i as u32,
+                        level: 1,
+                        wave_flag: u32::MAX,
+                        target_index_list: (0..=4).collect(),
+                        dynamic_values: dynamic_val,
+                        ..Default::default()
+                    }
+                })
             })
             .collect()
     }
@@ -329,7 +340,8 @@ pub struct AvatarConfig {
     pub rank: u32,
     pub lightcone: LightCone,
     pub relics: Vec<String>,
-    pub use_technique: bool,
+    // pub use_technique: bool,
+    pub buff_id_list: Vec<u32>,
 }
 
 #[derive(Deserialize)]
@@ -347,4 +359,5 @@ pub struct BattleConfig {
     pub cycle_count: u32,
     pub monster_wave: Vec<Vec<u32>>,
     pub monster_level: u32,
+    // pub blessings: Vec<u32>,
 }

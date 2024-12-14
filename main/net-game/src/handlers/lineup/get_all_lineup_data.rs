@@ -4,7 +4,7 @@ use net_msg::Trait;
 
 pub async fn handle(_req: &[u8]) -> Vec<u8> {
     let cfg = AvatarConfig::from_file("avatar.toml");
-    
+
     GetAllLineupDataScRsp {
         lineup_list: vec![cfg.get_cur_lineup()],
         cur_index: 0,
