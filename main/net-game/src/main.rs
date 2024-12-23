@@ -11,7 +11,7 @@ use network::conn;
 
 #[tokio::main]
 async fn main() -> TokioResult<()> {
-    let server_config = ServerConfig::from_file("server.toml");
+    let server_config = ServerConfig::from_file("_config/server.toml");
     let to_bind = format!(
         "{}:{}",
         server_config.game_server_host(),

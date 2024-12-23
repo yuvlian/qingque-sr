@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use std::fs;
 
 #[derive(Deserialize, Clone, Default)]
-pub struct Hotfix {
+pub struct HotfixConfig {
     pub asset_bundle_url: String,
     pub ex_resource_url: String,
     pub lua_url: String,
@@ -13,7 +13,7 @@ pub struct Hotfix {
 #[derive(Deserialize, Default)]
 pub struct GameVersion {
     #[serde(flatten)]
-    pub versions: HashMap<String, Hotfix>,
+    pub versions: HashMap<String, HotfixConfig>,
 }
 
 impl GameVersion {
@@ -25,10 +25,10 @@ impl GameVersion {
         }
     }
 
-    pub fn get_hotfix_for_version(&self, version: &Option<String>) -> Hotfix {
+    pub fn get_hotfix_for_version(&self, version: &Option<String>) -> HotfixConfig {
         match version {
             Some(v) => self.versions.get(v).cloned().unwrap_or_default(),
-            None => Hotfix::default(),
+            None => HotfixConfig::default(),
         }
     }
 }

@@ -2,7 +2,7 @@ use crate::utils::time;
 use net_msg::pb::{PlayerBasicInfo, PlayerLoginScRsp};
 use net_msg::Trait;
 
-pub async fn handle(_req: &[u8]) -> Vec<u8> {
+pub async fn handle(_: &[u8]) -> Vec<u8> {
     PlayerLoginScRsp {
         basic_info: Some(PlayerBasicInfo {
             nickname: String::from("smol"),

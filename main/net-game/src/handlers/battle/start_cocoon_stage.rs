@@ -4,7 +4,7 @@ use net_msg::pb::{SceneBattleInfo, StartCocoonStageCsReq, StartCocoonStageScRsp}
 use net_msg::{dec, Trait};
 
 pub async fn handle(req: &[u8]) -> Vec<u8> {
-    let cfg = SrToolsConfig::from_file("config.json");
+    let cfg = SrToolsConfig::from_file("_config/config.json");
     let req = dec!(StartCocoonStageCsReq, req);
 
     let battle_info = SceneBattleInfo {

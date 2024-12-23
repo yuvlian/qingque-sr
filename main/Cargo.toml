@@ -24,10 +24,10 @@ strip = true
 lto = true
 opt-level = 3
 codegen-units = 1
-# set this shit to "abort"
-# if you want it to always crash
-# when theres a panic
-panic = "unwind"
+# set this shit to "unwind"
+# if you dont want it to always crash
+# when it panics
+panic = "abort"
 
 [profile.release.build-override]
 strip = true

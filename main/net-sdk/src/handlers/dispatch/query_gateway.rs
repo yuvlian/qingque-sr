@@ -23,8 +23,8 @@ pub struct Gateway {
 }
 
 pub async fn handle(q: Query<Gateway>) -> (StatusCode, String) {
-    let server_config = ServerConfig::from_file("server.toml");
-    let game_version = GameVersion::from_file("hotfix.json");
+    let server_config = ServerConfig::from_file("_config/server.toml");
+    let game_version = GameVersion::from_file("_config/hotfix.json");
 
     let hotfix = game_version.get_hotfix_for_version(&q.version);
 

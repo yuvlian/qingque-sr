@@ -11,7 +11,7 @@ use tracing::info;
 
 #[tokio::main]
 async fn main() {
-    let server_config = ServerConfig::from_file("server.toml");
+    let server_config = ServerConfig::from_file("_config/server.toml");
 
     tracing_subscriber::fmt().init();
 

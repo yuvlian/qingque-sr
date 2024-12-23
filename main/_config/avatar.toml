@@ -12,6 +12,11 @@ trailblazer_gender = "Woman"
 trailblazer_element = "Imaginary"
 march_element = "Imaginary"
 
+# You don't need to update owned_avatars for battle to work.
+# Only need to update for lineup.
+# If you don't change the lineup, no need to update.
+
+# Last updated: Fugue
 owned_avatars = [
     1001,
     1002,

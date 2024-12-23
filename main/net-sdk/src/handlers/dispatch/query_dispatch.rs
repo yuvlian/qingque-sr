@@ -4,7 +4,7 @@ use net_msg::pb::{Dispatch, RegionInfo};
 use net_msg::Trait;
 
 pub async fn handle() -> (StatusCode, String) {
-    let server_config = ServerConfig::from_file("server.toml");
+    let server_config = ServerConfig::from_file("_config/server.toml");
 
     let rsp = rbase64::encode(
         &Dispatch {

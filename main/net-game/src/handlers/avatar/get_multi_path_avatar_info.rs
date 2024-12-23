@@ -3,8 +3,8 @@ use net_msg::pb::GetMultiPathAvatarInfoScRsp;
 use net_msg::Trait;
 use std::collections::HashMap;
 
-pub async fn handle(_req: &[u8]) -> Vec<u8> {
-    let cfg = AvatarConfig::from_file("avatar.toml");
+pub async fn handle(_: &[u8]) -> Vec<u8> {
+    let cfg = AvatarConfig::from_file("_config/avatar.toml");
 
     let gender = cfg.get_trailblazer_gender();
     let (march, trailblazer) = cfg.get_multipath_data(gender);
