@@ -26,7 +26,7 @@ You only have to worry about `config.json` because that's the config file for ba
 1. Install Rust
 2. Clone this repository
 3. `cd` into `main`
-4. Put your proto & cmdid file in `net-msg`
+4. Put your proto & cmdid file in `net-msg` and adjust the `build.rs`
 5. Edit config files in `_config` if necessary (check the README in that folder)
 6. `cargo run --release --bin net-game`
 7. `cargo run --release --bin net-sdk`
