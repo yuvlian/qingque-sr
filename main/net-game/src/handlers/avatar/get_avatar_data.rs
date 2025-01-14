@@ -10,6 +10,7 @@ pub async fn handle(_: &[u8]) -> Vec<u8> {
         avatar_list: cfg.get_owned_avatars(),
         retcode: 0,
         unlocked_skin_id_list: Vec::with_capacity(0),
+        ..Default::default()
     }
     .encode_to_vec()
 }

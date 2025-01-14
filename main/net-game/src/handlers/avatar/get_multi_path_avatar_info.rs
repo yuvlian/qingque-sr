@@ -11,7 +11,7 @@ pub async fn handle(_: &[u8]) -> Vec<u8> {
 
     GetMultiPathAvatarInfoScRsp {
         retcode: 0,
-        cur_multi_path_avatar_type_map: HashMap::from([
+        cur_avatar_path: HashMap::from([
             (1001, march.into()),
             (8001, trailblazer.into()),
         ]),

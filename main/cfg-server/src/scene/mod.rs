@@ -1,6 +1,5 @@
-use net_msg::pb::scene_entity_info::EntityCase::{Actor, Prop};
 use net_msg::pb::{
-    AvatarType, MotionInfo, SceneActorInfo, SceneEntityGroupInfo, SceneEntityInfo, SceneInfo,
+    AvatarType, MotionInfo, SceneActorInfo, SceneGroupInfo, SceneEntityInfo, SceneInfo,
     ScenePropInfo, Vector,
 };
 use serde::Deserialize;
@@ -52,20 +51,20 @@ impl SceneConfig {
             floor_id: (self.plane_id * 1000) + 1,
             entry_id: (self.plane_id * 100) + 1,
             game_mode_type: 2,
-            entity_group_list: vec![
-                SceneEntityGroupInfo {
+            scene_group_list: vec![
+                SceneGroupInfo {
                     state: 1,
                     group_id: 0,
                     entity_list: vec![SceneEntityInfo {
                         group_id: 0,
                         inst_id: 0,
                         entity_id: 0,
-                        entity_case: Some(Actor(SceneActorInfo {
+                        actor: Some(SceneActorInfo {
                             avatar_type: AvatarType::AvatarFormalType.into(),
                             base_avatar_id: self.player.base_avatar_id,
                             map_layer: self.player.map_layer,
                             uid: 1,
-                        })),
+                        }),
                         motion: Some(MotionInfo {
                             pos: Some(Vector {
                                 x: self.player.x,
@@ -74,21 +73,22 @@ impl SceneConfig {
                             }),
                             rot: Some(Vector { x: 0, y: 0, z: 0 }),
                         }),
+                        ..Default::default()
                     }],
                     ..Default::default()
                 },
-                SceneEntityGroupInfo {
+                SceneGroupInfo {
                     state: 1,
                     group_id: self.calyx.group_id,
                     entity_list: vec![SceneEntityInfo {
                         group_id: self.calyx.group_id,
                         inst_id: self.calyx.inst_id,
                         entity_id: self.calyx.entity_id,
-                        entity_case: Some(Prop(ScenePropInfo {
+                        prop: Some(ScenePropInfo {
                             prop_id: self.calyx.prop_id,
                             prop_state: 1,
                             ..Default::default()
-                        })),
+                        }),
                         motion: Some(MotionInfo {
                             pos: Some(Vector {
                                 x: self.calyx.x,
@@ -97,6 +97,7 @@ impl SceneConfig {
                             }),
                             rot: Some(Vector { x: 0, y: 0, z: 0 }),
                         }),
+                        ..Default::default()
                     }],
                     ..Default::default()
                 },

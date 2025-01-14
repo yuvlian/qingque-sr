@@ -114,6 +114,14 @@ impl AvatarConfig {
                 MultiPathAvatarType::Mar7thRogueType,
                 MultiPathAvatarType::BoyWarriorType,
             ),
+            ("Imaginary", "Ice", Gender::Woman) => (
+                MultiPathAvatarType::Mar7thRogueType,
+                MultiPathAvatarType::GirlMemoryType,
+            ),
+            ("Imaginary", "Ice", Gender::Man) => (
+                MultiPathAvatarType::Mar7thRogueType,
+                MultiPathAvatarType::BoyMemoryType,
+            ),
             ("Ice", "Imaginary", Gender::Woman) => (
                 MultiPathAvatarType::Mar7thKnightType,
                 MultiPathAvatarType::GirlShamanType,
@@ -137,6 +145,14 @@ impl AvatarConfig {
             ("Ice", "Physical", Gender::Man) => (
                 MultiPathAvatarType::Mar7thKnightType,
                 MultiPathAvatarType::BoyWarriorType,
+            ),
+            ("Ice", "Ice", Gender::Woman) => (
+                MultiPathAvatarType::Mar7thKnightType,
+                MultiPathAvatarType::GirlMemoryType,
+            ),
+            ("Ice", "Ice", Gender::Man) => (
+                MultiPathAvatarType::Mar7thKnightType,
+                MultiPathAvatarType::BoyMemoryType,
             ),
             _ => (MultiPathAvatarType::None, MultiPathAvatarType::None),
         }

@@ -6,7 +6,7 @@
 # trailblazer = 8001, march = 1001
 
 # Editing this lineup only affects overworld lineup
-lineup = [1201, 1001, 8001]
+lineup = [1403]
 
 trailblazer_gender = "Woman"
 trailblazer_element = "Imaginary"
@@ -16,7 +16,7 @@ march_element = "Imaginary"
 # Only need to update for lineup.
 # If you don't change the lineup, no need to update.
 
-# Last updated: Fugue
+# Last updated: Tribbie
 owned_avatars = [
     1001,
     1002,
@@ -77,8 +77,10 @@ owned_avatars = [
     1314,
     1315,
     1317,
-    # 1401
-    # 1402
+    1401,
+    1402,
+    1403,
+    1404,
     8001,
     # 8002
     # 8003

@@ -31,10 +31,10 @@ pub async fn handle(q: Query<Gateway>) -> (StatusCode, String) {
     let rsp = rbase64::encode(
         &GateServer {
             // hotfix
-            lua_bundle_version_update_url: hotfix.lua_url,
-            lua_patch_version: hotfix.lua_version,
-            design_data_bundle_version_update_url: hotfix.ex_resource_url,
-            video_bundle_version_update_url: hotfix.asset_bundle_url,
+            lua_url: hotfix.lua_url,
+            lua_version: hotfix.lua_version,
+            ex_resource_url: hotfix.ex_resource_url,
+            asset_bundle_url: hotfix.asset_bundle_url,
 
             // gameserver
             ip: String::from(server_config.game_server_host()),
@@ -43,20 +43,18 @@ pub async fn handle(q: Query<Gateway>) -> (StatusCode, String) {
 
             // client bullshit
             retcode: 0,
-            watermark_enable: false,
-            enable_video_bundle_version_update: true,
-            close_redeem_code: true,
-            forbid_recharge: true,
-            enable_design_data_bundle_version_update: true,
-            network_diagnostic: false,
-            android_middle_package_enable: false,
-            event_tracking_open: false,
-            enable_save_replay_file: true,
-            enable_upload_battle_log: true,
-            ejcaokobhbg: true,
-            nhehajgmjnj: false,
-            ios_exam: false,
-            mtp_switch: false,
+            unk1: true,
+            unk2: true,
+            unk3: true,
+            unk5: true,
+            unk6: true,
+            unk9: true,
+            unk11: true,
+            unk12: true,
+            unk13: true,
+            unk14: true,
+            unk15: true,
+            use_design_data: true,
             ..Default::default()
         }
         .encode_to_vec(),

@@ -8,8 +8,8 @@ const OUTPUT_DIR: &str = "out/";
 const CMD_ID_OUTPUT_FILE: &str = "cmd.rs";
 
 // Source files
-const PROTO_FILE: &str = "SR-2.6.5x.proto";
-const CMD_ID_JSON: &str = "CmdId-2.6.5x.json";
+const PROTO_FILE: &str = "SR-3.0.5x.proto";
+const CMD_ID_JSON: &str = "CmdId-3.0.5x.json";
 
 fn main() {
     if !Path::new(OUTPUT_DIR).exists() {
