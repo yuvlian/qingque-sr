@@ -15,10 +15,10 @@ readme = "README.md"
 
 [workspace.dependencies]
 cfg-utility = { path = "cfg-utility/" }
-# if you don't want to clone sr-proto repo, you can uncomment the line below
-# sr-proto = { git = "https://github.com/f2pqingque/sr-proto", rev = "cc4713a" }
-# and comment this one
-sr-proto = { path = "sr-proto/" }
+# from gh repo
+sr-proto = { git = "https://github.com/f2pqingque/sr-proto", rev = "ddd4db3" }
+# from local repo
+# sr-proto = { path = "sr-proto/" }
 prost = "0.13.3"
 prost-types = "0.13.3"
 prost-build = "0.13.3"

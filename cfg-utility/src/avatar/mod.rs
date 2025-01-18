@@ -64,7 +64,7 @@ impl AvatarConfig {
             .collect();
 
         LineupInfo {
-            name: String::from("smolteam"),
+            name: String::from("yulianteam"),
             avatar_list: av_list,
             plane_id: 20101,
             ..Default::default()

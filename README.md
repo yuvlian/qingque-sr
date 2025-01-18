@@ -26,11 +26,15 @@ This server will fallback to default config when a file in `_cfg` is invalid or 
 #### Option 1: Prebuilt (Windows Only)
 
 1. Download the prebuilt version that matches your SR version from [here](https://github.com/f2pqingque/sr/releases).
+
 2. Extract the ZIP file.
+
 3. Edit configuration files in the `_cfg` folder as needed (refer to the README in that folder).
+
 4. Run the following executables:
    - `game-server.exe`
    - `sdk-server.exe`
+
 5. Make sure game traffic is being redirected and have fun.
 
 NOTE: If you want to see the logs when the server panics, run the binary through cmd.

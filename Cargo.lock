@@ -976,6 +976,7 @@ dependencies = [
 [[package]]
 name = "sr-proto"
 version = "3.0.0"
+source = "git+https://github.com/f2pqingque/sr-proto?rev=ddd4db3#ddd4db3a0b81e87d78d14ca21da32acf8ca94545"
 dependencies = [
  "prost",
  "prost-build",
