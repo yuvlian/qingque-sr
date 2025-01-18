@@ -6,7 +6,6 @@ use axum::Router;
 use cfg_utility::server::ServerConfig;
 use middleware::log_requests;
 use router::{auth_router, dispatch_router};
-use std::net::SocketAddr;
 use tracing::info;
 
 #[tokio::main]
@@ -20,7 +19,7 @@ async fn main() {
         .merge(dispatch_router())
         .layer(axum::middleware::from_fn(log_requests));
 
-    let addr = server_config.sdk_to_listen_at();
+    let addr = server_config.get_sdk_socket_addr();
 
     info!("Listening at {}", addr);
 

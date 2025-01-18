@@ -1,8 +1,8 @@
+use serde::Deserialize;
 use sr_proto::pb::{
-    AvatarType, MotionInfo, SceneActorInfo, SceneGroupInfo, SceneEntityInfo, SceneInfo,
+    AvatarType, MotionInfo, SceneActorInfo, SceneEntityInfo, SceneGroupInfo, SceneInfo,
     ScenePropInfo, Vector,
 };
-use serde::Deserialize;
 use std::fs;
 
 #[derive(Deserialize)]
@@ -75,7 +75,6 @@ impl SceneConfig {
                         }),
                         ..Default::default()
                     }],
-                    ..Default::default()
                 },
                 SceneGroupInfo {
                     state: 1,
@@ -99,7 +98,6 @@ impl SceneConfig {
                         }),
                         ..Default::default()
                     }],
-                    ..Default::default()
                 },
             ],
             ..Default::default()

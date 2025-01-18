@@ -1,7 +1,7 @@
 Self {
     avatar_config: vec![
         AvatarConfig {
-            name: String::from("Bronya"),
+            // name: String::from("Bronya"),
             id: 1101,
             hp: 100,
             sp: 50,
@@ -26,7 +26,7 @@ Self {
             buff_id_list: vec![110101],
         },
         AvatarConfig {
-            name: String::from("Fu Xuan"),
+            // name: String::from("Fu Xuan"),
             id: 1208,
             hp: 100,
             sp: 50,
@@ -51,7 +51,7 @@ Self {
             buff_id_list: vec![120801, 120802],
         },
         AvatarConfig {
-            name: String::from("Ruan Mei"),
+            // name: String::from("Ruan Mei"),
             id: 1303,
             hp: 100,
             sp: 50,
@@ -76,7 +76,7 @@ Self {
             buff_id_list: vec![130301, 130302, 130303],
         },
         AvatarConfig {
-            name: String::from("Qingque"),
+            // name: String::from("Qingque"),
             id: 1201,
             hp: 100,
             sp: 50,

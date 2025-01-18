@@ -1,5 +1,5 @@
 use crate::handlers::dispatch::{query_dispatch, query_gateway};
-use axum::{routing::get, Router};
+use axum::{Router, routing::get};
 
 pub fn dispatch_router() -> Router<()> {
     let mut router = Router::new();

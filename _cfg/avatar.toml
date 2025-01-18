@@ -9,14 +9,14 @@
 lineup = [1201, 1001, 8001]
 
 trailblazer_gender = "Woman"
-trailblazer_element = "Imaginary"
+trailblazer_element = "Ice"
 march_element = "Imaginary"
 
 # You don't need to update owned_avatars for battle to work.
 # Only need to update for lineup.
 # If you don't change the lineup, no need to update.
 
-# Last updated: Fugue
+# Last update: The Herta
 owned_avatars = [
     1001,
     1002,
@@ -77,8 +77,8 @@ owned_avatars = [
     1314,
     1315,
     1317,
-    # 1401
-    # 1402
+    1401,
+    1402,
     8001,
     # 8002
     # 8003

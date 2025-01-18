@@ -2,8 +2,8 @@ pub mod mdk {
     pub mod shield {
         pub mod api {
             pub mod login {
-                use axum::{http::StatusCode, Json};
-                use serde_json::{json, Value};
+                use axum::{Json, http::StatusCode};
+                use serde_json::{Value, json};
 
                 pub async fn handle() -> (StatusCode, Json<Value>) {
                     let rsp = Json(json!({
@@ -29,8 +29,8 @@ pub mod mdk {
                 }
             }
             pub mod verify {
-                use axum::{http::StatusCode, Json};
-                use serde_json::{json, Value};
+                use axum::{Json, http::StatusCode};
+                use serde_json::{Value, json};
                 pub async fn handle() -> (StatusCode, Json<Value>) {
                     let rsp = Json(json!({
                         "data": {
@@ -63,8 +63,8 @@ pub mod combo {
         pub mod login {
             pub mod v2 {
                 pub mod login {
-                    use axum::{http::StatusCode, Json};
-                    use serde_json::{json, Value};
+                    use axum::{Json, http::StatusCode};
+                    use serde_json::{Value, json};
 
                     pub async fn handle() -> (StatusCode, Json<Value>) {
                         let rsp = Json(json!({

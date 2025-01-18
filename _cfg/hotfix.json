@@ -1,8 +1,8 @@
 {
-    "OSPRODWin2.7.0": {
-        "asset_bundle_url": "https://autopatchos.starrails.com/asb/V2.7Live/output_8749212_b6af1d01f94a",
-        "ex_resource_url": "https://autopatchos.starrails.com/design_data/V2.7Live/output_8789622_e1208cef714d",
-        "lua_url": "https://autopatchos.starrails.com/lua/V2.7Live/output_8774490_7f0c259f6163",
-        "lua_version": "8774490"
+    "OSPRODWin3.0.0": {
+        "asset_bundle_url": "",
+        "ex_resource_url": "",
+        "lua_url": "",
+        "lua_version": ""
     }
 }

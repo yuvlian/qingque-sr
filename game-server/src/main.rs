@@ -1,5 +1,4 @@
 use cfg_utility::server::ServerConfig;
-use tokio::io::Result as TokioResult;
 use tokio::net::TcpListener;
 use tracing::{error, info};
 
@@ -10,21 +9,20 @@ mod utils;
 use network::conn;
 
 #[tokio::main]
-async fn main() -> TokioResult<()> {
+async fn main() -> tokio::io::Result<()> {
     let server_config = ServerConfig::from_file("_cfg/server.toml");
-    let to_bind = format!(
+    let socket_addr = format!(
         "{}:{}",
-        server_config.game_server_host(),
-        server_config.game_server_port()
+        server_config.game_server_host, server_config.game_server_port
     );
 
     tracing_subscriber::fmt().init();
 
-    let listener = TcpListener::bind(&to_bind)
+    let listener = TcpListener::bind(&socket_addr)
         .await
         .expect("Failed to bind to address");
 
-    info!("Listening at {}", &to_bind);
+    info!("Listening at {}", &socket_addr);
 
     loop {
         let (socket, addr) = listener

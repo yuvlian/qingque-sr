@@ -25,7 +25,7 @@ impl GameVersion {
         }
     }
 
-    pub fn get_hotfix_for_version(&self, version: &Option<String>) -> HotfixConfig {
+    pub fn get_hotfix_by_version(&self, version: &Option<String>) -> HotfixConfig {
         match version {
             Some(v) => self.versions.get(v).cloned().unwrap_or_default(),
             None => HotfixConfig::default(),

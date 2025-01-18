@@ -2,6 +2,6 @@ sdk_server_host = "127.0.0.1"
 sdk_server_port = 21000
 
 game_server_host = "127.0.0.1"
-game_server_port = 59584
+game_server_port = 23301
 
 dispatch_url = "http://127.0.0.1:21000/query_gateway"

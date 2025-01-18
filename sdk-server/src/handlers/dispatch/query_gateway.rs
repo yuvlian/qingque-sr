@@ -1,8 +1,8 @@
 use axum::{extract::Query, http::StatusCode};
-use cfg_utility::server::ServerConfig;
 use cfg_utility::hotfix::GameVersion;
-use sr_proto::pb::Gateserver;
+use cfg_utility::server::ServerConfig;
 use sr_proto::MsgTrait;
+use sr_proto::pb::Gateserver;
 
 use serde::Deserialize;
 
@@ -25,8 +25,7 @@ pub struct Gateway {
 pub async fn handle(Query(q): Query<Gateway>) -> (StatusCode, String) {
     let server_config = ServerConfig::from_file("_cfg/server.toml");
     let game_version = GameVersion::from_file("_cfg/hotfix.json");
-
-    let hotfix = game_version.get_hotfix_for_version(&q.version);
+    let hotfix = game_version.get_hotfix_by_version(&q.version);
 
     let rsp = rbase64::encode(
         &Gateserver {
@@ -38,8 +37,8 @@ pub async fn handle(Query(q): Query<Gateway>) -> (StatusCode, String) {
 
             // we're not using kcp.
             use_tcp: true,
-            ip: String::from(server_config.game_server_host()),
-            port: server_config.game_server_port(),
+            ip: server_config.game_server_host,
+            port: server_config.game_server_port,
 
             // let's just bruteforce the bool fields.
             unk1: true,

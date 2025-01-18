@@ -1,15 +1,14 @@
 use bytes::{Buf, BytesMut};
-use tokio::io::Result as TokioResult;
 use tokio::{
     io::{AsyncReadExt, AsyncWriteExt},
     net::TcpStream,
 };
 
-use crate::network::packet::decode_bytes;
+use crate::network::packet::{TAIL_MAGIC_BYTES, decode_bytes};
 use crate::network::router::ping_pong;
-use tracing::{error, info};
+use tracing::info;
 
-pub async fn handle_connection(mut socket: TcpStream) -> TokioResult<()> {
+pub async fn handle_connection(mut socket: TcpStream) -> tokio::io::Result<()> {
     let mut buffer = BytesMut::with_capacity(1024);
     let mut temp_buffer = [0u8; 1024];
 
@@ -28,29 +27,22 @@ pub async fn handle_connection(mut socket: TcpStream) -> TokioResult<()> {
 
         while let Some(position) = buffer
             .windows(4)
-            .position(|window| window == 0xD7A152C8_u32.to_be_bytes())
+            .position(|window| window == TAIL_MAGIC_BYTES)
         {
             if position + 4 <= buffer.len() {
                 let complete_message = &buffer[..position + 4];
+                let (cmd, body) = decode_bytes(complete_message);
 
-                match decode_bytes(complete_message).await {
-                    Ok((cmd, body)) => {
-                        info!("{} -> {:?}", cmd, body);
+                info!("{} -> ?", cmd);
 
-                        let response = ping_pong(cmd, body).await;
-                        if !response.is_empty() {
-                            info!("{:?} -> {}", response, cmd);
-                            socket
-                                .write_all(&response)
-                                .await
-                                .expect("Failed to write to socket");
-                        }
-                    }
-                    Err(e) => {
-                        error!("Decoding error: {}", e);
-                    }
+                let response = ping_pong(cmd, body).await;
+                if !response.is_empty() {
+                    info!("{} <- ✓", cmd);
+                    socket
+                        .write_all(&response)
+                        .await
+                        .expect("Failed to write to socket");
                 }
-
                 buffer.advance(position + 4);
             } else {
                 break;

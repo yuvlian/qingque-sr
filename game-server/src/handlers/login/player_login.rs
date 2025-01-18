@@ -1,6 +1,6 @@
 use crate::utils::time;
-use sr_proto::pb::{PlayerBasicInfo, PlayerLoginScRsp};
 use sr_proto::MsgTrait;
+use sr_proto::pb::{PlayerBasicInfo, PlayerLoginScRsp};
 
 pub async fn handle(_: &[u8]) -> Vec<u8> {
     PlayerLoginScRsp {

@@ -1,5 +1,5 @@
 use sr_proto::pb::{GetMissionStatusCsReq, GetMissionStatusScRsp, Mission, MissionStatus};
-use sr_proto::{dec, MsgTrait};
+use sr_proto::{MsgTrait, dec};
 
 pub async fn handle(req: &[u8]) -> Vec<u8> {
     let req = dec!(GetMissionStatusCsReq, req);

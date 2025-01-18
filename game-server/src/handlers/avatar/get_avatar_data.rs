@@ -1,6 +1,6 @@
 use cfg_utility::avatar::AvatarConfig;
-use sr_proto::pb::GetAvatarDataScRsp;
 use sr_proto::MsgTrait;
+use sr_proto::pb::GetAvatarDataScRsp;
 
 pub async fn handle(_: &[u8]) -> Vec<u8> {
     let cfg = AvatarConfig::from_file("_cfg/avatar.toml");

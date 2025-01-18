@@ -1,5 +1,5 @@
 use crate::handlers::auth::{account, product};
-use axum::{routing::post, Router};
+use axum::{Router, routing::post};
 
 pub fn auth_router() -> Router<()> {
     let mut router = Router::new();

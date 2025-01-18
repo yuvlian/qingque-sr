@@ -1,6 +1,6 @@
 use cfg_utility::avatar::AvatarConfig;
-use sr_proto::pb::GetMultiPathAvatarInfoScRsp;
 use sr_proto::MsgTrait;
+use sr_proto::pb::GetMultiPathAvatarInfoScRsp;
 use std::collections::HashMap;
 
 pub async fn handle(_: &[u8]) -> Vec<u8> {
@@ -11,10 +11,7 @@ pub async fn handle(_: &[u8]) -> Vec<u8> {
 
     GetMultiPathAvatarInfoScRsp {
         retcode: 0,
-        cur_avatar_path: HashMap::from([
-            (1001, march.into()),
-            (8001, trailblazer.into()),
-        ]),
+        cur_avatar_path: HashMap::from([(1001, march.into()), (8001, trailblazer.into())]),
         ..Default::default()
     }
     .encode_to_vec()

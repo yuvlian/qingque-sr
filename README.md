@@ -31,7 +31,9 @@ This server will fallback to default config when a file in `_cfg` is invalid or 
 4. Run the following executables:
    - `game-server.exe`
    - `sdk-server.exe`
-5. Make sure game traffic is being redirected, and play the game.
+5. Make sure game traffic is being redirected and have fun.
+
+NOTE: If you want to see the logs when the server panics, run the binary through cmd.
 
 #### Option 2: Build from Source
 
@@ -43,21 +45,16 @@ This server will fallback to default config when a file in `_cfg` is invalid or 
    ```bash
    git clone https://github.com/f2pqingque/sr.git
    ```
+3. Place your `proto` and `cmdid` files in the `sr-proto` folder, and adjust the `build.rs` file accordingly.
 
-3. Navigate to the main directory:
-   ```bash
-   cd main
-   ```
-4. Place your `proto` and `cmdid` files in the `sr-proto` folder, and adjust the `build.rs` file accordingly.
+4. Edit configuration files in the `_cfg` folder as needed (refer to the README in that folder).
 
-5. Edit configuration files in the `_cfg` folder as needed (refer to the README in that folder).
-
-6. Build and run the game server:
+5. Build and run the game server:
    ```bash
    cargo run --release --bin game-server
    ```
 
-7. Build and run the SDK server:
+6. Build and run the SDK server:
    ```bash
    cargo run --release --bin sdk-server
    ```

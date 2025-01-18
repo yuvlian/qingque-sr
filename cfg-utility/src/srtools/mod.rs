@@ -1,10 +1,23 @@
+use serde::Deserialize;
 use sr_proto::pb::{
     AmountInfo, AvatarSkillTree, AvatarType, BattleAvatar, BattleBuff, BattleEquipment,
     BattleRelic, RelicAffix, SceneMonsterData, SceneMonsterWave, SceneMonsterWaveParam,
 };
-use serde::Deserialize;
 use std::collections::HashMap;
 use std::fs;
+
+macro_rules! trace {
+    ($timed_id:expr; $($point:literal $level:literal);* $(;)?) => {{
+        vec![
+            $(
+                AvatarSkillTree {
+                    point_id: $timed_id + $point,
+                    level: $level,
+                }
+            ),*
+        ]
+    }};
+}
 
 #[derive(Deserialize)]
 pub struct SrToolsConfig {
@@ -45,8 +58,9 @@ impl SrToolsConfig {
             .enumerate()
             .flat_map(|(i, av)| {
                 av.buff_id_list.iter().map(move |&buff_id| {
+                    // hardcode march tech to 3 stack
                     let dynamic_val = match buff_id {
-                        122401 | 122402 | 122403 => HashMap::from([
+                        122401..=122403 => HashMap::from([
                             (String::from("SkillIndex"), 0.0),
                             (String::from("#ADF_1"), 3.0),
                             (String::from("#ADF_2"), 3.0),
@@ -60,7 +74,6 @@ impl SrToolsConfig {
                         wave_flag: u32::MAX,
                         target_index_list: (0..=4).collect(),
                         dynamic_values: dynamic_val,
-                        ..Default::default()
                     }
                 })
             })
@@ -75,7 +88,7 @@ impl SrToolsConfig {
                 monster_list: monster_ids
                     .iter()
                     .map(|&monster_id| SceneMonsterData {
-                        monster_id: monster_id,
+                        monster_id,
                         ..Default::default()
                     })
                     .collect(),
@@ -91,80 +104,58 @@ impl SrToolsConfig {
     pub fn get_battle_avatars(&self) -> Vec<BattleAvatar> {
         fn create_max_trace(avatar_id: u32) -> Vec<AvatarSkillTree> {
             let timed_id = avatar_id * 1000;
-            vec![
-                AvatarSkillTree {
-                    point_id: timed_id + 1,
-                    level: 6,
-                },
-                AvatarSkillTree {
-                    point_id: timed_id + 2,
-                    level: 10,
-                },
-                AvatarSkillTree {
-                    point_id: timed_id + 3,
-                    level: 10,
-                },
-                AvatarSkillTree {
-                    point_id: timed_id + 4,
-                    level: 10,
-                },
-                AvatarSkillTree {
-                    point_id: timed_id + 7,
-                    level: 1,
-                },
-                AvatarSkillTree {
-                    point_id: timed_id + 101,
-                    level: 1,
-                },
-                AvatarSkillTree {
-                    point_id: timed_id + 102,
-                    level: 1,
-                },
-                AvatarSkillTree {
-                    point_id: timed_id + 103,
-                    level: 1,
-                },
-                AvatarSkillTree {
-                    point_id: timed_id + 201,
-                    level: 1,
-                },
-                AvatarSkillTree {
-                    point_id: timed_id + 202,
-                    level: 1,
-                },
-                AvatarSkillTree {
-                    point_id: timed_id + 203,
-                    level: 1,
-                },
-                AvatarSkillTree {
-                    point_id: timed_id + 204,
-                    level: 1,
-                },
-                AvatarSkillTree {
-                    point_id: timed_id + 205,
-                    level: 1,
-                },
-                AvatarSkillTree {
-                    point_id: timed_id + 206,
-                    level: 1,
-                },
-                AvatarSkillTree {
-                    point_id: timed_id + 207,
-                    level: 1,
-                },
-                AvatarSkillTree {
-                    point_id: timed_id + 208,
-                    level: 1,
-                },
-                AvatarSkillTree {
-                    point_id: timed_id + 209,
-                    level: 1,
-                },
-                AvatarSkillTree {
-                    point_id: timed_id + 210,
-                    level: 1,
-                },
-            ]
+            match avatar_id {
+                // Remembrance characters
+                // Fucking annoying...
+                8007 | 8008 | 1402 => {
+                    trace![
+                        timed_id;
+                        1 6;
+                        2 10;
+                        3 10;
+                        4 10;
+                        7 1;
+                        101 1;
+                        102 1;
+                        103 1;
+                        201 1;
+                        202 1;
+                        203 1;
+                        204 1;
+                        205 1;
+                        206 1;
+                        207 1;
+                        208 1;
+                        209 1;
+                        210 1;
+                        301 5;
+                        302 5;
+                    ]
+                }
+                _ => {
+                    trace![
+                        timed_id;
+                        1 6;
+                        2 10;
+                        3 10;
+                        4 10;
+                        7 1;
+                        101 1;
+                        102 1;
+                        103 1;
+                        201 1;
+                        202 1;
+                        203 1;
+                        204 1;
+                        205 1;
+                        206 1;
+                        207 1;
+                        208 1;
+                        209 1;
+                        210 1;
+                    ]
+                }
+            }
         }
 
         fn create_lightcone(
@@ -174,10 +165,10 @@ impl SrToolsConfig {
             promotion: u32,
         ) -> Vec<BattleEquipment> {
             vec![BattleEquipment {
-                id: id,
-                rank: rank,
-                promotion: promotion,
-                level: level,
+                id,
+                rank,
+                promotion,
+                level,
             }]
         }
 
@@ -238,13 +229,13 @@ impl SrToolsConfig {
                     .split(':')
                     .map(|part| part.parse::<u32>().expect("Failed to parse RelicSAffix"))
                     .collect();
-                if parts.len() != 3 {
-                    panic!(
-                        "Expected exactly 3 components in saffix, found {}",
-                        parts.len()
-                    );
+
+                match parts.len() {
+                    // if no step, high step
+                    2 => (parts[0], parts[1], parts[1] * 2),
+                    3 => (parts[0], parts[1], parts[2]),
+                    _ => panic!("Invalid relic sub affix in config.json"),
                 }
-                (parts[0], parts[1], parts[2])
             }
 
             relic_strings
@@ -331,7 +322,7 @@ impl SrToolsConfig {
 
 #[derive(Deserialize)]
 pub struct AvatarConfig {
-    pub name: String,
+    // pub name: String,
     pub id: u32,
     pub hp: u32,
     pub sp: u32,

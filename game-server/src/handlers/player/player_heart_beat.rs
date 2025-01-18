@@ -1,6 +1,6 @@
 use crate::utils::time;
 use sr_proto::pb::{PlayerHeartBeatCsReq, PlayerHeartBeatScRsp};
-use sr_proto::{dec, MsgTrait};
+use sr_proto::{MsgTrait, dec};
 
 pub async fn handle(req: &[u8]) -> Vec<u8> {
     let req = dec!(PlayerHeartBeatCsReq, req);

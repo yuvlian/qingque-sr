@@ -1,7 +1,7 @@
 use axum::http::StatusCode;
 use cfg_utility::server::ServerConfig;
-use sr_proto::pb::{GlobalDispatchData, ServerData};
 use sr_proto::MsgTrait;
+use sr_proto::pb::{GlobalDispatchData, ServerData};
 
 pub async fn handle() -> (StatusCode, String) {
     let server_config = ServerConfig::from_file("_cfg/server.toml");
@@ -16,7 +16,7 @@ pub async fn handle() -> (StatusCode, String) {
                 title: String::from("smol"),
                 env_type: String::from("2"),
                 msg: String::from("OK"),
-                dispatch_url: String::from(server_config.gateway_dispatch()),
+                dispatch_url: server_config.dispatch_url,
             }],
             top_sever_region_name: String::from("smol"),
             ..Default::default()

@@ -1,7 +1,7 @@
+use serde::Deserialize;
 use sr_proto::pb::{
     AmountInfo, Avatar, AvatarType, Gender, LineupAvatar, LineupInfo, MultiPathAvatarType,
 };
-use serde::Deserialize;
 use std::fs;
 
 type MarchPath = MultiPathAvatarType;
@@ -88,13 +88,13 @@ impl AvatarConfig {
     pub fn get_multipath_data(&self, gender: Gender) -> (MarchPath, TrailblazerPath) {
         let march = self.march_element.as_str();
         let tb = self.trailblazer_element.as_str();
-    
+
         let march_path = match march {
             "Imaginary" => MultiPathAvatarType::Mar7thRogueType,
             "Ice" => MultiPathAvatarType::Mar7thKnightType,
             _ => MultiPathAvatarType::None,
         };
-    
+
         let tb_path = match (tb, gender) {
             ("Imaginary", Gender::Woman) => MultiPathAvatarType::GirlShamanType,
             ("Imaginary", Gender::Man) => MultiPathAvatarType::BoyShamanType,
@@ -106,7 +106,7 @@ impl AvatarConfig {
             ("Ice", Gender::Man) => MultiPathAvatarType::BoyMemoryType,
             _ => MultiPathAvatarType::None,
         };
-    
+
         (march_path, tb_path)
     }
 }

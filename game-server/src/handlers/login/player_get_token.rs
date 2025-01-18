@@ -1,5 +1,5 @@
-use sr_proto::pb::PlayerGetTokenScRsp;
 use sr_proto::MsgTrait;
+use sr_proto::pb::PlayerGetTokenScRsp;
 
 pub async fn handle(_: &[u8]) -> Vec<u8> {
     PlayerGetTokenScRsp {
