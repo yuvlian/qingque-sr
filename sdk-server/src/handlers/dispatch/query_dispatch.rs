@@ -14,7 +14,7 @@ pub async fn handle() -> (StatusCode, String) {
                 name: String::from("yulian"),
                 display_name: String::from("yulian"),
                 title: String::from("yulian"),
-                env_type: String::from("2"),
+                env_type: server_config.env_type,
                 msg: String::from("OK"),
                 dispatch_url: server_config.dispatch_url,
             }],

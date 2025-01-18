@@ -15,6 +15,8 @@ pub async fn log_requests(req: Request, next: Next) -> Response {
 
     if status == StatusCode::OK {
         info!("{} {} -> {} {:.2?}", method, uri, status, duration);
+    } else {
+        info!("Unhandled: {}", uri);
     }
 
     response

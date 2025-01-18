@@ -9,6 +9,7 @@ pub struct ServerConfig {
     pub game_server_host: String,
     pub game_server_port: u32,
     pub dispatch_url: String,
+    pub env_type: String,
 }
 
 impl Default for ServerConfig {
@@ -19,6 +20,7 @@ impl Default for ServerConfig {
             game_server_host: String::from("127.0.0.1"),
             game_server_port: 59584,
             dispatch_url: String::from("http://127.0.0.1:21000/query_gateway"),
+            env_type: String::from("21"),
         }
     }
 }
