@@ -1,36 +1,73 @@
-# QingqueSR 
+# QingqueSR - 3.0.0
 
 Ever wanted a private server that is quick to update when the game updates, but doesn't sacrifice too much features?
 
 A server that's modular enough and feature complete-ish for battle simulation?
 
-You're in the right place!
+QingqueSR got you covered.
 
 ## Tutorial
 
-This tutorial assumes you have basic knowledge of a terminal and traffic redirection with a proxy.
+This tutorial assumes you have basic knowledge of terminal usage and traffic redirection via a proxy.
 
-Also, if config files are missing, the server will fallback to default config. This means you can delete all files in `_config` folder.
+### Prerequisites
 
-You only have to worry about `config.json` because that's the config file for battle. It's obtainable from https://srtools.pages.dev/
+#### Proxy Setup (For Windows)
+- Download the proxy tool from [here](https://git.xeondev.com/YYHEggEgg/FireflySR.Tool.Proxy/releases/download/v2.0.0/FireflySR.Tool.Proxy_win-x64.zip).
 
-### From Prebuilt (Windows only)
+- If you experience internet connectivity issues after playing, manually disable the proxy in your Windows settings.
 
-1. Download the prebuilt that matches your SR version in https://github.com/f2pqingque/sr/releases
-2. Extract the zip
-5. Edit config files in `_config` if necessary (check the README in that folder)
-4. Run `net-game.exe` and `net-sdk.exe`
+This server will fallback to default config when a file in `_cfg` is invalid or missing.
 
-### From Source
+---
 
-1. Install Rust
-2. Clone this repository
-3. `cd` into `main`
-4. Put your proto & cmdid file in `net-msg` and adjust the `build.rs`
-5. Edit config files in `_config` if necessary (check the README in that folder)
-6. `cargo run --release --bin net-game`
-7. `cargo run --release --bin net-sdk`
+### Installation Options
+
+#### Option 1: Prebuilt (Windows Only)
+
+1. Download the prebuilt version that matches your SR version from [here](https://github.com/f2pqingque/sr/releases).
+2. Extract the ZIP file.
+3. Edit configuration files in the `_cfg` folder as needed (refer to the README in that folder).
+4. Run the following executables:
+   - `game-server.exe`
+   - `sdk-server.exe`
+5. Make sure game traffic is being redirected, and play the game.
+
+#### Option 2: Build from Source
+
+1. Install the following tools:
+   - [Rust](https://www.rust-lang.org/)
+   - `protoc` (Protocol Buffers compiler)
+
+2. Clone the repository:
+   ```bash
+   git clone https://github.com/f2pqingque/sr.git
+   ```
+
+3. Navigate to the main directory:
+   ```bash
+   cd main
+   ```
+4. Place your `proto` and `cmdid` files in the `sr-proto` folder, and adjust the `build.rs` file accordingly.
+
+5. Edit configuration files in the `_cfg` folder as needed (refer to the README in that folder).
+
+6. Build and run the game server:
+   ```bash
+   cargo run --release --bin game-server
+   ```
+
+7. Build and run the SDK server:
+   ```bash
+   cargo run --release --bin sdk-server
+   ```
+
+---
 
 ## Credits
-- Yulian: QingqueSR Developer
-- amizing25: SrTools Author
+
+- **QingqueSR Developer**: Yulian
+- **SRTools Author**: Amizing25
+- **Protobufs**: Amizing25 & Lukopa
+
+---

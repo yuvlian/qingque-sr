@@ -1,0 +1,22 @@
+[package]
+name = "sdk-server"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description.workspace = true
+homepage.workspace = true
+repository.workspace = true
+readme.workspace = true
+
+[dependencies]
+sr-proto.workspace = true
+cfg-utility.workspace = true
+axum.workspace = true
+axum-server.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+rbase64.workspace = true
