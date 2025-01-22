@@ -17,8 +17,6 @@ This tutorial assumes you have basic knowledge of terminal usage and traffic red
 
 - If you experience internet connectivity issues after playing, manually disable the proxy in your Windows settings.
 
-This server will fallback to default config when a file in `_cfg` is invalid or missing.
-
 ---
 
 ### Installation Options
@@ -29,7 +27,7 @@ This server will fallback to default config when a file in `_cfg` is invalid or 
 
 2. Extract the ZIP file.
 
-3. Edit configuration files in the `_cfg` folder as needed (refer to the README in that folder).
+3. Edit configuration files in the `_cfg` folder as needed (refer to the README in that folder). The server will fallback to default config when a file in `_cfg` is invalid or missing.
 
 4. Run the following executables:
    - `game-server.exe`
@@ -49,20 +47,21 @@ NOTE: If you want to see the logs when the server panics, run the binary through
    ```bash
    git clone https://github.com/f2pqingque/sr.git
    ```
-3. Place your `proto` and `cmdid` files in the `sr-proto` folder, and adjust the `build.rs` file accordingly.
+3. cd into `sr`
+4. If you want to use your own protobufs:
+   - Clone `https://github.com/f2pqingque/sr-proto.git`
+   - Change dependency source in root Cargo.toml
+   - Place your `proto` and `cmdid` files in the `sr-proto` folder, and adjust the `build.rs` file accordingly.
 
-4. Edit configuration files in the `_cfg` folder as needed (refer to the README in that folder).
+5. Edit configuration files in the `_cfg` folder as needed (refer to the README in that folder).
 
-5. Build and run the game server:
+6. Build and run the server:
    ```bash
    cargo run --release --bin game-server
    ```
-
-6. Build and run the SDK server:
    ```bash
    cargo run --release --bin sdk-server
    ```
-
 ---
 
 ## Credits
