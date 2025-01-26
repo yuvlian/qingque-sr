@@ -1,7 +1,7 @@
 use crate::handlers::*;
 use crate::network::packet;
-use sr_proto::cmd::*;
 use paste::paste;
+use sr_proto::cmd::*;
 
 macro_rules! enc {
     ($body:expr, $rsp_cmd:expr, $handler:path) => {

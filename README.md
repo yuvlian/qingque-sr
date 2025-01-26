@@ -35,7 +35,9 @@ This tutorial assumes you have basic knowledge of terminal usage and traffic red
 
 5. Make sure game traffic is being redirected and have fun.
 
-NOTE: If you want to see the logs when the server panics, run the binary through cmd.
+- If you want to see the logs when the server panics, run the binary through cmd.
+
+- You can use `cfg-manager.exe` to easily manage config.json(s).
 
 #### Option 2: Build from Source
 
@@ -63,6 +65,12 @@ NOTE: If you want to see the logs when the server panics, run the binary through
    ```bash
    cargo run --release --bin sdk-server
    ```
+
+7. Build and run config.json manager (optional):
+   ```bash
+   cargo run --release --bin cfg-manager
+   ```
+
 ---
 
 ## Credits
