@@ -16,3 +16,4 @@ sr-proto.workspace = true
 cfg-utility.workspace = true
 tracing.workspace = true
 tracing-subscriber.workspace = true
+paste.workspace = true

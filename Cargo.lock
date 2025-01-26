@@ -300,6 +300,7 @@ version = "3.0.0"
 dependencies = [
  "bytes",
  "cfg-utility",
+ "paste",
  "sr-proto",
  "tokio",
  "tracing",
@@ -611,6 +612,12 @@ dependencies = [
  "smallvec",
  "windows-targets",
 ]
+
+[[package]]
+name = "paste"
+version = "1.0.15"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "57c0d7b74b563b49d38dae00a0c37d4d6de9b432382b2892f0574ddcae73fd0a"
 
 [[package]]
 name = "percent-encoding"
@@ -976,12 +983,13 @@ dependencies = [
 [[package]]
 name = "sr-proto"
 version = "3.0.0"
-source = "git+https://github.com/f2pqingque/sr-proto?rev=ddd4db3#ddd4db3a0b81e87d78d14ca21da32acf8ca94545"
+source = "git+https://github.com/f2pqingque/sr-proto?rev=5324d1a#5324d1a1e613c1db2c3a76ce6edf0f70efd6764d"
 dependencies = [
+ "heck",
  "prost",
  "prost-build",
  "prost-types",
- "serde_json",
+ "regex",
 ]
 
 [[package]]

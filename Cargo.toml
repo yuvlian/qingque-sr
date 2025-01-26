@@ -16,7 +16,7 @@ readme = "README.md"
 [workspace.dependencies]
 cfg-utility = { path = "cfg-utility/" }
 # from gh repo
-sr-proto = { git = "https://github.com/f2pqingque/sr-proto", rev = "ddd4db3" }
+sr-proto = { git = "https://github.com/f2pqingque/sr-proto", rev = "5324d1a" }
 # from local repo
 # sr-proto = { path = "sr-proto/" }
 prost = "0.13.3"
@@ -32,6 +32,7 @@ tracing-subscriber = "0.3.19"
 toml = "0.8.19"
 rbase64 = "2.0.3"
 bytes = "1.9.0"
+paste = "1.0.15"
 
 [profile.release]
 strip = true

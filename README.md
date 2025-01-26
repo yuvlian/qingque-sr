@@ -48,10 +48,11 @@ NOTE: If you want to see the logs when the server panics, run the binary through
    git clone https://github.com/f2pqingque/sr.git
    ```
 3. cd into `sr`
+
 4. If you want to use your own protobufs:
-   - Clone `https://github.com/f2pqingque/sr-proto.git`
+   - Clone `https://github.com/f2pqingque/sr-proto.git` too
    - Change dependency source in root Cargo.toml
-   - Place your `proto` and `cmdid` files in the `sr-proto` folder, and adjust the `build.rs` file accordingly.
+   - Place your proto file in the `sr-proto` folder, and adjust the `build.rs` file accordingly.
 
 5. Edit configuration files in the `_cfg` folder as needed (refer to the README in that folder).
 
