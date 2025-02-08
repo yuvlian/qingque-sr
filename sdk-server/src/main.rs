@@ -19,7 +19,7 @@ async fn main() {
         .merge(dispatch_router())
         .layer(axum::middleware::from_fn(log_requests));
 
-    let addr = server_config.get_sdk_socket_addr();
+    let addr = server_config.get_sdk_server_addr();
 
     info!("Listening at {}", addr);
 

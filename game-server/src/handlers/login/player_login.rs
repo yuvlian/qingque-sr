@@ -1,8 +1,7 @@
 use crate::utils::time;
-use sr_proto::MsgTrait;
-use sr_proto::pb::{PlayerBasicInfo, PlayerLoginScRsp};
+use sr_proto::{PlayerBasicInfo, PlayerLoginScRsp};
 
-pub async fn handle(_: &[u8]) -> Vec<u8> {
+pub fn handle(_: &[u8]) -> PlayerLoginScRsp {
     PlayerLoginScRsp {
         basic_info: Some(PlayerBasicInfo {
             nickname: String::from("yulian"),
@@ -19,5 +18,4 @@ pub async fn handle(_: &[u8]) -> Vec<u8> {
         stamina: 240,
         ..Default::default()
     }
-    .encode_to_vec()
 }

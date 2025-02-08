@@ -1,8 +1,7 @@
 use cfg_utility::avatar::AvatarConfig;
-use sr_proto::MsgTrait;
-use sr_proto::pb::GetAvatarDataScRsp;
+use sr_proto::GetAvatarDataScRsp;
 
-pub async fn handle(_: &[u8]) -> Vec<u8> {
+pub fn handle(_: &[u8]) -> GetAvatarDataScRsp {
     let cfg = AvatarConfig::from_file("_cfg/avatar.toml");
 
     GetAvatarDataScRsp {
@@ -11,5 +10,4 @@ pub async fn handle(_: &[u8]) -> Vec<u8> {
         retcode: 0,
         ..Default::default()
     }
-    .encode_to_vec()
 }

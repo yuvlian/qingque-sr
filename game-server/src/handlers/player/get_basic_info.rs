@@ -1,8 +1,7 @@
 use cfg_utility::avatar::AvatarConfig;
-use sr_proto::MsgTrait;
-use sr_proto::pb::GetBasicInfoScRsp;
+use sr_proto::GetBasicInfoScRsp;
 
-pub async fn handle(_: &[u8]) -> Vec<u8> {
+pub fn handle(_: &[u8]) -> GetBasicInfoScRsp {
     let cfg = AvatarConfig::from_file("_cfg/avatar.toml");
     let gender = cfg.get_trailblazer_gender() as u32;
 
@@ -12,5 +11,4 @@ pub async fn handle(_: &[u8]) -> Vec<u8> {
         gender,
         ..Default::default()
     }
-    .encode_to_vec()
 }

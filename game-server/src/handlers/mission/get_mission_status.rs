@@ -1,8 +1,7 @@
-use sr_proto::pb::{GetMissionStatusCsReq, GetMissionStatusScRsp, Mission, MissionStatus};
-use sr_proto::{MsgTrait, dec};
+use sr_proto::{GetMissionStatusCsReq, GetMissionStatusScRsp, Mission, MissionStatus, decode};
 
-pub async fn handle(req: &[u8]) -> Vec<u8> {
-    let req = dec!(GetMissionStatusCsReq, req);
+pub fn handle(req: &[u8]) -> GetMissionStatusScRsp {
+    let req: GetMissionStatusCsReq = decode(req);
 
     GetMissionStatusScRsp {
         finished_main_mission_id_list: req.main_mission_id_list,
@@ -17,5 +16,4 @@ pub async fn handle(req: &[u8]) -> Vec<u8> {
             .collect(),
         ..Default::default()
     }
-    .encode_to_vec()
 }

@@ -1,5 +1,5 @@
 use serde::Deserialize;
-use sr_proto::pb::{
+use sr_proto::{
     AmountInfo, AvatarSkillTree, AvatarType, BattleAvatar, BattleBuff, BattleEquipment,
     BattleRelic, RelicAffix, SceneMonsterData, SceneMonsterWave, SceneMonsterWaveParam,
 };

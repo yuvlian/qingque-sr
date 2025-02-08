@@ -20,7 +20,7 @@ impl Default for ServerConfig {
             game_server_host: String::from("127.0.0.1"),
             game_server_port: 59584,
             dispatch_url: String::from("http://127.0.0.1:21000/query_gateway"),
-            env_type: String::from("21"),
+            env_type: String::from("2"),
         }
     }
 }
@@ -34,9 +34,15 @@ impl ServerConfig {
         }
     }
 
-    pub fn get_sdk_socket_addr(&self) -> SocketAddr {
+    pub fn get_sdk_server_addr(&self) -> SocketAddr {
         format!("{}:{}", self.sdk_server_host, self.sdk_server_port)
             .parse()
-            .expect("Failed parsing SDK SocketAddr")
+            .expect("Failed parsing sdk-server SocketAddr")
+    }
+
+    pub fn get_game_server_addr(&self) -> SocketAddr {
+        format!("{}:{}", self.game_server_host, self.game_server_port)
+            .parse()
+            .expect("Failed parsing game-server SocketAddr")
     }
 }

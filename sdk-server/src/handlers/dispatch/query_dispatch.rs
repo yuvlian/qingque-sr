@@ -1,12 +1,11 @@
-use axum::http::StatusCode;
 use cfg_utility::server::ServerConfig;
-use sr_proto::MsgTrait;
-use sr_proto::pb::{GlobalDispatchData, ServerData};
+use sr_proto::Message;
+use sr_proto::{GlobalDispatchData, ServerData};
 
-pub async fn handle() -> (StatusCode, String) {
+pub async fn handle() -> String {
     let server_config = ServerConfig::from_file("_cfg/server.toml");
 
-    let rsp = rbase64::encode(
+    rbase64::encode(
         &GlobalDispatchData {
             retcode: 0,
             msg: String::from("OK"),
@@ -22,7 +21,5 @@ pub async fn handle() -> (StatusCode, String) {
             ..Default::default()
         }
         .encode_to_vec(),
-    );
-
-    (StatusCode::OK, rsp)
+    )
 }

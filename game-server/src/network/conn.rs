@@ -9,7 +9,7 @@ use crate::network::router::ping_pong;
 use tracing::info;
 
 pub async fn handle_connection(mut socket: TcpStream) -> tokio::io::Result<()> {
-    let mut buffer = BytesMut::with_capacity(1024);
+    let mut buffer = BytesMut::with_capacity(1200);
     let mut temp_buffer = [0u8; 1024];
 
     loop {
@@ -33,11 +33,12 @@ pub async fn handle_connection(mut socket: TcpStream) -> tokio::io::Result<()> {
                 let complete_message = &buffer[..position + 4];
                 let (cmd, body) = decode_bytes(complete_message);
 
-                info!("{} -> ?", cmd);
+                info!("Received: {}", cmd);
 
-                let response = ping_pong(cmd, body).await;
+                let response = ping_pong(cmd, body);
+
                 if !response.is_empty() {
-                    info!("{} <- ✓", cmd);
+                    info!("Handled: {}", cmd);
                     socket
                         .write_all(&response)
                         .await

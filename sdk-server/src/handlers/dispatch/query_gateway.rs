@@ -1,33 +1,22 @@
-use axum::{extract::Query, http::StatusCode};
+use axum::extract::Query;
 use cfg_utility::hotfix::GameVersion;
 use cfg_utility::server::ServerConfig;
-use sr_proto::MsgTrait;
-use sr_proto::pb::Gateserver;
+use sr_proto::Gateserver;
+use sr_proto::Message;
 
 use serde::Deserialize;
 
 #[derive(Deserialize)]
 pub struct Gateway {
     pub version: Option<String>,
-    // t: Option<String>,
-    // uid: Option<String>,
-    // language_type: Option<i32>,
-    // platform_type: Option<i32>,
-    // dispatch_seed: Option<String>,
-    // channel_id: Option<i32>,
-    // sub_channel_id: Option<i32>,
-    // is_need_url: Option<i32>,
-    // game_version: Option<String>,
-    // account_type: Option<i32>,
-    // account_uid: Option<i64>,
 }
 
-pub async fn handle(Query(q): Query<Gateway>) -> (StatusCode, String) {
+pub async fn handle(Query(q): Query<Gateway>) -> String {
     let server_config = ServerConfig::from_file("_cfg/server.toml");
     let game_version = GameVersion::from_file("_cfg/hotfix.json");
     let hotfix = game_version.get_hotfix_by_version(&q.version);
 
-    let rsp = rbase64::encode(
+    rbase64::encode(
         &Gateserver {
             // hotfix
             lua_url: hotfix.lua_url,
@@ -60,7 +49,5 @@ pub async fn handle(Query(q): Query<Gateway>) -> (StatusCode, String) {
             ..Default::default()
         }
         .encode_to_vec(),
-    );
-
-    (StatusCode::OK, rsp)
+    )
 }

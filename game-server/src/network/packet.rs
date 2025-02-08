@@ -1,3 +1,5 @@
+use sr_proto::Message;
+
 const HEAD_MAGIC: u32 = 0x9D74C714;
 const TAIL_MAGIC: u32 = 0xD7A152C8;
 const HEAD_MAGIC_BYTES: [u8; 4] = [0x9D, 0x74, 0xC7, 0x14];
@@ -30,7 +32,7 @@ pub fn decode_bytes(buffer: &[u8]) -> (u16, &[u8]) {
         panic!("Head data exceeds byte array length");
     }
 
-    let _head_data = &buffer[head_start..head_end];
+    // let head_data = &buffer[head_start..head_end];
 
     let body_start = head_end;
 
@@ -55,7 +57,8 @@ pub fn decode_bytes(buffer: &[u8]) -> (u16, &[u8]) {
     (cmd, body_data)
 }
 
-pub fn encode_packet(cmd_id: u16, data: Vec<u8>) -> Vec<u8> {
+pub fn encode_packet<T: Message>(cmd_id: u16, data: T) -> Vec<u8> {
+    let data = data.encode_to_vec();
     let packet_len = 12 + data.len() + 4;
     let mut buffer = Vec::with_capacity(packet_len);
 

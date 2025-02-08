@@ -1,11 +1,10 @@
 use crate::utils::time;
 use cfg_utility::srtools::SrToolsConfig;
-use sr_proto::pb::{SceneBattleInfo, StartCocoonStageCsReq, StartCocoonStageScRsp};
-use sr_proto::{MsgTrait, dec};
+use sr_proto::{SceneBattleInfo, StartCocoonStageCsReq, StartCocoonStageScRsp, decode};
 
-pub async fn handle(req: &[u8]) -> Vec<u8> {
+pub fn handle(req: &[u8]) -> StartCocoonStageScRsp {
     let cfg = SrToolsConfig::from_file("_cfg/config.json");
-    let req = dec!(StartCocoonStageCsReq, req);
+    let req: StartCocoonStageCsReq = decode(req);
 
     let battle_info = SceneBattleInfo {
         buff_list: cfg.get_battle_buffs(),
@@ -25,5 +24,4 @@ pub async fn handle(req: &[u8]) -> Vec<u8> {
         wave: 1,
         battle_info: Some(battle_info),
     }
-    .encode_to_vec()
 }

@@ -1,6 +1,5 @@
-use sr_proto::MsgTrait;
-use sr_proto::pb::PlayerLoginFinishScRsp;
+use sr_proto::PlayerLoginFinishScRsp;
 
-pub async fn handle(_: &[u8]) -> Vec<u8> {
-    PlayerLoginFinishScRsp { retcode: 0 }.encode_to_vec()
+pub fn handle(_: &[u8]) -> PlayerLoginFinishScRsp {
+    PlayerLoginFinishScRsp::default()
 }

@@ -1,5 +1,5 @@
 use serde::Deserialize;
-use sr_proto::pb::{
+use sr_proto::{
     AmountInfo, Avatar, AvatarType, Gender, LineupAvatar, LineupInfo, MultiPathAvatarType,
 };
 use std::fs;

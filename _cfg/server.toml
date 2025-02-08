@@ -8,24 +8,3 @@ dispatch_url = "http://127.0.0.1:21000/query_gateway"
 
 # try changing to "9" or "21" if you get login issues
 env_type = "2"
-
-# public enum EnvType : Enum, IComparable, IConvertible, IFormattable
-# {
-#     // Fields
-#     public const EnvType PROD_CN = 0; // Token: 0x4000869
-#     public const EnvType SANDBOX_CN = 1; // Token: 0x400086A
-#     public const EnvType PROD_OVERSEA = 2; // Token: 0x400086B
-#     public const EnvType SANDBOX_OVERSEA = 3; // Token: 0x400086C
-#     public const EnvType PROD_CN_PRE = 4; // Token: 0x400086D
-#     public const EnvType PROD_OVERSEA_PRE = 5; // Token: 0x400086E
-#     public const EnvType TEST_CN = 6; // Token: 0x400086F
-#     public const EnvType TEST_OVERSEA = 7; // Token: 0x4000870
-#     public const EnvType PET_CN = 8; // Token: 0x4000871
-#     public const EnvType BETA_CN = 9; // Token: 0x4000872
-#     public const EnvType BETA_CN_PRE = 10; // Token: 0x4000873
-#     public const EnvType BETA_OVERSEA = 11; // Token: 0x4000874
-#     public const EnvType PET_OS = 12; // Token: 0x4000875
-#     public const EnvType HOTFIX_CN = 19; // Token: 0x4000876
-#     public const EnvType HOTFIX_OVERSEA = 20; // Token: 0x4000877
-#     public int value__; // Offset: 0x10, Token: 0x4000868
-# }

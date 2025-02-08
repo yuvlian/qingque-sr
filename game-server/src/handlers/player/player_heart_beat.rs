@@ -1,9 +1,8 @@
 use crate::utils::time;
-use sr_proto::pb::{PlayerHeartBeatCsReq, PlayerHeartBeatScRsp};
-use sr_proto::{MsgTrait, dec};
+use sr_proto::{PlayerHeartBeatCsReq, PlayerHeartBeatScRsp, decode};
 
-pub async fn handle(req: &[u8]) -> Vec<u8> {
-    let req = dec!(PlayerHeartBeatCsReq, req);
+pub fn handle(req: &[u8]) -> PlayerHeartBeatScRsp {
+    let req: PlayerHeartBeatCsReq = decode(req);
 
     PlayerHeartBeatScRsp {
         download_data: None,
@@ -11,5 +10,4 @@ pub async fn handle(req: &[u8]) -> Vec<u8> {
         server_time_ms: time::cur_timestamp_ms(),
         retcode: 0,
     }
-    .encode_to_vec()
 }

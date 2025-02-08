@@ -3,33 +3,20 @@ use crate::network::packet;
 use paste::paste;
 use sr_proto::cmd::*;
 
-macro_rules! enc {
-    ($body:expr, $rsp_cmd:expr, $handler:path) => {
-        packet::encode_packet($rsp_cmd, $handler($body).await)
-    };
-}
-
-macro_rules! router {
-    ($($req:ident $rsp:ident $handler:path);* $(;)?) => {
-        pub async fn ping_pong(cmd: u16, body: &[u8]) -> Vec<u8> {
-            match cmd {
-                $(
-                    $req => enc!(body, $rsp, $handler),
-                )*
-                _ => Vec::with_capacity(0),
-            }
-        }
-    };
-}
-
 macro_rules! handle {
     ($($handler:ident);* $(;)?) => {
         paste! {
-            router![
-                $(
-                    [<$handler:upper _CS_REQ>] [<$handler:upper _SC_RSP>] $handler::handle;
-                )*
-            ];
+            pub fn ping_pong(cmd: u16, body: &[u8]) -> Vec<u8> {
+                match cmd {
+                    $(
+                        [<$handler:upper _CS_REQ>] => packet::encode_packet(
+                            [<$handler:upper _SC_RSP>],
+                            $handler::handle(body)
+                        ),
+                    )*
+                    _ => Vec::with_capacity(0),
+                }
+            }
         }
     };
 }

@@ -1,8 +1,7 @@
-use sr_proto::pb::{PveBattleResultCsReq, PveBattleResultScRsp};
-use sr_proto::{MsgTrait, dec};
+use sr_proto::{PveBattleResultCsReq, PveBattleResultScRsp, decode};
 
-pub async fn handle(req: &[u8]) -> Vec<u8> {
-    let req = dec!(PveBattleResultCsReq, req);
+pub fn handle(req: &[u8]) -> PveBattleResultScRsp {
+    let req: PveBattleResultCsReq = decode(req);
 
     PveBattleResultScRsp {
         retcode: 0,
@@ -11,5 +10,4 @@ pub async fn handle(req: &[u8]) -> Vec<u8> {
         battle_id: req.battle_id,
         ..Default::default()
     }
-    .encode_to_vec()
 }

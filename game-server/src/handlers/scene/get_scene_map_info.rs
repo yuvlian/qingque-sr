@@ -1,8 +1,7 @@
-use sr_proto::pb::{GetSceneMapInfoCsReq, GetSceneMapInfoScRsp, SceneMapInfo};
-use sr_proto::{MsgTrait, dec};
+use sr_proto::{GetSceneMapInfoCsReq, GetSceneMapInfoScRsp, SceneMapInfo, decode};
 
-pub async fn handle(req: &[u8]) -> Vec<u8> {
-    let req = dec!(GetSceneMapInfoCsReq, req);
+pub fn handle(req: &[u8]) -> GetSceneMapInfoScRsp {
+    let req: GetSceneMapInfoCsReq = decode(req);
 
     GetSceneMapInfoScRsp {
         map_info_list: req
@@ -15,5 +14,4 @@ pub async fn handle(req: &[u8]) -> Vec<u8> {
             .collect(),
         ..Default::default()
     }
-    .encode_to_vec()
 }

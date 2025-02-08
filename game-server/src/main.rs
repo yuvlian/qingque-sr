@@ -11,26 +11,24 @@ use network::conn;
 #[tokio::main]
 async fn main() -> tokio::io::Result<()> {
     let server_config = ServerConfig::from_file("_cfg/server.toml");
-    let socket_addr = format!(
-        "{}:{}",
-        server_config.game_server_host, server_config.game_server_port
-    );
 
     tracing_subscriber::fmt().init();
 
-    let listener = TcpListener::bind(&socket_addr)
+    let addr = server_config.get_game_server_addr();
+
+    let listener = TcpListener::bind(addr)
         .await
         .expect("Failed to bind to address");
 
-    info!("Listening at {}", &socket_addr);
+    info!("Listening at {}", addr);
 
     loop {
-        let (socket, addr) = listener
+        let (socket, client_addr) = listener
             .accept()
             .await
             .expect("Failed to accept connection");
 
-        info!("New connection: {}", addr);
+        info!("New connection: {}", client_addr);
 
         tokio::spawn(async move {
             if let Err(e) = conn::handle_connection(socket).await {

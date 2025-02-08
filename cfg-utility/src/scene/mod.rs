@@ -1,5 +1,5 @@
 use serde::Deserialize;
-use sr_proto::pb::{
+use sr_proto::{
     AvatarType, MotionInfo, SceneActorInfo, SceneEntityInfo, SceneGroupInfo, SceneInfo,
     ScenePropInfo, Vector,
 };
