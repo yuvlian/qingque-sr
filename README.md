@@ -71,6 +71,12 @@ This tutorial assumes you have basic knowledge of terminal usage and traffic red
    cargo run --release --bin cfg-manager
    ```
 
+8. Share prebuilt (optional):
+
+   Powershell: `rustc pub.rs; ./pub.exe`
+
+   Cmd: `rustc pub.rs && pub.exe`
+
 ---
 
 ## Credits
