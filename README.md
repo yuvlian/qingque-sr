@@ -72,10 +72,10 @@ This tutorial assumes you have basic knowledge of terminal usage and traffic red
    ```
 
 8. Share prebuilt (optional):
-
-   Powershell: `rustc pub.rs; ./pub.exe`
-
-   Cmd: `rustc pub.rs && pub.exe`
+   ```bash
+   rustc pub.rs
+   ./pub.exe [VERSION]
+   ```
 
 ---
 
