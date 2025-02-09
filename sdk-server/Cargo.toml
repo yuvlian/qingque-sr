@@ -20,3 +20,4 @@ tracing-subscriber.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 rbase64.workspace = true
+ansi_term.workspace = true

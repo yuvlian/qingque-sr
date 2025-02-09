@@ -12,6 +12,9 @@ use network::conn;
 async fn main() -> tokio::io::Result<()> {
     let server_config = ServerConfig::from_file("_cfg/server.toml");
 
+    #[cfg(target_os = "windows")]
+    ansi_term::enable_ansi_support().expect("failed to enable ansi");
+
     tracing_subscriber::fmt().init();
 
     let addr = server_config.get_game_server_addr();

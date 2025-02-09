@@ -17,3 +17,4 @@ cfg-utility.workspace = true
 tracing.workspace = true
 tracing-subscriber.workspace = true
 paste.workspace = true
+ansi_term.workspace = true
