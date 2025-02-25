@@ -699,7 +699,7 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
 name = "cfg-utility"
-version = "3.0.0"
+version = "3.1.0"
 dependencies = [
  "eframe",
  "egui",
@@ -1312,7 +1312,7 @@ dependencies = [
 
 [[package]]
 name = "game-server"
-version = "3.0.0"
+version = "3.1.0"
 dependencies = [
  "ansi_term",
  "bytes",
@@ -2888,7 +2888,7 @@ dependencies = [
 
 [[package]]
 name = "sdk-server"
-version = "3.0.0"
+version = "3.1.0"
 dependencies = [
  "ansi_term",
  "axum",
@@ -3109,7 +3109,6 @@ dependencies = [
 [[package]]
 name = "sr-proto"
 version = "3.0.0"
-source = "git+https://github.com/f2pqingque/sr-proto?rev=9e1e29c#9e1e29c2d5096dd579da754340c6588282de1ee3"
 dependencies = [
  "heck",
  "prost",

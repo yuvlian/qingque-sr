@@ -82,6 +82,7 @@ This tutorial assumes you have basic knowledge of terminal usage and traffic red
 ## Credits
 
 - **QingqueSR Developer**: Yulian
+- **QingqueSR Maintainer**: Naruse
 - **SRTools Author**: Amizing25
 - **Protobufs**: Amizing25 & Lukopa
 

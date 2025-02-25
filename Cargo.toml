@@ -4,7 +4,7 @@ members = ["game-server", "sdk-server", "cfg-utility"]
 
 [workspace.package]
 # name = "qingque-sr"
-version = "3.0.0"
+version = "3.1.0"
 edition = "2024"
 authors = ["Yulian <yuvlian@naver.com>"]
 license = "MIT"
@@ -16,7 +16,7 @@ readme = "README.md"
 [workspace.dependencies]
 cfg-utility = { path = "cfg-utility/" }
 # from gh repo
-sr-proto = { git = "https://github.com/f2pqingque/sr-proto", rev = "9e1e29c" }
+sr-proto = { git = "https://github.com/f2pqingque/sr-proto", rev = "fcaaccf" }
 # # from local repo
 # sr-proto = { path = "sr-proto/" }
 prost = "0.13.4"
