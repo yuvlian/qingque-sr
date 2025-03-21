@@ -1,4 +1,5 @@
-release/
-sr-proto/
-target/
-pub.exe
+/target
+.env
+sqlite.db
+sqlite.db-shm
+sqlite.db-wal

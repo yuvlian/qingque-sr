@@ -1,48 +1,38 @@
 [workspace]
 resolver = "3"
-members = ["game-server", "sdk-server", "cfg-utility"]
+members = ["sdk-sv", "utils"]
+exclude = ["sr-proto"]
 
 [workspace.package]
-# name = "qingque-sr"
-version = "3.1.0"
+version = "0.1.0"
 edition = "2024"
 authors = ["Yulian <yuvlian@naver.com>"]
 license = "MIT"
-description = "SR calyx simulator"
-homepage = "https://github.com/f2pqingque/sr"
-repository = "https://github.com/f2pqingque/sr"
-readme = "README.md"
+repository = "https://github.com/yuvlian/stalel"
 
 [workspace.dependencies]
-cfg-utility = { path = "cfg-utility/" }
-# from gh repo
-sr-proto = { git = "https://github.com/f2pqingque/sr-proto", rev = "fcaaccf" }
-# # from local repo
-# sr-proto = { path = "sr-proto/" }
-prost = "0.13.4"
-prost-types = "0.13.4"
-prost-build = "0.13.4"
-serde = { version = "1.0.217", features = ["derive"] }
-serde_json = "1.0.138"
+ansi_term = "0.12.1"
 axum = "0.8.1"
-axum-server = "0.7.1"
-tokio = { version = "1.43.0", features = ["full"] }
+bcrypt = "0.17.0"
+chrono = "0.4.40"
+envie = "0.2.1"
+rand = "0.9.0"
+reqwest = "0.12.15"
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.140"
+sqlx = { version = "0.8.3", features = ["runtime-tokio", "sqlite", "derive"] }
+sr-proto = { path = "sr-proto/" }
+tokio = { version = "1.44.1", features = ["fs", "io-util", "macros", "net", "rt-multi-thread", "bytes"] }
 tracing = "0.1.41"
 tracing-subscriber = "0.3.19"
-toml = "0.8.20"
-rbase64 = "2.0.3"
-bytes = "1.10.0"
-paste = "1.0.15"
-eframe = "0.31.0"
-egui = "0.31.0"
-ansi_term = "0.12.1"
+utils = { path = "utils/" }
 
 [profile.release]
 strip = true
 lto = true
 opt-level = 3
 codegen-units = 1
-panic = "abort"
+panic = "unwind"
 
 [profile.release.build-override]
 strip = true
@@ -51,9 +41,7 @@ codegen-units = 1
 
 [profile.dev]
 panic = "abort"
-incremental = true
-codegen-units = 384
+codegen-units = 64
 
 [profile.dev.build-override]
-incremental = true
-codegen-units = 384
+codegen-units = 64
