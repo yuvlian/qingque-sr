@@ -1724,8 +1724,6 @@ name = "sdk-sv"
 version = "0.1.0"
 dependencies = [
  "axum",
- "bcrypt",
- "rand 0.9.0",
  "reqwest",
  "serde",
  "serde_json",
@@ -2478,8 +2476,10 @@ name = "utils"
 version = "0.1.0"
 dependencies = [
  "ansi_term",
+ "bcrypt",
  "chrono",
  "envie",
+ "rand 0.9.0",
  "tracing-subscriber",
 ]
 

@@ -6,7 +6,7 @@ pub struct User {
     pub username: String,
     pub password_hash: String,
     // pub is_banned: u8,
-    pub user_token: String,
+    pub user_token: Option<String>,
     // pub device_id: String,
 }
 
@@ -15,15 +15,13 @@ impl User {
         pool: &SqlitePool,
         username: &str,
         password_hash: &str,
-        user_token: &str,
     ) -> Result<u32, Error> {
         let result = sqlx::query(
-            "INSERT INTO user (username, password_hash, user_token) 
-             VALUES (?, ?, ?)",
+            "INSERT INTO user (username, password_hash) 
+             VALUES (?, ?)",
         )
         .bind(username)
         .bind(password_hash)
-        .bind(user_token)
         .execute(pool)
         .await?;
 

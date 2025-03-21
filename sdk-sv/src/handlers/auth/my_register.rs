@@ -7,8 +7,7 @@ use axum::{
     http::StatusCode,
     response::{Html, IntoResponse},
 };
-use bcrypt::{DEFAULT_COST, hash};
-use rand::Rng;
+use utils::hash_password;
 
 pub async fn get() -> Html<&'static str> {
     Html(
@@ -116,7 +115,7 @@ pub async fn post(
         _ => {}
     }
 
-    let password_hash = match hash(&req.password, DEFAULT_COST) {
+    let password_hash = match hash_password(&req.password) {
         Ok(v) => v,
         Err(e) => {
             tracing::error!("{e}");
@@ -124,13 +123,7 @@ pub async fn post(
         }
     };
 
-    let user_token = {
-        let mut rng = rand::rng();
-        let num = rng.random::<u32>();
-        format!("{:X}", num)
-    };
-
-    match User::create(&state.pool, &req.username, &password_hash, &user_token).await {
+    match User::create(&state.pool, &req.username, &password_hash).await {
         Ok(v) => Html(format!("Successfully Registered With UID: {}", v)),
         Err(e) => {
             tracing::error!("{e}");

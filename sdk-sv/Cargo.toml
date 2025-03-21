@@ -8,8 +8,6 @@ repository.workspace = true
 
 [dependencies]
 axum.workspace = true
-bcrypt.workspace = true
-rand.workspace = true
 reqwest.workspace = true
 serde.workspace = true
 serde_json.workspace = true

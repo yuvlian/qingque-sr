@@ -28,7 +28,7 @@ async fn main() {
 
     let addr = format!("{}:{}", env.sdk_sv_host, env.sdk_sv_port);
     let listener = TcpListener::bind(&addr).await.unwrap();
-    
+
     init_tracing();
 
     tracing::info!("Listening @ {}", addr);
