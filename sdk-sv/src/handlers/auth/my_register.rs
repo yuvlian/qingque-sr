@@ -1,5 +1,5 @@
 use crate::{
-    AppState,
+    ArcState,
     app::{db::user::User, request::MyRegisterReq, response::MyRegisterRsp},
 };
 use axum::{
@@ -89,7 +89,7 @@ pub async fn get() -> Html<&'static str> {
 }
 
 pub async fn post(
-    State(state): State<AppState>,
+    State(state): State<ArcState>,
     Json(req): Json<MyRegisterReq>,
 ) -> Html<MyRegisterRsp> {
     let pass_len = req.password.len();

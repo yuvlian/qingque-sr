@@ -1,4 +1,4 @@
-use crate::AppState;
+use crate::ArcState;
 use axum::{
     Router,
     routing::{get, post},
@@ -6,7 +6,7 @@ use axum::{
 
 use crate::handlers::{auth, dispatch, misc};
 
-pub fn auth_router() -> Router<AppState> {
+pub fn auth_router() -> Router<ArcState> {
     let mut r = Router::new();
 
     r = r.route("/my_register", get(auth::my_register::get));

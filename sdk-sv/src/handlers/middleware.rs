@@ -1,4 +1,4 @@
-use crate::AppState;
+use crate::ArcState;
 use axum::{
     body::{Body, Bytes, to_bytes},
     extract::{Request, State},
@@ -72,7 +72,7 @@ pub async fn log_requests(
 
             if res_status == StatusCode::INTERNAL_SERVER_ERROR {
                 error!(
-                    "\n{} {} - Status: {} | Duration: {:.2?}\n|> Request Headers: {:?}\n|> Request Body: {}\n|> Response Headers: {:?}\n|> Response Body: {}",
+                    "\n{} {} - Status: {} | Duration: {:.2?}\n->> Request Headers: {:?}\n->> Request Body: {}\n->> Response Headers: {:?}\n->> Response Body: {}",
                     req_method,
                     req_uri,
                     res_status,
@@ -84,7 +84,7 @@ pub async fn log_requests(
                 );
             } else {
                 info!(
-                    "\n{} {} - Status: {} | Duration: {:.2?}\n|> Request Headers: {:?}\n|> Request Body: {}\n|> Response Headers: {:?}\n|> Response Body: {}",
+                    "\n{} {} - Status: {} | Duration: {:.2?}\n->> Request Headers: {:?}\n->> Request Body: {}\n->> Response Headers: {:?}\n->> Response Body: {}",
                     req_method,
                     req_uri,
                     res_status,
