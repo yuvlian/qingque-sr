@@ -29,16 +29,16 @@ async fn main() {
     let addr = format!("{}:{}", env.sdk_sv_host, env.sdk_sv_port);
     let listener = TcpListener::bind(&addr).await.unwrap();
 
-    init_tracing();
-
-    tracing::info!("Listening @ {}", addr);
-
     let app = Router::new()
         .merge(app::router::auth_router())
+        .merge(app::router::dispatch_router())
         .with_state(state.clone());
 
     match log_level {
         1 | 2 => {
+            init_tracing();
+            tracing::info!("Listening @ {}", addr);
+
             let app = app.layer(from_fn_with_state(log_level, middleware::log_requests));
             axum::serve(listener, app).await.unwrap();
         }

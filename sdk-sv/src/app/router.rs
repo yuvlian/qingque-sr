@@ -35,3 +35,13 @@ pub fn auth_router() -> Router<ArcState> {
 
     r
 }
+
+pub fn dispatch_router() -> Router<ArcState> {
+    let mut r = Router::new();
+
+    r = r.route("/query_dispatch", get(dispatch::query_dispatch::get));
+
+    r = r.route("/query_gateway", post(dispatch::query_gateway::get));
+
+    r
+}

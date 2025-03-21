@@ -27,7 +27,7 @@ pub struct DotEnv {
     pub sdk_sv_port: u16,
     pub game_sv_host: String,
     pub game_sv_port: u16,
-    pub login_env_type: i32,
+    pub login_env_type: String,
     pub log_level: i32,
     pub auto_hotfix: bool,
 }
@@ -43,7 +43,7 @@ impl DotEnv {
             sdk_sv_port: u16 => "SDK_SV_PORT",
             game_sv_host: String => "GAME_SV_HOST",
             game_sv_port: u16 => "GAME_SV_PORT",
-            login_env_type: i32 => "LOGIN_ENV_TYPE",
+            login_env_type: String => "LOGIN_ENV_TYPE",
             log_level: i32 => "LOG_LEVEL",
             auto_hotfix: bool => "AUTO_HOTFIX"
         }

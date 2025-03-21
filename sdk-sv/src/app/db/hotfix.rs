@@ -1,6 +1,7 @@
 use sqlx::{Error, FromRow, SqlitePool};
+use sr_proto::{GateServer, Message};
 
-#[derive(FromRow, Debug)]
+#[derive(FromRow, Debug, Default)]
 pub struct GatewayHotfix {
     pub game_version: String,
     pub asset_bundle_url: String,
@@ -9,16 +10,91 @@ pub struct GatewayHotfix {
     pub ifix_url: String,
 }
 
+// thx amizing
 impl GatewayHotfix {
-    pub async fn fetch(dispatch_seed: &str) -> Self {
-        // use single connection reqwest (no need client, overkill methinks)
-        // fetch url, decode with proto, insert db, yada yada...
-        todo!()
+    pub fn parse_version_string(ver: &str) -> (Option<&str>, Option<&str>, Option<&str>) {
+        const REGIONS: [&str; 2] = ["CN", "OS"];
+        const OS_LIST: [&str; 3] = ["Android", "Win", "iOS"];
+
+        let (region, rest) = REGIONS
+            .iter()
+            .find_map(|&r| ver.strip_prefix(r).map(|rest| (Some(r), rest)))
+            .unwrap_or((None, ver));
+
+        let os = OS_LIST
+            .iter()
+            .find_map(|&os| rest.find(os).map(|pos| (os, pos)));
+
+        let (os_name, branch) = match os {
+            Some((os, os_pos)) => {
+                let branch = rest[..os_pos].trim();
+                (
+                    Some(os),
+                    if branch.is_empty() {
+                        None
+                    } else {
+                        Some(branch)
+                    },
+                )
+            }
+            None => (None, None),
+        };
+
+        (region, branch, os_name)
+    }
+
+    pub async fn fetch_hotfix(ver: &str, dispatch_seed: &str) -> Option<Self> {
+        const CNPROD_HOST_WIN: &str = "prod-gf-cn-dp01.bhsr.com";
+        const CNBETA_HOST_WIN: &str = "beta-release01-cn.bhsr.com";
+        const OSPROD_HOST_WIN: &str = "prod-official-asia-dp01.starrails.com";
+        const OSBETA_HOST_WIN: &str = "beta-release01-asia.starrails.com";
+        const NEON_PROXY: &str = "proxy1.neonteam.dev";
+
+        let ver_parsed = Self::parse_version_string(ver);
+        let region = ver_parsed.0?;
+        let branch = ver_parsed.1?;
+        let os = ver_parsed.2?;
+
+        let host = match (region, branch, os) {
+            ("OS", "BETA", "Win") => Some(OSBETA_HOST_WIN),
+            ("OS", "PROD", "Win") => Some(OSPROD_HOST_WIN),
+            ("CN", "BETA", "Win") => Some(CNBETA_HOST_WIN),
+            ("CN", "PROD", "Win") => Some(CNPROD_HOST_WIN),
+            _ => None,
+        }?;
+
+        let url = format!(
+            "https://{}/{}/query_gateway?version={}&platform_type=1&language_type=3&dispatch_seed={}&channel_id=1&sub_channel_id=1&is_need_url=1",
+            NEON_PROXY, host, ver, dispatch_seed
+        );
+
+        tracing::info!("Auto Hotfix: {}", url);
+
+        let res = reqwest::get(url).await.ok()?.text().await.ok()?;
+
+        let bytes = rbase64::decode(&res).ok()?;
+        let decoded = GateServer::decode(bytes.as_slice()).ok()?;
+
+        if decoded.retcode != 0 || res.is_empty() {
+            return None;
+        }
+
+        let gateway_hotfix = Self {
+            game_version: ver.into(),
+            asset_bundle_url: decoded.asset_bundle_url,
+            ex_resource_url: decoded.ex_resource_url,
+            lua_url: decoded.lua_url,
+            ifix_url: decoded.ifix_url,
+        };
+
+        tracing::info!("Obtained Hotfix: {:?}", gateway_hotfix);
+
+        Some(gateway_hotfix)
     }
 
     pub async fn insert(&self, pool: &SqlitePool) -> Result<(), Error> {
         sqlx::query(
-            "INSERT INTO GatewayHotfix (version, asset_bundle_url, ex_resource_url, lua_url, ifix_url) 
+            "INSERT INTO gateway_hotfix (version, asset_bundle_url, ex_resource_url, lua_url, ifix_url) 
              VALUES (?, ?, ?, ?, ?)",
         )
         .bind(&self.game_version)
@@ -32,10 +108,28 @@ impl GatewayHotfix {
         Ok(())
     }
 
+    pub async fn get_or_fetch(
+        pool: &SqlitePool,
+        ver: &str,
+        dispatch_seed: &str,
+    ) -> Result<Self, sqlx::Error> {
+        if let Some(v) = Self::get_by_version(pool, ver).await? {
+            return Ok(v);
+        }
+
+        match Self::fetch_hotfix(ver, dispatch_seed).await {
+            Some(v) => {
+                v.insert(pool).await?;
+                Ok(v)
+            }
+            None => Err(sqlx::Error::Protocol("Auto Hotfix Failed".to_string())),
+        }
+    }
+
     pub async fn get_by_version(pool: &SqlitePool, version: &str) -> Result<Option<Self>, Error> {
         let result = sqlx::query_as::<_, GatewayHotfix>(
             "SELECT game_version, asset_bundle_url, ex_resource_url, lua_url, ifix_url 
-             FROM GatewayHotfix WHERE game_version = ?",
+             FROM gateway_hotfix WHERE game_version = ?",
         )
         .bind(version)
         .fetch_optional(pool)
