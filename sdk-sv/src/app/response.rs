@@ -546,9 +546,10 @@ pub type MyRegisterRsp = String;
 // Example Rsp: IRsp.data = {"id":"9e54a9727a014ba4afd2cb2bb4347fe3","action":"ACTION_NONE","geetest":null}
 #[derive(Default, Serialize)]
 pub struct RiskyApiCheckRsp {
-    pub action_type: String,
-    pub api_name: String,
-    pub username: String,
+    pub id: String,
+    pub action: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub geetest: Option<serde_json::Value>,
 }
 
 // ------------------------------------------------------------------------- //
