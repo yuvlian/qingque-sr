@@ -1,7 +1,7 @@
 mod app;
 mod handlers;
 
-use axum::{Router, extract::State, middleware::from_fn_with_state};
+use axum::{Router, middleware::from_fn_with_state};
 use handlers::middleware;
 use sqlx::SqlitePool;
 use std::sync::Arc;
@@ -32,6 +32,7 @@ async fn main() {
     let app = Router::new()
         .merge(app::router::auth_router())
         .merge(app::router::dispatch_router())
+        .merge(app::router::misc_router())
         .with_state(state.clone());
 
     match log_level {

@@ -1,7 +1,7 @@
 use crate::ArcState;
 use crate::app::{
-    request::ComboGranterLoginReq,
-    response::{ComboGranterLoginRsp, IRsp},
+    request::ComboBeforeVerifyReq,
+    response::{ComboBeforeVerifyRsp, IRsp},
 };
 use axum::extract::Json as JsonEx;
 use axum::extract::State;
@@ -9,7 +9,7 @@ use axum::response::Json;
 
 pub async fn post(
     State(_state): State<ArcState>,
-    JsonEx(_req): JsonEx<ComboGranterLoginReq>,
-) -> Json<IRsp<ComboGranterLoginRsp>> {
+    JsonEx(_req): JsonEx<ComboBeforeVerifyReq>,
+) -> Json<IRsp<ComboBeforeVerifyRsp>> {
     todo!()
 }

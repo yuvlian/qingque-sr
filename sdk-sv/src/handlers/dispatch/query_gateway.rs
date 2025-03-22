@@ -2,7 +2,6 @@ use crate::ArcState;
 use crate::app::db::hotfix::GatewayHotfix;
 use crate::app::request::QueryGatewayReq;
 use axum::extract::{Query, State};
-use axum::http::StatusCode;
 use sr_proto::{GateServer, Message};
 
 pub async fn get(State(state): State<ArcState>, Query(query): Query<QueryGatewayReq>) -> String {
@@ -10,14 +9,14 @@ pub async fn get(State(state): State<ArcState>, Query(query): Query<QueryGateway
         GatewayHotfix::get_or_fetch(&state.pool, &query.version, &query.dispatch_seed)
             .await // unwrap_or_else because its lazy init
             .unwrap_or_else(|e| {
-                tracing::info!("GatewayHotfix is defaulting. Reason: {}", e);
+                tracing::warn!("GatewayHotfix is defaulting. Reason: {}", e);
                 GatewayHotfix::default()
             })
     } else {
         GatewayHotfix::get_by_version(&state.pool, &query.version)
             .await
             .unwrap_or_else(|e| {
-                tracing::info!("GatewayHotfix is defaulting. Reason: {}", e);
+                tracing::warn!("GatewayHotfix is defaulting. Reason: {}", e);
                 None
             })
             .unwrap_or_default()

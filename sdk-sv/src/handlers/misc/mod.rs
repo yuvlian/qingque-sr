@@ -1,1 +1,16 @@
-
+pub mod admin_mi18n;
+pub mod compare_protocol_version;
+pub mod config_experiment_list;
+pub mod config_sdk_combo;
+pub mod device_get_ext_list;
+pub mod device_get_fp;
+pub mod get_agreement_infos;
+pub mod get_alert_ann;
+pub mod get_alert_pic;
+pub mod get_ann_list;
+pub mod granter_api_get_config;
+pub mod h5log;
+pub mod red_dot_list;
+pub mod sdk_data_upload;
+pub mod shield_api_load_config;
+pub mod sw_precache;

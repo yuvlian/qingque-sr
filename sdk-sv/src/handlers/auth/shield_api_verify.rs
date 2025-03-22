@@ -8,8 +8,8 @@ use axum::extract::State;
 use axum::response::Json;
 
 pub async fn post(
-    State(state): State<ArcState>,
-    JsonEx(req): JsonEx<ShieldApiVerifyReq>,
+    State(_state): State<ArcState>,
+    JsonEx(_req): JsonEx<ShieldApiVerifyReq>,
 ) -> Json<IRsp<ShieldApiVerifyRsp>> {
     todo!()
 }

@@ -94,7 +94,7 @@ impl GatewayHotfix {
 
     pub async fn insert(&self, pool: &SqlitePool) -> Result<(), Error> {
         sqlx::query(
-            "INSERT INTO gateway_hotfix (version, asset_bundle_url, ex_resource_url, lua_url, ifix_url) 
+            "INSERT INTO gateway_hotfix (game_version, asset_bundle_url, ex_resource_url, lua_url, ifix_url) 
              VALUES (?, ?, ?, ?, ?)",
         )
         .bind(&self.game_version)

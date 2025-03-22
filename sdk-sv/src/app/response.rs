@@ -1,4 +1,5 @@
 #![allow(dead_code)]
+use serde::Deserialize;
 use serde::Serialize;
 
 // NOTE: some things may be censored with hashtags, I don't want DMCA
@@ -12,7 +13,6 @@ use serde::Serialize;
 pub struct IRsp<T: Default + Serialize> {
     pub retcode: i32,
     pub message: String,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub data: Option<T>,
 }
 
@@ -56,7 +56,7 @@ pub type QueryGatewayRsp = String;
 // - https://webstatic.#########.com/admin/mi18n/plat_oversea/m2020030410/m2020030410-version.json
 // - https://webstatic.#########.com/admin/mi18n/plat_os/m09291531181441/m09291531181441-version.json
 // Example Rsp: {"version": 108}
-#[derive(Default, Serialize)]
+#[derive(Default, Deserialize, Serialize)]
 pub struct AdminMi18nPlatRsp {
     pub version: i32,
 }
@@ -72,7 +72,6 @@ pub struct AdminMi18nPlatRsp {
 #[derive(Default, Serialize)]
 pub struct CompareProtocolVersionRsp {
     pub modified: bool,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub protocol: Option<serde_json::Value>,
 }
 
@@ -131,7 +130,7 @@ pub struct ThirdpartyLoginConfigs {
 #[derive(Default, Serialize)]
 pub struct TokenInfo {
     pub token_type: String,
-    pub game_token_expires_in: u64,
+    pub game_token_expires_in: i64,
 }
 
 // ------------------------------------------------------------------------- //
@@ -259,10 +258,8 @@ pub struct ConfigExperiment {
 
 #[derive(Default, Serialize)]
 pub struct UserExperimentConfigs {
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub hoyopass_enable: Option<String>,
     #[serde(rename = "userCenterType")]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub user_center_type: Option<String>,
 }
 
@@ -442,7 +439,6 @@ pub struct GetAgreementInfosRsp {
 #[derive(Serialize)]
 pub struct SdkDataUploadRsp {
     pub code: i32,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
 }
 
@@ -523,7 +519,7 @@ pub struct RedDotListRsp {
 // URL: https://sg-hkrpg-api.hoyoverse.com/common/hkrpg_global/announcement/api/getAlertPic?bundle_id=hkrpg_global&channel_id=1&game=hkrpg&game_biz=hkrpg_global&lang=en&level=70&platform=pc&region=prod_official_asia&uid=1
 // Example Rsp: IRsp.data = {"total":0,"list":[]}
 #[derive(Default, Serialize)]
-pub struct GetAlertPicReq {
+pub struct GetAlertPicRsp {
     pub total: i32,
     pub list: Vec<Option<serde_json::Value>>,
 }
@@ -548,7 +544,6 @@ pub type MyRegisterRsp = String;
 pub struct RiskyApiCheckRsp {
     pub id: String,
     pub action: String,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub geetest: Option<serde_json::Value>,
 }
 

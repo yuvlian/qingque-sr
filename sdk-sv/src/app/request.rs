@@ -30,7 +30,7 @@ pub struct H5LogQueryReq {
 #[derive(Deserialize, Clone)]
 pub struct QueryDispatchReq {
     pub version: String,
-    pub t: u64, // time
+    pub t: i64, // time
     pub language_type: i32,
     pub platform_type: i32,
     pub channel_id: i32,
@@ -47,7 +47,7 @@ pub struct QueryDispatchReq {
 #[derive(Deserialize, Clone)]
 pub struct QueryGatewayReq {
     pub version: String,
-    pub t: u64,
+    pub t: i64,
     pub uid: u32,
     pub language_type: i32,
     pub platform_type: i32,
@@ -64,8 +64,7 @@ pub struct QueryGatewayReq {
 
 // Request Type: POST
 // Parse Target: Body
-// URL:
-// - https://#####-sdk-os.#########.com/#####_global/combo/granter/api/compareProtocolVersion?
+// URL: https://#####-sdk-os.#########.com/#####_global/combo/granter/api/compareProtocolVersion?
 #[derive(Deserialize, Clone)]
 pub struct CompareProtocolVersionReq {
     pub app_id: String,
@@ -82,7 +81,7 @@ pub struct CompareProtocolVersionReq {
 // URL: https://#####-sdk-os-static.#########.com/#####_global/mdk/shield/api/loadConfig?client=3&game_key=#####_global
 #[derive(Deserialize, Clone)]
 pub struct ShieldApiLoadConfigReq {
-    pub client: u8,
+    pub client: String,
     pub game_key: String,
 }
 
@@ -395,7 +394,7 @@ pub struct ComboBeforeVerifyReq {
     pub channel_id: String,
     pub open_id: String,
     pub combo_token: String,
-    pub time: u64,
+    pub time: i64,
     pub role: BeforeVerifyRole,
 }
 

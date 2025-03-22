@@ -4,8 +4,7 @@ use crate::{
 };
 use axum::{
     extract::{Json, State},
-    http::StatusCode,
-    response::{Html, IntoResponse},
+    response::Html,
 };
 use utils::hash_password;
 
