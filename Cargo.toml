@@ -17,6 +17,7 @@ bcrypt = "0.17.0"
 chrono = "0.4.40"
 db = { path = "db/" }
 envie = "0.2.1"
+paste = "1.0.15"
 prost = "0.13.4"
 rand = "0.9.0"
 rbase64 = "2.0.3"

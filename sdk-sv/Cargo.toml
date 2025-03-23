@@ -10,6 +10,7 @@ repository.workspace = true
 axum.workspace = true
 bcrypt.workspace = true
 db.workspace = true
+paste.workspace = true
 rand.workspace = true
 rbase64.workspace = true
 reqwest.workspace = true
