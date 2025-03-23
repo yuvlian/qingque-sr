@@ -1,17 +1,46 @@
+use crate::ArcState;
 use crate::app::{
     request::RiskyApiCheckReq,
     response::{IRsp, RiskyApiCheckRsp},
 };
-use axum::extract::Json as JsonEx;
+use axum::extract::{Json as JsonEx, State};
+use axum::http::header::HeaderMap;
 use axum::response::Json;
+use db::sdk::user::User;
 
-pub async fn post(JsonEx(_req): JsonEx<RiskyApiCheckReq>) -> Json<IRsp<RiskyApiCheckRsp>> {
-    Json(IRsp::<RiskyApiCheckRsp> {
-        data: Some(RiskyApiCheckRsp {
+pub async fn post(
+    State(state): State<ArcState>,
+    headers: HeaderMap,
+    JsonEx(req): JsonEx<RiskyApiCheckReq>,
+) -> Json<IRsp<RiskyApiCheckRsp>> {
+    if req.action_type != "login" {
+        return Json(IRsp::<RiskyApiCheckRsp>::ok(RiskyApiCheckRsp {
             id: "9e54a9727a014ba4afd2cb2bb4347fe3".to_string(),
             action: "ACTION_NONE".to_string(),
             ..Default::default()
-        }),
-        ..Default::default()
-    })
+        }));
+    }
+
+    let username = req.username;
+    let device_id = match headers.get("x-rpc-device_id") {
+        Some(v) => match v.to_str() {
+            Ok(id) => id,
+            _ => return Json(IRsp::<RiskyApiCheckRsp>::internal_error()),
+        },
+        _ => {
+            return Json(IRsp::<RiskyApiCheckRsp>::custom_error(
+                -101,
+                "DeviceId Header is missing".to_string(),
+            ));
+        }
+    };
+
+    match User::insert_device_id_by_username(&state.pool, &username, &device_id).await {
+        Ok(_) => Json(IRsp::<RiskyApiCheckRsp>::ok(RiskyApiCheckRsp {
+            id: "9e54a9727a014ba4afd2cb2bb4347fe3".to_string(),
+            action: "ACTION_NONE".to_string(),
+            ..Default::default()
+        })),
+        Err(_) => Json(IRsp::<RiskyApiCheckRsp>::internal_error()),
+    }
 }

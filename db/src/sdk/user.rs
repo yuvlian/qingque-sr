@@ -48,55 +48,43 @@ impl User {
         Ok(stored_token == Some(token.into()))
     }
 
-    pub async fn verify_token_and_give_combo_token(
+    pub async fn insert_device_id_by_username(
         pool: &SqlitePool,
         username: &str,
+        device_id: &str,
+    ) -> Result<(), sqlx::Error> {
+        sqlx::query("UPDATE user SET device_id = ? WHERE username = ? AND device_id IS NULL")
+            .bind(device_id)
+            .bind(username)
+            .execute(pool)
+            .await?;
+        Ok(())
+    }
+
+    pub async fn verify_token_and_give_combo_token(
+        pool: &SqlitePool,
         token: &str,
         device_id: &str,
     ) -> Result<String, Box<dyn std::error::Error + Send + Sync>> {
         // Fetch stored user token
         let stored_token: Option<String> =
-            sqlx::query_scalar("SELECT user_token FROM user WHERE username = ?")
-                .bind(username)
+            sqlx::query_scalar("SELECT user_token FROM user WHERE device_id = ?")
+                .bind(device_id)
                 .fetch_optional(pool)
                 .await?;
 
         // Verify if the token matches
         match stored_token {
             Some(existing_token) if existing_token == token => {
-                // Token matches, now check the device_id
-                let stored_device_id: Option<String> =
-                    sqlx::query_scalar("SELECT device_id FROM user WHERE username = ?")
-                        .bind(username)
-                        .fetch_optional(pool)
-                        .await?;
-
-                match stored_device_id {
-                    // If device ID doesn't match, return error
-                    Some(existing_device_id) if existing_device_id != device_id => {
-                        return Err("Device ID does not match.".into());
-                    }
-                    // Already exists and matches, do nothing
-                    Some(_) => {}
-                    // Missing device_id, insert into DB
-                    None => {
-                        sqlx::query("UPDATE user SET device_id = ? WHERE username = ?")
-                            .bind(device_id)
-                            .bind(username)
-                            .execute(pool)
-                            .await?;
-                    }
-                }
-
                 // Generate and update the combo token
                 let combo_token = User::generate_token();
-                sqlx::query("UPDATE user SET combo_token = ? WHERE username = ?")
+                sqlx::query("UPDATE user SET combo_token = ? WHERE device_id = ?")
                     .bind(&combo_token)
-                    .bind(username)
+                    .bind(device_id)
                     .execute(pool)
                     .await?;
 
-                Ok(combo_token) // Return the combo token
+                Ok(combo_token)
             }
             _ => Err("Invalid token.".into()),
         }

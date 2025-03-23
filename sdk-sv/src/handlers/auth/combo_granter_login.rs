@@ -22,19 +22,17 @@ pub async fn post(
         }
     };
 
-    let rsp = match User::verify_token_and_give_combo_token(
-        &state.pool,
-        &data.username,
-        &data.token,
-        &req.device,
-    )
-    .await
+    let rsp = match User::verify_token_and_give_combo_token(&state.pool, &data.token, &req.device)
+        .await
     {
         Ok(v) => IRsp::<ComboGranterLoginRsp>::ok(ComboGranterLoginRsp {
             combo_id: data.uid.clone(),
             open_id: data.uid,
             combo_token: v,
-            data: r#"{"guest":false}"#.to_string(),
+            data: match data.guest {
+                true => r#"{"guest":true}"#.to_string(),
+                false => r#"{"guest":false}"#.to_string(),
+            },
             account_type: 1,
             ..Default::default()
         }),

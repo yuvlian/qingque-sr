@@ -216,7 +216,7 @@ impl ComboGranterLoginReq {
 #[derive(Deserialize, Clone)]
 pub struct ComboGranterLoginReqData {
     pub token: String,
-    pub username: String,
+    pub guest: bool,
     pub uid: String,
 }
 
