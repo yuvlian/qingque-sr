@@ -1,4 +1,4 @@
-CREATE TABLE gateway_hotfix (
+CREATE TABLE IF NOT EXISTS gateway_hotfix (
     game_version TEXT PRIMARY KEY,
     asset_bundle_url TEXT NOT NULL,
     ex_resource_url TEXT NOT NULL,
@@ -6,7 +6,7 @@ CREATE TABLE gateway_hotfix (
     ifix_url TEXT NOT NULL
 );
 
-CREATE TABLE user (
+CREATE TABLE IF NOT EXISTS user (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL,
     password_hash TEXT NOT NULL,

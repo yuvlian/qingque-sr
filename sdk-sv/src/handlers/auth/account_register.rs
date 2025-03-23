@@ -136,7 +136,7 @@ pub async fn post(
     };
 
     match User::create(&state.pool, username, &password_hash).await {
-        Ok(v) => Html(format!("Successfully Registered With UID: {}", v)),
+        Ok(v) => Html(format!("<p>Register Success! UID: {}</p>", v)),
         Err(e) => {
             tracing::error!("{e}");
             Html("<p>Server Error. Try Again Later.</p>".to_string())

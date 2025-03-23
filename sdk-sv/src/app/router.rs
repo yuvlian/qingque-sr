@@ -56,5 +56,5 @@ gen_router![
     "/{product}/mdk/agreement/api/getAgreementInfos" get get_agreement_infos;
     "/{product}/mdk/shield/api/loadConfig" get shield_api_load_config;
     "/{product}/combo/red_dot/list" post red_dot_list;
-    "/sdk/dataUpload" post sdk_data_upload;
+    "/sdk/dataUpload" post sdk_data_upload
 ];
