@@ -207,6 +207,19 @@ pub struct ComboGranterLoginReq {
     pub sign: String,
 }
 
+impl ComboGranterLoginReq {
+    pub fn parse_data(&self) -> Result<ComboGranterLoginReqData, serde_json::Error> {
+        serde_json::from_str(&self.data)
+    }
+}
+
+#[derive(Deserialize, Clone)]
+pub struct ComboGranterLoginReqData {
+    pub token: String,
+    pub username: String,
+    pub uid: String,
+}
+
 // ------------------------------------------------------------------------- //
 
 // Request Type: GET

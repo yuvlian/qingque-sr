@@ -14,14 +14,14 @@ pub async fn get(
         match GatewayHotfix::get_or_fetch(&state.pool, &query.version, &query.dispatch_seed).await {
             Ok(v) => v,
             Err(_) => {
-                return (StatusCode::INTERNAL_SERVER_ERROR, "".into());
+                return (StatusCode::INTERNAL_SERVER_ERROR, "".to_string());
             }
         }
     } else {
         match GatewayHotfix::get_by_version(&state.pool, &query.version).await {
             Ok(Some(v)) => v,
             Err(_) | Ok(_) => {
-                return (StatusCode::INTERNAL_SERVER_ERROR, "".into());
+                return (StatusCode::INTERNAL_SERVER_ERROR, "".to_string());
             }
         }
     };
@@ -34,7 +34,7 @@ pub async fn get(
         use_tcp: true,
         ip: state.env.game_sv_host.clone(),
         port: state.env.game_sv_port as u32,
-        ifix_version: "0".into(),
+        ifix_version: "0".to_string(),
         enable_design_data_version_update: true,
         enable_version_update: true,
         enable_upload_battle_log: true,

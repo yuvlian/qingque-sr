@@ -10,7 +10,9 @@ CREATE TABLE user (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL,
     password_hash TEXT NOT NULL,
-    -- is_banned INTEGER NOT NULL DEFAULT 0 CHECK (is_banned IN (0, 1)),
+    is_banned INTEGER NOT NULL DEFAULT 0 CHECK (is_banned IN (0, 1)),
     user_token TEXT,
+    combo_token TEXT,
+    device_id TEXT,
     register_date TEXT NOT NULL
 )

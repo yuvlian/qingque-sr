@@ -8,9 +8,7 @@ use axum::{
 };
 use db::sdk::user::User;
 
-pub async fn get() -> Html<&'static str> {
-    Html(
-        r###"<html>
+const REGISTER_PAGE: &'static str = r###"<html>
 <head>
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
     <script src="https://unpkg.com/htmx-ext-json-enc@2.0.1/json-enc.js"></script>
@@ -30,32 +28,28 @@ pub async fn get() -> Html<&'static str> {
             background-color: #1e1e1e;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+            width: 300px;
         }
-        h1 {
-            margin-bottom: 20px;
-        }
-        input {
+        input, button {
             width: 100%;
             padding: 10px;
             margin: 5px 0;
-            border: none;
             border-radius: 5px;
             background-color: #333;
             color: white;
+            border: 1px solid #333;
         }
         button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border: none;
-            border-radius: 5px;
             background-color: #6200ea;
-            color: white;
             cursor: pointer;
         }
         button:hover {
             background-color: #3700b3;
+        }
+        .password-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         #response {
             margin-top: 10px;
@@ -67,9 +61,13 @@ pub async fn get() -> Html<&'static str> {
 </head>
 <body>
     <div class="container">
-        <h1>stalel</h1>
         <input type="text" id="username" name="username" placeholder="Username" required>
-        <input type="password" id="password" name="password" placeholder="Password" required>
+        
+        <div class="password-container">
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <button type="button" onclick="togglePassword()">Show</button>
+        </div>
+
         <button 
             hx-post="/account/register"
             hx-trigger="click" 
@@ -81,9 +79,25 @@ pub async fn get() -> Html<&'static str> {
         </button>
         <div id="response"></div>
     </div>
+
+    <script>
+        function togglePassword() {
+            const passwordField = document.getElementById('password');
+            const button = document.querySelector('.password-container button');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                button.textContent = 'Hide';
+            } else {
+                passwordField.type = 'password';
+                button.textContent = 'Show';
+            }
+        }
+    </script>
 </body>
-</html>"###,
-    )
+</html>"###;
+
+pub async fn get() -> Html<&'static str> {
+    Html(REGISTER_PAGE)
 }
 
 pub async fn post(
@@ -102,13 +116,13 @@ pub async fn post(
 
     match User::exists_by_username(&state.pool, username).await {
         Ok(true) => {
-            return Html("<p>User Already Exists</p>".into());
+            return Html("<p>User Already Exists</p>".to_string());
         }
         Err(e) => {
             tracing::error!("{e}");
             // I'd love to return 500 status code, but HTMX is idk, kinda stupid
             // It wouldn't load the html unless it's 2xx code...
-            return Html("<p>Server Error. Try Again Later.</p>".into());
+            return Html("<p>Server Error. Try Again Later.</p>".to_string());
         }
         _ => {}
     }
@@ -117,7 +131,7 @@ pub async fn post(
         Ok(v) => v,
         Err(e) => {
             tracing::error!("{e}");
-            return Html("<p>Server Error. Try Again Later.</p>".into());
+            return Html("<p>Server Error. Try Again Later.</p>".to_string());
         }
     };
 
@@ -125,7 +139,7 @@ pub async fn post(
         Ok(v) => Html(format!("Successfully Registered With UID: {}", v)),
         Err(e) => {
             tracing::error!("{e}");
-            Html("<p>Server Error. Try Again Later.</p>".into())
+            Html("<p>Server Error. Try Again Later.</p>".to_string())
         }
     }
 }

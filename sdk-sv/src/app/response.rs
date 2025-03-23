@@ -26,6 +26,33 @@ impl<T: Default + Serialize> Default for IRsp<T> {
     }
 }
 
+impl<T: Default + Serialize> IRsp<T> {
+    // Helper function for a successful response
+    pub fn ok(data: T) -> Self {
+        IRsp {
+            retcode: 0,
+            message: String::from("OK"),
+            data: Some(data),
+        }
+    }
+
+    pub fn internal_error() -> Self {
+        IRsp {
+            retcode: -1,
+            message: String::from("Internal Server Error"),
+            data: None,
+        }
+    }
+
+    pub fn custom_error(retcode: i32, message: String) -> Self {
+        IRsp {
+            retcode,
+            message,
+            data: None,
+        }
+    }
+}
+
 // ------------------------------------------------------------------------- //
 
 // Request Type: POST

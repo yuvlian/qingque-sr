@@ -7,61 +7,131 @@ static VALID_USERNAME: LazyLock<Regex> = LazyLock::new(|| Regex::new("^[A-Za-z0-
 
 #[derive(FromRow, Debug)]
 pub struct User {
-    pub user_id: u32,
+    pub user_id: u32, // pkey autoincrement
     pub username: String,
     pub password_hash: String,
-    // pub is_banned: u8,
+    pub is_banned: u8,
     pub user_token: Option<String>,
-    // pub device_id: String,
+    pub combo_token: Option<String>,
+    pub device_id: Option<String>,
     pub register_date: String,
 }
 
 impl User {
+    pub fn generate_token() -> String {
+        use rand::Rng;
+        let mut rng = rand::rng();
+        format!("{:X}", rng.random::<u32>())
+    }
+
+    pub async fn give_token(pool: &SqlitePool, username: &str) -> Result<String, sqlx::Error> {
+        let token = User::generate_token();
+        sqlx::query("UPDATE user SET user_token = ? WHERE username = ?")
+            .bind(&token)
+            .bind(username)
+            .execute(pool)
+            .await?;
+        Ok(token)
+    }
+
+    pub async fn verify_token_by_uid(
+        pool: &SqlitePool,
+        user_id: u32,
+        token: &str,
+    ) -> Result<bool, sqlx::Error> {
+        let stored_token: Option<String> =
+            sqlx::query_scalar("SELECT user_token FROM user WHERE user_id = ?")
+                .bind(user_id)
+                .fetch_optional(pool)
+                .await?;
+
+        Ok(stored_token == Some(token.into()))
+    }
+
+    pub async fn verify_token_and_give_combo_token(
+        pool: &SqlitePool,
+        username: &str,
+        token: &str,
+        device_id: &str,
+    ) -> Result<String, Box<dyn std::error::Error + Send + Sync>> {
+        // Fetch stored user token
+        let stored_token: Option<String> =
+            sqlx::query_scalar("SELECT user_token FROM user WHERE username = ?")
+                .bind(username)
+                .fetch_optional(pool)
+                .await?;
+
+        // Verify if the token matches
+        match stored_token {
+            Some(existing_token) if existing_token == token => {
+                // Token matches, now check the device_id
+                let stored_device_id: Option<String> =
+                    sqlx::query_scalar("SELECT device_id FROM user WHERE username = ?")
+                        .bind(username)
+                        .fetch_optional(pool)
+                        .await?;
+
+                match stored_device_id {
+                    // If device ID doesn't match, return error
+                    Some(existing_device_id) if existing_device_id != device_id => {
+                        return Err("Device ID does not match.".into());
+                    }
+                    // Already exists and matches, do nothing
+                    Some(_) => {}
+                    // Missing device_id, insert into DB
+                    None => {
+                        sqlx::query("UPDATE user SET device_id = ? WHERE username = ?")
+                            .bind(device_id)
+                            .bind(username)
+                            .execute(pool)
+                            .await?;
+                    }
+                }
+
+                // Generate and update the combo token
+                let combo_token = User::generate_token();
+                sqlx::query("UPDATE user SET combo_token = ? WHERE username = ?")
+                    .bind(&combo_token)
+                    .bind(username)
+                    .execute(pool)
+                    .await?;
+
+                Ok(combo_token) // Return the combo token
+            }
+            _ => Err("Invalid token.".into()),
+        }
+    }
+
+    pub async fn verify_combo_token_by_uid(
+        pool: &SqlitePool,
+        user_id: u32,
+        combo_token: &str,
+    ) -> Result<bool, sqlx::Error> {
+        let stored_combo_token: Option<String> =
+            sqlx::query_scalar("SELECT combo_token FROM user WHERE user_id = ?")
+                .bind(user_id)
+                .fetch_optional(pool)
+                .await?;
+
+        Ok(stored_combo_token == Some(combo_token.into()))
+    }
+
     pub fn hash_password(password: &str) -> Result<String, bcrypt::BcryptError> {
         bcrypt::hash(password, bcrypt::DEFAULT_COST)
     }
 
     pub fn validate_register_form<'a>(username: &'a str, password: &'a str) -> Result<(), &'a str> {
-        // let pass_len = password.len();
-        // let usrn_len = username.len();
-
-        // if pass_len < 8 || pass_len > 72 {
-        //     return Err("Invalid Password Length. Minimum: 8, Maximum: 72.");
-        // }
-
-        // if usrn_len < 4 || usrn_len > 16 {
-        //     return Err("Invalid Username Length. Minimum: 4, Maximum: 16.");
-        // }
+        if username.len() == 0 {
+            // set a custom length if u want
+            return Err("Username cannot be empty.");
+        } else if password.len() == 0 {
+            return Err("Password cannot be empty.");
+        }
 
         if !VALID_USERNAME.is_match(username) {
             return Err("Invalid Username Format. Must Be Alphanumeric.");
         }
-
         Ok(())
-    }
-
-    pub async fn verify_password(
-        pool: &SqlitePool,
-        username: &str,
-        password: &str,
-    ) -> Result<bool, Box<dyn std::error::Error>> {
-        let stored_hash: Option<String> =
-            sqlx::query_scalar("SELECT password_hash FROM user WHERE username = ?")
-                .bind(username)
-                .fetch_optional(pool)
-                .await?
-                .map(|hash| hash);
-
-        match stored_hash {
-            Some(hash) => Ok(bcrypt::verify(password, &hash)?),
-            None => Ok(false),
-        }
-    }
-
-    pub fn generate_token() -> String {
-        use rand::Rng;
-        let mut rng = rand::rng();
-        format!("{:X}", rng.random::<u32>())
     }
 
     pub async fn create(
@@ -95,60 +165,33 @@ impl User {
         Ok(exists.is_some())
     }
 
-    pub async fn get_by_uid(pool: &SqlitePool, user_id: u32) -> Result<Option<Self>, sqlx::Error> {
-        let user = sqlx::query_as::<_, Self>("SELECT * FROM user WHERE user_id = ?")
-            .bind(user_id)
-            .fetch_optional(pool)
-            .await?;
-        Ok(user)
-    }
-
-    pub async fn get_by_token(pool: &SqlitePool, token: &str) -> Result<Option<Self>, sqlx::Error> {
-        let user = sqlx::query_as::<_, Self>("SELECT * FROM user WHERE user_token = ?")
-            .bind(token)
-            .fetch_optional(pool)
-            .await?;
-        Ok(user)
-    }
-
-    // pub async fn get_token_by_device_id(
-    //     pool: &SqlitePool,
-    //     device_id: &str,
-    // ) -> Result<Option<String>, sqlx::Error> {
-    //     let token = sqlx::query_scalar("SELECT user_token FROM user WHERE device_id = ?")
-    //         .bind(device_id)
-    //         .fetch_optional(pool)
-    //         .await?;
-    //     Ok(token)
-    // }
-
-    pub async fn update_token(
+    pub async fn verify_login_form_and_give_token(
         pool: &SqlitePool,
-        user_id: u32,
-        new_token: &str,
-    ) -> Result<(), sqlx::Error> {
-        sqlx::query("UPDATE user SET user_token = ? WHERE user_id = ?")
-            .bind(new_token)
-            .bind(user_id)
-            .execute(pool)
-            .await?;
-        Ok(())
-    }
+        username: &str,
+        password: &str,
+    ) -> Result<(u32, String), Box<dyn std::error::Error + Send + Sync>> {
+        // reuse register validator for consistency
+        User::validate_register_form(username, password)?;
 
-    // pub async fn set_banned(pool: &SqlitePool, user_id: u32, is_banned: bool) -> Result<(), sqlx::Error> {
-    //     sqlx::query("UPDATE user SET is_banned = ? WHERE user_id = ?")
-    //         .bind(if is_banned { 1 } else { 0 })
-    //         .bind(user_id)
-    //         .execute(pool)
-    //         .await?;
-    //     Ok(())
-    // }
+        if !User::exists_by_username(pool, username).await? {
+            return Err("User does not exist".into());
+        }
 
-    pub async fn delete(pool: &SqlitePool, user_id: u32) -> Result<(), sqlx::Error> {
-        sqlx::query("DELETE FROM user WHERE user_id = ?")
-            .bind(user_id)
-            .execute(pool)
-            .await?;
-        Ok(())
+        let Some((stored_password_hash, user_id)): Option<(String, u32)> =
+            sqlx::query_as("SELECT password_hash, user_id FROM user WHERE username = ?")
+                .bind(username)
+                .fetch_optional(pool)
+                .await?
+        else {
+            return Err("User not found".into());
+        };
+
+        match stored_password_hash {
+            hash if bcrypt::verify(password, &hash)? => {
+                let token = User::give_token(pool, username).await?;
+                Ok((user_id, token))
+            }
+            _ => Err("Invalid password.".into()),
+        }
     }
 }
