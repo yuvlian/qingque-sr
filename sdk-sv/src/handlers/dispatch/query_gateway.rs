@@ -1,25 +1,29 @@
 use crate::ArcState;
-use crate::app::db::hotfix::GatewayHotfix;
 use crate::app::request::QueryGatewayReq;
 use axum::extract::{Query, State};
+use axum::http::StatusCode;
+use db::sdk::hotfix::GatewayHotfix;
 use sr_proto::{GateServer, Message};
 
-pub async fn get(State(state): State<ArcState>, Query(query): Query<QueryGatewayReq>) -> String {
+// #[axum::debug_handler]
+pub async fn get(
+    State(state): State<ArcState>,
+    Query(query): Query<QueryGatewayReq>,
+) -> (StatusCode, String) {
     let gateway_hotfix = if state.env.auto_hotfix {
-        GatewayHotfix::get_or_fetch(&state.pool, &query.version, &query.dispatch_seed)
-            .await // unwrap_or_else because its lazy init
-            .unwrap_or_else(|e| {
-                tracing::warn!("GatewayHotfix is defaulting. Reason: {}", e);
-                GatewayHotfix::default()
-            })
+        match GatewayHotfix::get_or_fetch(&state.pool, &query.version, &query.dispatch_seed).await {
+            Ok(v) => v,
+            Err(_) => {
+                return (StatusCode::INTERNAL_SERVER_ERROR, "".into());
+            }
+        }
     } else {
-        GatewayHotfix::get_by_version(&state.pool, &query.version)
-            .await
-            .unwrap_or_else(|e| {
-                tracing::warn!("GatewayHotfix is defaulting. Reason: {}", e);
-                None
-            })
-            .unwrap_or_default()
+        match GatewayHotfix::get_by_version(&state.pool, &query.version).await {
+            Ok(Some(v)) => v,
+            Err(_) | Ok(_) => {
+                return (StatusCode::INTERNAL_SERVER_ERROR, "".into());
+            }
+        }
     };
 
     let rsp = GateServer {
@@ -44,5 +48,5 @@ pub async fn get(State(state): State<ArcState>, Query(query): Query<QueryGateway
         ..Default::default()
     };
 
-    rbase64::encode(&rsp.encode_to_vec())
+    (StatusCode::OK, rbase64::encode(&rsp.encode_to_vec()))
 }

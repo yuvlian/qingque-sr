@@ -72,17 +72,3 @@ pub fn cur_date_full_precision() -> String {
         .format("%Y-%m-%dT%H:%M:%S%.6fZ")
         .to_string()
 }
-
-pub fn hash_password(pass: &str) -> Result<String, bcrypt::BcryptError> {
-    bcrypt::hash(pass, bcrypt::DEFAULT_COST)
-}
-
-pub fn verify_password(pass: &str, hash: &str) -> Result<bool, bcrypt::BcryptError> {
-    bcrypt::verify(pass, hash)
-}
-
-pub fn rand_u32_hex() -> String {
-    use rand::Rng;
-    let mut rng = rand::rng();
-    format!("{:X}", rng.random::<u32>())
-}

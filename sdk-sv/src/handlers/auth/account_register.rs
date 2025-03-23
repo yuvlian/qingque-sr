@@ -1,12 +1,12 @@
 use crate::{
     ArcState,
-    app::{db::user::User, request::MyRegisterReq, response::MyRegisterRsp},
+    app::{request::MyRegisterReq, response::MyRegisterRsp},
 };
 use axum::{
     extract::{Json, State},
     response::Html,
 };
-use utils::hash_password;
+use db::sdk::user::User;
 
 pub async fn get() -> Html<&'static str> {
     Html(
@@ -71,7 +71,7 @@ pub async fn get() -> Html<&'static str> {
         <input type="text" id="username" name="username" placeholder="Username" required>
         <input type="password" id="password" name="password" placeholder="Password" required>
         <button 
-            hx-post="/my_register"
+            hx-post="/account/register"
             hx-trigger="click" 
             hx-target="#response" 
             hx-swap="innerHTML"
@@ -90,18 +90,17 @@ pub async fn post(
     State(state): State<ArcState>,
     Json(req): Json<MyRegisterReq>,
 ) -> Html<MyRegisterRsp> {
-    let pass_len = req.password.len();
-    let usrn_len = req.username.len();
+    let username = &req.username;
+    let password = &req.password;
 
-    if pass_len < 6 || pass_len > 72 {
-        return Html("<p>Password Length Must Be Between 6 and 72</p>".into());
+    match User::validate_register_form(username, password) {
+        Ok(_) => {}
+        Err(e) => {
+            return Html(format!("<p>{e}</p>"));
+        }
     }
 
-    if usrn_len < 4 || usrn_len > 16 {
-        return Html("<p>Username Length Must Be Between 4 and 16</p>".into());
-    }
-
-    match User::exists_by_username(&state.pool, &req.username).await {
+    match User::exists_by_username(&state.pool, username).await {
         Ok(true) => {
             return Html("<p>User Already Exists</p>".into());
         }
@@ -114,7 +113,7 @@ pub async fn post(
         _ => {}
     }
 
-    let password_hash = match hash_password(&req.password) {
+    let password_hash = match User::hash_password(password) {
         Ok(v) => v,
         Err(e) => {
             tracing::error!("{e}");
@@ -122,7 +121,7 @@ pub async fn post(
         }
     };
 
-    match User::create(&state.pool, &req.username, &password_hash).await {
+    match User::create(&state.pool, username, &password_hash).await {
         Ok(v) => Html(format!("Successfully Registered With UID: {}", v)),
         Err(e) => {
             tracing::error!("{e}");

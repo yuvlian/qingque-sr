@@ -90,6 +90,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6d6fd624c75e18b3b4c6b9caf42b1afe24437daaee904069137d8bab077be8b8"
 dependencies = [
  "axum-core",
+ "axum-macros",
  "bytes",
  "form_urlencoded",
  "futures-util",
@@ -135,6 +136,17 @@ dependencies = [
  "tower-layer",
  "tower-service",
  "tracing",
+]
+
+[[package]]
+name = "axum-macros"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "604fde5e028fea851ce1d8570bbdc034bec850d157f7569d10f347d06808c05c"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
@@ -359,6 +371,21 @@ checksum = "1bfb12502f3fc46cca1bb51ac28df9d618d813cdc3d2f25b9fe775a34af26bb3"
 dependencies = [
  "generic-array",
  "typenum",
+]
+
+[[package]]
+name = "db"
+version = "0.1.0"
+dependencies = [
+ "bcrypt",
+ "rand 0.9.0",
+ "rbase64",
+ "regex",
+ "reqwest",
+ "sqlx",
+ "sr-proto",
+ "tracing",
+ "utils",
 ]
 
 [[package]]
@@ -1792,6 +1819,9 @@ name = "sdk-sv"
 version = "0.1.0"
 dependencies = [
  "axum",
+ "bcrypt",
+ "db",
+ "rand 0.9.0",
  "rbase64",
  "reqwest",
  "serde",
@@ -2545,10 +2575,8 @@ name = "utils"
 version = "0.1.0"
 dependencies = [
  "ansi_term",
- "bcrypt",
  "chrono",
  "envie",
- "rand 0.9.0",
  "tracing-subscriber",
 ]
 

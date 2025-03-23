@@ -1,5 +1,5 @@
 [package]
-name = "sdk-sv"
+name = "db"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
@@ -7,16 +7,12 @@ license.workspace = true
 repository.workspace = true
 
 [dependencies]
-axum.workspace = true
 bcrypt.workspace = true
-db.workspace = true
 rand.workspace = true
 rbase64.workspace = true
+regex.workspace = true
 reqwest.workspace = true
-serde.workspace = true
-serde_json.workspace = true
 sqlx.workspace = true
 sr-proto.workspace = true
-tokio.workspace = true
 tracing.workspace = true
 utils.workspace = true

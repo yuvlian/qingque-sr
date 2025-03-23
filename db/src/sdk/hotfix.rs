@@ -1,4 +1,4 @@
-use sqlx::{Error, FromRow, SqlitePool};
+use sqlx::{FromRow, SqlitePool};
 use sr_proto::{GateServer, Message};
 
 #[derive(FromRow, Debug, Default)]
@@ -43,7 +43,10 @@ impl GatewayHotfix {
         (region, branch, os_name)
     }
 
-    pub async fn fetch_hotfix(ver: &str, dispatch_seed: &str) -> Option<Self> {
+    pub async fn fetch_hotfix(
+        ver: &str,
+        dispatch_seed: &str,
+    ) -> Result<Self, Box<dyn std::error::Error + Send + Sync>> {
         const CNPROD_HOST_WIN: &str = "prod-gf-cn-dp01.bhsr.com";
         const CNBETA_HOST_WIN: &str = "beta-release01-cn.bhsr.com";
         const OSPROD_HOST_WIN: &str = "prod-official-asia-dp01.starrails.com";
@@ -51,9 +54,9 @@ impl GatewayHotfix {
         const NEON_PROXY: &str = "proxy1.neonteam.dev";
 
         let ver_parsed = Self::parse_version_string(ver);
-        let region = ver_parsed.0?;
-        let branch = ver_parsed.1?;
-        let os = ver_parsed.2?;
+        let region = ver_parsed.0.ok_or("Region not found in version string")?;
+        let branch = ver_parsed.1.ok_or("Branch not found in version string")?;
+        let os = ver_parsed.2.ok_or("OS not found in version string")?;
 
         let host = match (region, branch, os) {
             ("OS", "BETA", "Win") => Some(OSBETA_HOST_WIN),
@@ -61,7 +64,8 @@ impl GatewayHotfix {
             ("CN", "BETA", "Win") => Some(CNBETA_HOST_WIN),
             ("CN", "PROD", "Win") => Some(CNPROD_HOST_WIN),
             _ => None,
-        }?;
+        }
+        .ok_or("No matching host for provided version")?;
 
         let url = format!(
             "https://{}/{}/query_gateway?version={}&platform_type=1&language_type=3&dispatch_seed={}&channel_id=1&sub_channel_id=1&is_need_url=1",
@@ -70,13 +74,19 @@ impl GatewayHotfix {
 
         tracing::info!("Auto Hotfix: {}", url);
 
-        let res = reqwest::get(url).await.ok()?.text().await.ok()?;
+        let res = reqwest::get(url)
+            .await
+            .map_err(|e| format!("Request failed: {}", e))?
+            .text()
+            .await
+            .map_err(|e| format!("Failed to read response: {}", e))?;
 
-        let bytes = rbase64::decode(&res).ok()?;
-        let decoded = GateServer::decode(bytes.as_slice()).ok()?;
+        let bytes = rbase64::decode(&res).map_err(|e| format!("Base64 decode failed: {}", e))?;
+        let decoded = GateServer::decode(bytes.as_slice())
+            .map_err(|e| format!("Failed to decode GateServer: {}", e))?;
 
         if decoded.retcode != 0 || res.is_empty() {
-            return None;
+            return Err("Invalid response received".into());
         }
 
         let gateway_hotfix = Self {
@@ -89,10 +99,10 @@ impl GatewayHotfix {
 
         tracing::info!("Obtained Hotfix: {:?}", gateway_hotfix);
 
-        Some(gateway_hotfix)
+        Ok(gateway_hotfix)
     }
 
-    pub async fn insert(&self, pool: &SqlitePool) -> Result<(), Error> {
+    pub async fn insert(&self, pool: &SqlitePool) -> Result<(), sqlx::Error> {
         sqlx::query(
             "INSERT INTO gateway_hotfix (game_version, asset_bundle_url, ex_resource_url, lua_url, ifix_url) 
              VALUES (?, ?, ?, ?, ?)",
@@ -112,21 +122,24 @@ impl GatewayHotfix {
         pool: &SqlitePool,
         ver: &str,
         dispatch_seed: &str,
-    ) -> Result<Self, sqlx::Error> {
+    ) -> Result<Self, Box<dyn std::error::Error + Send + Sync>> {
         if let Some(v) = Self::get_by_version(pool, ver).await? {
             return Ok(v);
         }
 
         match Self::fetch_hotfix(ver, dispatch_seed).await {
-            Some(v) => {
+            Ok(v) => {
                 v.insert(pool).await?;
                 Ok(v)
             }
-            None => Err(sqlx::Error::Protocol("Auto Hotfix Failed".to_string())),
+            Err(e) => Err(e),
         }
     }
 
-    pub async fn get_by_version(pool: &SqlitePool, version: &str) -> Result<Option<Self>, Error> {
+    pub async fn get_by_version(
+        pool: &SqlitePool,
+        version: &str,
+    ) -> Result<Option<Self>, Box<dyn std::error::Error + Send + Sync>> {
         let result = sqlx::query_as::<_, GatewayHotfix>(
             "SELECT game_version, asset_bundle_url, ex_resource_url, lua_url, ifix_url 
              FROM gateway_hotfix WHERE game_version = ?",

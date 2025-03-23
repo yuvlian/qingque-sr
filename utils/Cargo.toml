@@ -8,8 +8,6 @@ repository.workspace = true
 
 [dependencies]
 ansi_term.workspace = true
-bcrypt.workspace = true
 envie.workspace = true
-rand.workspace = true
 tracing-subscriber.workspace = true
 chrono.workspace = true

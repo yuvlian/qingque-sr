@@ -9,9 +9,9 @@ use crate::handlers::{auth, dispatch, misc};
 pub fn auth_router() -> Router<ArcState> {
     let mut r = Router::new();
 
-    r = r.route("/my_register", get(auth::my_register::get));
+    r = r.route("/account/register", get(auth::account_register::get));
 
-    r = r.route("/my_register", post(auth::my_register::post));
+    r = r.route("/account/register", post(auth::account_register::post));
 
     r = r.route(
         "/{product}/combo/granter/login/beforeVerify",
@@ -46,7 +46,7 @@ pub fn dispatch_router() -> Router<ArcState> {
 
     r = r.route("/query_dispatch", get(dispatch::query_dispatch::get));
 
-    r = r.route("/query_gateway", post(dispatch::query_gateway::get));
+    r = r.route("/query_gateway", get(dispatch::query_gateway::get));
 
     r
 }
