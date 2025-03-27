@@ -11,7 +11,7 @@ pub async fn get(State(state): State<ArcState>, Query(_query): Query<QueryDispat
             name: "stalel".to_string(),
             title: "stalel".to_string(),
             dispatch_url: format!(
-                "{}:{}/query_gateway",
+                "http://{}:{}/query_gateway",
                 state.env.sdk_sv_host, state.env.sdk_sv_port
             ),
             env_type: state.env.login_env_type.clone(),

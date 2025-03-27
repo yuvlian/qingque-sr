@@ -1,6 +1,6 @@
 use crate::{
     ArcState,
-    app::{request::MyRegisterReq, response::MyRegisterRsp},
+    app::{request::AccountRegisterReq, response::AccountRegisterRsp},
 };
 use axum::{
     extract::{Json, State},
@@ -102,8 +102,8 @@ pub async fn get() -> Html<&'static str> {
 
 pub async fn post(
     State(state): State<ArcState>,
-    Json(req): Json<MyRegisterReq>,
-) -> Html<MyRegisterRsp> {
+    Json(req): Json<AccountRegisterReq>,
+) -> Html<AccountRegisterRsp> {
     let username = &req.username;
     let password = &req.password;
 

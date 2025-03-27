@@ -5,6 +5,21 @@ use axum::http::StatusCode;
 use db::sdk::hotfix::GatewayHotfix;
 use sr_proto::{GateServer, Message};
 
+#[inline(always)]
+fn gateway_error(e: String) -> (StatusCode, String) {
+    (
+        StatusCode::INTERNAL_SERVER_ERROR,
+        rbase64::encode(
+            &GateServer {
+                retcode: 2,
+                msg: e,
+                ..Default::default()
+            }
+            .encode_to_vec(),
+        ),
+    )
+}
+
 // #[axum::debug_handler]
 pub async fn get(
     State(state): State<ArcState>,
@@ -13,15 +28,19 @@ pub async fn get(
     let gateway_hotfix = if state.env.auto_hotfix {
         match GatewayHotfix::get_or_fetch(&state.pool, &query.version, &query.dispatch_seed).await {
             Ok(v) => v,
-            Err(_) => {
-                return (StatusCode::INTERNAL_SERVER_ERROR, "".to_string());
+            Err(e) => {
+                return gateway_error(e.to_string());
             }
         }
     } else {
         match GatewayHotfix::get_by_version(&state.pool, &query.version).await {
             Ok(Some(v)) => v,
-            Err(_) | Ok(_) => {
-                return (StatusCode::INTERNAL_SERVER_ERROR, "".to_string());
+            Err(e) => {
+                return gateway_error(e.to_string());
+            }
+            _ => {
+                GatewayHotfix::default()
+                // return gateway_error("Option<GatewayHotfix> = None".to_string());
             }
         }
     };
@@ -43,7 +62,7 @@ pub async fn get(
         enable_android_middle_package: true,
         enable_watermark: true,
         event_tracking_open: true,
-        enable_cdn_ipv6: 1,
+        // enable_cdn_ipv6: 1,
         enable_save_replay_file: true,
         ..Default::default()
     };

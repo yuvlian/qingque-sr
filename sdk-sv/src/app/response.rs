@@ -558,7 +558,7 @@ pub struct GetAlertPicRsp {
 // Note: retcode for http rsp is stupid tbh, status code headers exist
 // Note edit: nvm, htmx doesnt like error codes
 // URL: http://localhost:.../my_register?username=...&password=...
-pub type MyRegisterRsp = String;
+pub type AccountRegisterRsp = String;
 
 // ------------------------------------------------------------------------- //
 

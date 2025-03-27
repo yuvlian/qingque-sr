@@ -1,13 +1,15 @@
-use crate::app::{
-    request::ConfigExperimentListReq,
-    response::{ConfigExperiment, ConfigExperimentListRsp, IRsp, UserExperimentConfigs},
+use crate::app::response::{
+    ConfigExperiment, ConfigExperimentListRsp, IRsp, UserExperimentConfigs,
 };
-use axum::extract::Json as JsonEx;
+// use crate::app::request::ConfigExperimentListReq;
+// use axum::extract::Json as JsonEx;
 use axum::response::Json;
 
-pub async fn post(
-    JsonEx(_req): JsonEx<ConfigExperimentListReq>,
-) -> Json<IRsp<ConfigExperimentListRsp>> {
+// status code 522 so we'll just remove the extractor cuz im not gonna bother fixing the model
+// pub async fn post(
+//     JsonEx(_req): JsonEx<ConfigExperimentListReq>,
+// ) -> Json<IRsp<ConfigExperimentListRsp>> {
+pub async fn post() -> Json<IRsp<ConfigExperimentListRsp>> {
     Json(IRsp::<ConfigExperimentListRsp> {
         data: Some(vec![
             ConfigExperiment {

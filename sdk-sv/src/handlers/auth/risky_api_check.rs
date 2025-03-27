@@ -21,7 +21,20 @@ pub async fn post(
         }));
     }
 
-    let username = req.username;
+    let (username, _) = {
+        // we're doing this cuz i'm not gonna bother RSA patching
+        let kv: Vec<&str> = req.username.split("::").collect();
+
+        if kv.len() < 2 {
+            return Json(IRsp::<RiskyApiCheckRsp>::custom_error(
+                -101,
+                "Invalid {user}::{pass} Input".to_string(),
+            ));
+        }
+
+        (kv[0], kv[1])
+    };
+
     let device_id = match headers.get("x-rpc-device_id") {
         Some(v) => match v.to_str() {
             Ok(id) => id,
@@ -35,7 +48,7 @@ pub async fn post(
         }
     };
 
-    match User::insert_device_id_by_username(&state.pool, &username, &device_id).await {
+    match User::insert_device_id_by_username(&state.pool, username, &device_id).await {
         Ok(_) => Json(IRsp::<RiskyApiCheckRsp>::ok(RiskyApiCheckRsp {
             id: "9e54a9727a014ba4afd2cb2bb4347fe3".to_string(),
             action: "ACTION_NONE".to_string(),
