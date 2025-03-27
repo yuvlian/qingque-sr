@@ -133,7 +133,7 @@ impl GatewayHotfix {
     pub async fn get_by_version(
         pool: &SqlitePool,
         version: &str,
-    ) -> Result<Option<Self>, Box<dyn std::error::Error + Send + Sync>> {
+    ) -> Result<Option<Self>, sqlx::Error> {
         let result = sqlx::query_as::<_, GatewayHotfix>(
             "SELECT game_version, asset_bundle_url, ex_resource_url, lua_url, ifix_url 
              FROM gateway_hotfix WHERE game_version = ?",
