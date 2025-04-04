@@ -473,7 +473,7 @@ pub struct GetAlertPicReq {
 // Parse Target: Query
 // URL: http://localhost:.../my_register
 #[derive(Deserialize, Clone)]
-pub struct MyRegisterReq {
+pub struct AccountRegisterReq {
     pub username: String,
     pub password: String,
 }

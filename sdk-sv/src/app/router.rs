@@ -25,6 +25,8 @@ macro_rules! gen_router {
 gen_router![
     auth;
     "/account/register" get account_register;
+    "/accountSystemAuditFE/{*remainder}" get account_register;
+    "/login-platform/{*remainder}" get account_register;
     "/account/register" post account_register;
     "/account/risky/api/check" post risky_api_check;
     "/{product}/combo/granter/login/beforeVerify" post combo_before_verify;

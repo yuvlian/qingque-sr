@@ -15,10 +15,11 @@ pub async fn get(Query(query): Query<GetAnnListReq>) -> Json<IRsp<GetAnnListRsp>
                     ann_id: 186,
                     title: "Honkai: Star Rail Fair Gaming Declaration".to_string(),
                     subtitle: "Honkai: Star Rail Fair Gaming Declaration".to_string(),
-                    banner: "https://proxy1.neonteam.dev/sdk.hoyoverse.com/upload/ann/2023/04/04/bbab09d84af4bbb294dc9350fdbaf69c_6005675597601035971.png".to_string(),
+                    banner: "https://codeberg.org/yuvlian/cdn/raw/branch/main/pps.png".to_string(),
                     type_label: "Notices".to_string(),
                     tag_label: "重要".to_string(),
-                    tag_icon: "https://proxy1.neonteam.dev/sdk.hoyoverse.com/upload/announcement/2023/01/05/605ab5f6643d822ec6cdb158a66c81ad_3387186949421905950.png".to_string(),
+                    tag_icon: "https://codeberg.org/yuvlian/cdn/raw/branch/main/3234.png"
+                        .to_string(),
                     login_alert: 1,
                     lang: query.lang,
                     start_time: "2023-04-04 00:00:00".to_string(),
@@ -41,7 +42,8 @@ pub async fn get(Query(query): Query<GetAnnListReq>) -> Json<IRsp<GetAnnListRsp>
                 mi18n_name: "Notices".to_string(),
             }],
             timezone: 8,
-            t: "1742222317_ae6295e8279662a881eb9beb19144112_d41d8cd98f00b204e9800998ecf8427e".to_string(),
+            t: "1742222317_ae6295e8279662a881eb9beb19144112_d41d8cd98f00b204e9800998ecf8427e"
+                .to_string(),
             pic_list: vec![PictureCategory {
                 type_id: 3,
                 type_label: "News".to_string(),

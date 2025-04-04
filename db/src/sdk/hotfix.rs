@@ -74,16 +74,10 @@ impl GatewayHotfix {
 
         tracing::info!("Auto Hotfix: {}", url);
 
-        let res = reqwest::get(url)
-            .await
-            .map_err(|e| format!("Request failed: {}", e))?
-            .text()
-            .await
-            .map_err(|e| format!("Failed to read response: {}", e))?;
+        let res = reqwest::get(url).await?.text().await?;
 
-        let bytes = rbase64::decode(&res).map_err(|e| format!("Base64 decode failed: {}", e))?;
-        let decoded = GateServer::decode(bytes.as_slice())
-            .map_err(|e| format!("Failed to decode GateServer: {}", e))?;
+        let bytes = rbase64::decode(&res)?;
+        let decoded = GateServer::decode(bytes.as_slice())?;
 
         if decoded.retcode != 0 || res.is_empty() {
             return Err("Invalid response received".into());
@@ -139,7 +133,7 @@ impl GatewayHotfix {
     pub async fn get_by_version(
         pool: &SqlitePool,
         version: &str,
-    ) -> Result<Option<Self>, Box<dyn std::error::Error + Send + Sync>> {
+    ) -> Result<Option<Self>, sqlx::Error> {
         let result = sqlx::query_as::<_, GatewayHotfix>(
             "SELECT game_version, asset_bundle_url, ex_resource_url, lua_url, ifix_url 
              FROM gateway_hotfix WHERE game_version = ?",
