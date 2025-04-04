@@ -622,6 +622,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "game-sv"
+version = "0.1.0"
+dependencies = [
+ "bytes",
+ "kcp-zs",
+ "tokio",
+]
+
+[[package]]
 name = "generic-array"
 version = "0.14.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1070,6 +1079,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "kcp-zs"
+version = "0.1.0"
+source = "git+https://github.com/yuvlian/kcp-zs.git#833ea3162b69eaa36794bce05bd72b5f67da2fbf"
+dependencies = [
+ "bytes",
+ "log",
+ "thiserror",
+]
+
+[[package]]
 name = "lazy_static"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1135,9 +1154,9 @@ dependencies = [
 
 [[package]]
 name = "log"
-version = "0.4.26"
+version = "0.4.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "30bde2b3dc3671ae49d8e2e9f044c7c005836e7a023ee57cffa25ab82764bb9e"
+checksum = "13dc2df351e3202783a1fe0d44375f7295ffb4049267b0f3018346dc122a1d94"
 
 [[package]]
 name = "matchit"

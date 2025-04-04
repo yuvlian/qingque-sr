@@ -31,7 +31,7 @@ pub async fn get(
         asset_bundle_url: gateway_hotfix.asset_bundle_url,
         ex_resource_url: gateway_hotfix.ex_resource_url,
         ifix_url: gateway_hotfix.ifix_url,
-        use_tcp: true,
+        use_tcp: false,
         ip: state.env.game_sv_host.clone(),
         port: state.env.game_sv_port as u32,
         ifix_version: "0".to_string(),

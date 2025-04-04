@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = [ "db","sdk-sv", "utils"]
+members = [ "db", "game-sv", "sdk-sv", "utils"]
 exclude = ["sr-proto"]
 
 [workspace.package]
@@ -14,9 +14,11 @@ repository = "https://github.com/yuvlian/stalel"
 ansi_term = "0.12.1"
 axum = { version = "0.8.1", features = ["macros"] } # debug_handler is a cool attribute
 bcrypt = "0.17.0"
+bytes = "1.10.1"
 chrono = "0.4.40"
 db = { path = "db/" }
 envie = "0.2.1"
+kcp-zs = { git = "https://github.com/yuvlian/kcp-zs.git" }
 paste = "1.0.15"
 prost = "0.13.4"
 rand = "0.9.0"
@@ -27,7 +29,8 @@ serde = { version = "1.0.219", features = ["derive"] }
 serde_json = "1.0.140"
 sqlx = { version = "0.8.3", features = ["runtime-tokio", "sqlite", "derive"] }
 sr-proto = { path = "sr-proto/" }
-tokio = { version = "1.44.1", features = ["fs", "io-util", "macros", "net", "rt-multi-thread", "bytes"] }
+thiserror = "2.0.12"
+tokio = { version = "1.44.1", features = ["fs", "io-util", "macros", "net", "rt-multi-thread", "bytes", "sync"] }
 tracing = "0.1.41"
 tracing-subscriber = "0.3.19"
 utils = { path = "utils/" }
