@@ -7,6 +7,9 @@ license.workspace = true
 repository.workspace = true
 
 [dependencies]
+byteorder.workspace = true
 bytes.workspace = true
-tokio.workspace = true
 kcp-zs.workspace = true
+sr-proto.workspace = true
+thiserror.workspace = true
+tokio.workspace = true

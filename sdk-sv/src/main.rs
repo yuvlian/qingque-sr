@@ -32,6 +32,7 @@ async fn main() {
     let app = Router::new()
         .merge(app::router::auth_router())
         .merge(app::router::dispatch_router())
+        // you can comment the line below to save resource
         .merge(app::router::misc_router())
         .with_state(state.clone());
 

@@ -3,7 +3,7 @@ use crate::app::request::QueryGatewayReq;
 use axum::extract::{Query, State};
 use axum::http::StatusCode;
 use db::sdk::hotfix::GatewayHotfix;
-use sr_proto::{GateServer, Message};
+use sr_proto::{GateServer, prost::Message};
 
 #[inline(always)]
 fn gateway_error(e: String) -> (StatusCode, String) {

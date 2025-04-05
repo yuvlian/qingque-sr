@@ -625,8 +625,11 @@ dependencies = [
 name = "game-sv"
 version = "0.1.0"
 dependencies = [
+ "byteorder",
  "bytes",
  "kcp-zs",
+ "sr-proto",
+ "thiserror",
  "tokio",
 ]
 

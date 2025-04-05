@@ -15,7 +15,7 @@ pub async fn post(
 ) -> Json<IRsp<RiskyApiCheckRsp>> {
     if req.action_type != "login" {
         return Json(IRsp::<RiskyApiCheckRsp>::ok(RiskyApiCheckRsp {
-            id: "9e54a9727a014ba4afd2cb2bb4347fe3".to_string(),
+            id: "".to_string(),
             action: "ACTION_NONE".to_string(),
             ..Default::default()
         }));
@@ -50,7 +50,7 @@ pub async fn post(
 
     match User::insert_device_id_by_username(&state.pool, username, &device_id).await {
         Ok(_) => Json(IRsp::<RiskyApiCheckRsp>::ok(RiskyApiCheckRsp {
-            id: "9e54a9727a014ba4afd2cb2bb4347fe3".to_string(),
+            id: "".to_string(),
             action: "ACTION_NONE".to_string(),
             ..Default::default()
         })),

@@ -1,7 +1,8 @@
+use rand::{self, Rng};
 use regex::Regex;
 use sqlx::{FromRow, SqlitePool};
 use std::sync::LazyLock;
-use utils::cur_date_full_precision;
+use utils::{cur_date_full_precision, cur_timestamp_ms};
 
 static VALID_USERNAME: LazyLock<Regex> = LazyLock::new(|| Regex::new("^[A-Za-z0-9_]+$").unwrap());
 
@@ -19,9 +20,8 @@ pub struct User {
 
 impl User {
     pub fn generate_token() -> String {
-        use rand::Rng;
         let mut rng = rand::rng();
-        format!("{:X}", rng.random::<u32>())
+        format!("{:X}{:X}", rng.random::<u16>(), cur_timestamp_ms())
     }
 
     pub async fn give_token(pool: &SqlitePool, username: &str) -> Result<String, sqlx::Error> {

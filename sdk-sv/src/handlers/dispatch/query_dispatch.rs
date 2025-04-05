@@ -1,7 +1,7 @@
 use crate::ArcState;
 use crate::app::request::QueryDispatchReq;
 use axum::extract::{Query, State};
-use sr_proto::{Dispatch, Message, RegionInfo};
+use sr_proto::{Dispatch, RegionInfo, prost::Message};
 
 pub async fn get(State(state): State<ArcState>, Query(_query): Query<QueryDispatchReq>) -> String {
     let rsp = Dispatch {

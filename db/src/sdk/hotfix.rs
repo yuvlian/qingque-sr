@@ -1,5 +1,5 @@
 use sqlx::{FromRow, SqlitePool};
-use sr_proto::{GateServer, Message};
+use sr_proto::{GateServer, prost::Message};
 
 #[derive(FromRow, Debug, Default)]
 pub struct GatewayHotfix {
