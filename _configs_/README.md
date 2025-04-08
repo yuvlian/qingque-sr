@@ -10,9 +10,9 @@ NOTE: your avatar multipath here must match with the multipath you're using for 
 ## `config.json`
 configuration for battle, obtainable from https://srtools.pages.dev/
 
-you can use `cfg-manager.exe` to manage config.json easily
+you can use `srtools-manager` to manage config.json easily
 
-if you're building from source do: `cargo run --release cfg-manager`
+if you're building from source do: `cargo run --release srtools-manager`
 
 ## `hotfix.json`
 configuration for hotfix links.
