@@ -49,7 +49,7 @@ def request(flow: http.HTTPFlow) -> None:
 
 ### Installation Options
 
-#### Option 1: Prebuilt
+#### Option 1: Prebuilt (Linux/Windows)
 
 1. Download the prebuilt version that matches your SR version from [here](https://github.com/yuvlian/qingque-sr/releases).
 
