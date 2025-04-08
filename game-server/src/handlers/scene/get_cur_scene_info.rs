@@ -1,8 +1,8 @@
-use cfg_utility::scene::SceneConfig;
+use configs::scene::SceneConfig;
 use sr_proto::GetCurSceneInfoScRsp;
 
-pub fn handle(_: &[u8]) -> GetCurSceneInfoScRsp {
-    let scene_cfg = SceneConfig::from_file("_cfg/scene.toml");
+pub async fn handle(_: &[u8]) -> GetCurSceneInfoScRsp {
+    let scene_cfg = SceneConfig::from_file("_configs_/scene.toml").await;
 
     GetCurSceneInfoScRsp {
         retcode: 0,

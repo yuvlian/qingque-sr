@@ -1,0 +1,4 @@
+[submodule "sr-proto"]
+	path = sr-proto
+	url = https://github.com/yuvlian/sr-proto
+	branch = main

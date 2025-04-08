@@ -1,8 +1,8 @@
 use serde::Deserialize;
 use sr_proto::{
-    AmountInfo, Avatar, AvatarType, Gender, LineupAvatar, LineupInfo, MultiPathAvatarType,
+    SpBarInfo, Avatar, AvatarType, Gender, LineupAvatar, LineupInfo, MultiPathAvatarType,
 };
-use std::fs;
+use tokio::fs;
 
 type MarchPath = MultiPathAvatarType;
 type TrailblazerPath = MultiPathAvatarType;
@@ -29,12 +29,8 @@ impl Default for AvatarConfig {
 }
 
 impl AvatarConfig {
-    pub fn from_file(file_path: &str) -> Self {
-        let avatar_toml_data = fs::read_to_string(file_path);
-        match avatar_toml_data {
-            Ok(data) => toml::from_str(&data).unwrap_or_default(),
-            Err(_) => Self::default(),
-        }
+    pub async fn from_file(file_path: &str) -> Self {
+        toml::from_str(&fs::read_to_string(file_path).await.unwrap_or_default()).unwrap_or_default()
     }
 
     pub fn get_trailblazer_gender(&self) -> Gender {
@@ -53,11 +49,11 @@ impl AvatarConfig {
             .map(|(i, id)| LineupAvatar {
                 id: *id,
                 hp: 10000,
-                slot_type: i as u32,
+                slot: i as u32,
                 satiety: 0,
-                sp: Some(AmountInfo {
-                    cur_amount: 0,
-                    max_amount: 10000,
+                sp_bar: Some(SpBarInfo {
+                    cur_sp: 0,
+                    max_sp: 10000,
                 }),
                 avatar_type: AvatarType::AvatarFormalType.into(),
             })

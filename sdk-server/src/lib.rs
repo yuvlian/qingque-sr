@@ -9,13 +9,7 @@ use router::{auth_router, dispatch_router};
 use tokio::net::TcpListener;
 use tracing::info;
 
-#[tokio::main(flavor = "current_thread")]
-async fn main() {
-    #[cfg(target_os = "windows")]
-    ansi_term::enable_ansi_support().unwrap_or(());
-
-    tracing_subscriber::fmt().init();
-
+pub async fn start_sdk_server() {
     let addr = {
         let cfg = ServerConfig::from_file("_configs_/server.toml").await;
         format!("{}:{}", cfg.sdk_server_host, cfg.sdk_server_port)

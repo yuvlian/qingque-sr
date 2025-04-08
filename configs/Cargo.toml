@@ -1,5 +1,5 @@
 [package]
-name = "cfg-utility"
+name = "configs"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
@@ -13,14 +13,5 @@ readme.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 toml.workspace = true
+tokio.workspace = true
 sr-proto.workspace = true
-eframe.workspace = true
-egui.workspace = true
-
-[[bin]]
-name = "cfg-manager"
-path = "src/main.rs"
-
-[lib]
-name = "cfg_utility"
-path = "src/lib.rs"

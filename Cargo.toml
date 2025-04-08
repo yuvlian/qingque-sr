@@ -1,41 +1,44 @@
 [workspace]
 resolver = "3"
-members = ["game-server", "sdk-server", "cfg-utility"]
+members = ["game-server", "sdk-server", "configs", "srtools-manager", "uni-server"]
+exclude = ["sr-proto"]
 
 [workspace.package]
 # name = "qingque-sr"
-version = "3.1.0"
+version = "3.2.0" # this is based on hsr version
 edition = "2024"
 authors = ["Yulian <yuvlian@naver.com>"]
 license = "MIT"
-description = "SR calyx simulator"
-homepage = "https://github.com/f2pqingque/sr"
-repository = "https://github.com/f2pqingque/sr"
+description = "hsr ps"
+repository = "https://github.com/yuvlian/qingque-sr"
+homepage = "https://github.com/yuvlian/qingque-sr"
 readme = "README.md"
 
 [workspace.dependencies]
-cfg-utility = { path = "cfg-utility/" }
-# from gh repo
-sr-proto = { git = "https://github.com/f2pqingque/sr-proto", rev = "fcaaccf" }
-# # from local repo
-# sr-proto = { path = "sr-proto/" }
-prost = "0.13.4"
-prost-types = "0.13.4"
-prost-build = "0.13.4"
-serde = { version = "1.0.217", features = ["derive"] }
-serde_json = "1.0.138"
-axum = "0.8.1"
-axum-server = "0.7.1"
-tokio = { version = "1.43.0", features = ["full"] }
+configs = { path = "configs/" }
+sr-proto = { path = "sr-proto/" }
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.140"
+axum = "0.8.3"
+tokio = { version = "1.44.2", features = [
+    "rt",
+    "io-util",
+    "io-std",
+    "net",
+    "macros",
+    "fs"
+] }
 tracing = "0.1.41"
 tracing-subscriber = "0.3.19"
 toml = "0.8.20"
 rbase64 = "2.0.3"
-bytes = "1.10.0"
+bytes = "1.10.1"
 paste = "1.0.15"
-eframe = "0.31.0"
-egui = "0.31.0"
 ansi_term = "0.12.1"
+game-server = { path = "game-server/" }
+sdk-server = { path = "sdk-server/" }
+egui = "0.31.1"
+eframe = "0.31.1"
 
 [profile.release]
 strip = true

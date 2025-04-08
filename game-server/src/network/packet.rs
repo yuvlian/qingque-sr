@@ -1,4 +1,4 @@
-use sr_proto::Message;
+use sr_proto::prost::Message;
 
 const HEAD_MAGIC: u32 = 0x9D74C714;
 const TAIL_MAGIC: u32 = 0xD7A152C8;

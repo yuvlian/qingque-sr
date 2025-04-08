@@ -1,0 +1,17 @@
+[package]
+name = "uni-server"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description.workspace = true
+repository.workspace = true
+homepage.workspace = true
+readme.workspace = true
+
+[dependencies]
+ansi_term.workspace = true
+game-server.workspace = true
+sdk-server.workspace = true
+tokio.workspace = true
+tracing-subscriber.workspace = true

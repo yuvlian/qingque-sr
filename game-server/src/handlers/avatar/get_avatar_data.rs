@@ -1,8 +1,8 @@
-use cfg_utility::avatar::AvatarConfig;
+use configs::avatar::AvatarConfig;
 use sr_proto::GetAvatarDataScRsp;
 
-pub fn handle(_: &[u8]) -> GetAvatarDataScRsp {
-    let cfg = AvatarConfig::from_file("_cfg/avatar.toml");
+pub async fn handle(_: &[u8]) -> GetAvatarDataScRsp {
+    let cfg = AvatarConfig::from_file("_configs_/avatar.toml").await;
 
     GetAvatarDataScRsp {
         is_get_all: true,

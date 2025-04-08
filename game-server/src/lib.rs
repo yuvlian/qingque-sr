@@ -8,13 +8,7 @@ mod utils;
 
 use network::conn;
 
-#[tokio::main(flavor = "current_thread")]
-async fn main() -> tokio::io::Result<()> {
-    #[cfg(target_os = "windows")]
-    ansi_term::enable_ansi_support().expect("failed to enable ansi");
-
-    tracing_subscriber::fmt().init();
-
+pub async fn start_game_server() -> tokio::io::Result<()> {
     let addr = {
         let cfg = ServerConfig::from_file("_configs_/server.toml").await;
         format!("{}:{}", cfg.game_server_host, cfg.game_server_port)

@@ -1,9 +1,9 @@
-use cfg_utility::avatar::AvatarConfig;
+use configs::avatar::AvatarConfig;
 use sr_proto::GetMultiPathAvatarInfoScRsp;
 use std::collections::HashMap;
 
-pub fn handle(_: &[u8]) -> GetMultiPathAvatarInfoScRsp {
-    let cfg = AvatarConfig::from_file("_cfg/avatar.toml");
+pub async fn handle(_: &[u8]) -> GetMultiPathAvatarInfoScRsp {
+    let cfg = AvatarConfig::from_file("_configs_/avatar.toml").await;
 
     let gender = cfg.get_trailblazer_gender();
     let (march, trailblazer) = cfg.get_multipath_data(gender);

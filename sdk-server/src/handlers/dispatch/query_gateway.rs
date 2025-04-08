@@ -1,8 +1,8 @@
 use axum::extract::Query;
-use cfg_utility::hotfix::GameVersion;
-use cfg_utility::server::ServerConfig;
-use sr_proto::Gateserver;
-use sr_proto::Message;
+use configs::hotfix::GameVersion;
+use configs::server::ServerConfig;
+use sr_proto::GateServer;
+use sr_proto::prost::Message;
 
 use serde::Deserialize;
 
@@ -12,38 +12,31 @@ pub struct Gateway {
 }
 
 pub async fn handle(Query(q): Query<Gateway>) -> String {
-    let server_config = ServerConfig::from_file("_cfg/server.toml");
-    let game_version = GameVersion::from_file("_cfg/hotfix.json");
+    let server_config = ServerConfig::from_file("_configs_/server.toml").await;
+    let game_version = GameVersion::from_file("_configs_/hotfix.json").await;
     let hotfix = game_version.get_hotfix_by_version(&q.version);
 
     rbase64::encode(
-        &Gateserver {
+        &GateServer {
             // hotfix
             lua_url: hotfix.lua_url,
-            lua_version: hotfix.lua_version,
             ex_resource_url: hotfix.ex_resource_url,
             asset_bundle_url: hotfix.asset_bundle_url,
+            mdk_res_version: hotfix.lua_version,
+            ifix_version: String::from("0"),
 
             // we're not using kcp.
             use_tcp: true,
             ip: server_config.game_server_host,
             port: server_config.game_server_port,
 
-            // let's just bruteforce the bool fields.
-            unk1: true,
-            unk2: true,
-            unk3: true,
-            unk5: true,
-            unk6: true,
-            unk7: true,
-            unk8: true,
-            unk9: true,
-            use_design_data: true,
-            unk11: true,
-            unk12: true,
-            unk13: true,
-            unk14: true,
-            unk15: true,
+            // misc
+            enable_version_update: true,
+            enable_design_data_version_update: true,
+            enable_save_replay_file: true,
+            enable_upload_battle_log: true,
+            enable_watermark: true,
+            event_tracking_open: true,
             ..Default::default()
         }
         .encode_to_vec(),

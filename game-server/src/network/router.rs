@@ -6,12 +6,12 @@ use sr_proto::cmd::*;
 macro_rules! handle {
     ($($handler:ident);* $(;)?) => {
         paste! {
-            pub fn ping_pong(cmd: u16, body: &[u8]) -> Vec<u8> {
+            pub async fn ping_pong(cmd: u16, body: &[u8]) -> Vec<u8> {
                 match cmd {
                     $(
                         [<$handler:upper _CS_REQ>] => packet::encode_packet(
                             [<$handler:upper _SC_RSP>],
-                            $handler::handle(body)
+                            $handler::handle(body).await
                         ),
                     )*
                     _ => Vec::with_capacity(0),

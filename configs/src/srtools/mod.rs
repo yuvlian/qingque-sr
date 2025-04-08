@@ -1,10 +1,10 @@
 use serde::Deserialize;
 use sr_proto::{
-    AmountInfo, AvatarSkillTree, AvatarType, BattleAvatar, BattleBuff, BattleEquipment,
-    BattleRelic, RelicAffix, SceneMonsterData, SceneMonsterWave, SceneMonsterWaveParam,
+    SpBarInfo, AvatarSkillTree, AvatarType, BattleAvatar, BattleBuff, BattleEquipment,
+    BattleRelic, RelicAffix, SceneMonster, SceneMonsterWave, SceneMonsterWaveParam,
 };
 use std::collections::HashMap;
-use std::fs;
+use tokio::fs;
 
 macro_rules! trace {
     ($timed_id:expr; $($point:literal $level:literal);* $(;)?) => {{
@@ -32,12 +32,9 @@ impl Default for SrToolsConfig {
 }
 
 impl SrToolsConfig {
-    pub fn from_file(path: &str) -> Self {
-        let content = fs::read_to_string(path);
-        match content {
-            Ok(data) => serde_json::from_str(&data).unwrap_or_default(),
-            Err(_) => Self::default(),
-        }
+    pub async fn from_file(file_path: &str) -> Self {
+        serde_json::from_str(&fs::read_to_string(file_path).await.unwrap_or_default())
+            .unwrap_or_default()
     }
 
     pub fn get_battle_id(&self) -> u32 {
@@ -87,12 +84,12 @@ impl SrToolsConfig {
             .map(|monster_ids| SceneMonsterWave {
                 monster_list: monster_ids
                     .iter()
-                    .map(|&monster_id| SceneMonsterData {
+                    .map(|&monster_id| SceneMonster {
                         monster_id,
                         ..Default::default()
                     })
                     .collect(),
-                wave_param: Some(SceneMonsterWaveParam {
+                monster_param: Some(SceneMonsterWaveParam {
                     level: self.battle_config.monster_level,
                     ..Default::default()
                 }),
@@ -107,7 +104,7 @@ impl SrToolsConfig {
             match avatar_id {
                 // Remembrance characters
                 // Fucking annoying...
-                8007 | 8008 | 1402 => {
+                8007 | 8008 | 1402 | 1407 => {
                     trace![
                         timed_id;
                         1 6;
@@ -177,8 +174,10 @@ impl SrToolsConfig {
             type RelicLv = u32;
             type RelicMAffix = u32;
             type RelicTotalSAffix = u32;
-            // (SAffixId, SAffixCnt, SAffixStep)
-            type RelicSAffix = (u32, u32, u32);
+            type SAffixId = u32;
+            type SAffixCnt = u32;
+            type SAffixStep = u32;
+            type RelicSAffix = (SAffixId, SAffixCnt, SAffixStep);
 
             fn parse_relic_string(
                 relic_str: &str,
@@ -286,10 +285,10 @@ impl SrToolsConfig {
                 .collect()
         }
 
-        fn create_energy(sp: u32) -> AmountInfo {
-            AmountInfo {
-                cur_amount: sp * 100,
-                max_amount: 10000,
+        fn create_energy(sp: u32) -> SpBarInfo {
+            SpBarInfo {
+                cur_sp: sp * 100,
+                max_sp: 10000,
             }
         }
 
@@ -310,7 +309,7 @@ impl SrToolsConfig {
                     av.lightcone.promotion,
                 ),
                 hp: av.hp * 100,
-                sp: Some(create_energy(av.sp)),
+                sp_bar: Some(create_energy(av.sp)),
                 promotion: av.promotion,
                 // Clone to avoid borrowing issues
                 relic_list: create_relics(av.relics.clone()),

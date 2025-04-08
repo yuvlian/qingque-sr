@@ -1,7 +1,7 @@
 use crate::utils::time;
 use sr_proto::{PlayerBasicInfo, PlayerLoginScRsp};
 
-pub fn handle(_: &[u8]) -> PlayerLoginScRsp {
+pub async fn handle(_: &[u8]) -> PlayerLoginScRsp {
     PlayerLoginScRsp {
         basic_info: Some(PlayerBasicInfo {
             nickname: String::from("yulian"),

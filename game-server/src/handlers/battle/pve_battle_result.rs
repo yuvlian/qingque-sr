@@ -1,7 +1,8 @@
-use sr_proto::{PveBattleResultCsReq, PveBattleResultScRsp, decode};
+use sr_proto::{PveBattleResultCsReq, PveBattleResultScRsp};
+use sr_proto::prost::Message;
 
-pub fn handle(req: &[u8]) -> PveBattleResultScRsp {
-    let req: PveBattleResultCsReq = decode(req);
+pub async fn handle(req: &[u8]) -> PveBattleResultScRsp {
+    let req = PveBattleResultCsReq::decode(req).unwrap_or_default();
 
     PveBattleResultScRsp {
         retcode: 0,

@@ -1,11 +1,12 @@
-use sr_proto::{GetSceneMapInfoCsReq, GetSceneMapInfoScRsp, SceneMapInfo, decode};
+use sr_proto::{GetSceneMapInfoCsReq, GetSceneMapInfoScRsp, SceneMapInfo};
+use sr_proto::prost::Message;
 
-pub fn handle(req: &[u8]) -> GetSceneMapInfoScRsp {
-    let req: GetSceneMapInfoCsReq = decode(req);
+pub async fn handle(req: &[u8]) -> GetSceneMapInfoScRsp {
+    let req = GetSceneMapInfoCsReq::decode(req).unwrap_or_default();
 
     GetSceneMapInfoScRsp {
-        map_info_list: req
-            .entry_id
+        scene_map_info: req
+            .entry_id_list
             .iter()
             .map(|i| SceneMapInfo {
                 entry_id: *i,

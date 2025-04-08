@@ -1,9 +1,9 @@
 use serde::Deserialize;
 use sr_proto::{
-    AvatarType, MotionInfo, SceneActorInfo, SceneEntityInfo, SceneGroupInfo, SceneInfo,
+    AvatarType, MotionInfo, SceneActorInfo, SceneEntityInfo, SceneEntityGroupInfo, SceneInfo,
     ScenePropInfo, Vector,
 };
-use std::fs;
+use tokio::fs;
 
 #[derive(Deserialize)]
 pub struct SceneConfig {
@@ -37,12 +37,8 @@ impl Default for SceneConfig {
 }
 
 impl SceneConfig {
-    pub fn from_file(file_path: &str) -> Self {
-        let scene_toml_data = fs::read_to_string(file_path);
-        match scene_toml_data {
-            Ok(data) => toml::from_str(&data).unwrap_or_default(),
-            Err(_) => Self::default(),
-        }
+    pub async fn from_file(file_path: &str) -> Self {
+        toml::from_str(&fs::read_to_string(file_path).await.unwrap_or_default()).unwrap_or_default()
     }
 
     pub fn get_scene_info(&self) -> SceneInfo {
@@ -51,8 +47,8 @@ impl SceneConfig {
             floor_id: (self.plane_id * 1000) + 1,
             entry_id: (self.plane_id * 100) + 1,
             game_mode_type: 2,
-            scene_group_list: vec![
-                SceneGroupInfo {
+            entity_group_list: vec![
+                SceneEntityGroupInfo {
                     state: 1,
                     group_id: 0,
                     entity_list: vec![SceneEntityInfo {
@@ -75,8 +71,9 @@ impl SceneConfig {
                         }),
                         ..Default::default()
                     }],
+                    ..Default::default()
                 },
-                SceneGroupInfo {
+                SceneEntityGroupInfo {
                     state: 1,
                     group_id: self.calyx.group_id,
                     entity_list: vec![SceneEntityInfo {
@@ -98,6 +95,7 @@ impl SceneConfig {
                         }),
                         ..Default::default()
                     }],
+                    ..Default::default()
                 },
             ],
             ..Default::default()

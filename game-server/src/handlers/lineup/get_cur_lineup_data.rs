@@ -1,8 +1,8 @@
-use cfg_utility::avatar::AvatarConfig;
+use configs::avatar::AvatarConfig;
 use sr_proto::GetCurLineupDataScRsp;
 
-pub fn handle(_: &[u8]) -> GetCurLineupDataScRsp {
-    let cfg = AvatarConfig::from_file("_cfg/avatar.toml");
+pub async fn handle(_: &[u8]) -> GetCurLineupDataScRsp {
+    let cfg = AvatarConfig::from_file("_configs_/avatar.toml").await;
 
     GetCurLineupDataScRsp {
         retcode: 0,

@@ -1,6 +1,6 @@
 use serde::Deserialize;
 use std::collections::HashMap;
-use std::fs;
+use tokio::fs;
 
 #[derive(Deserialize, Clone, Default)]
 pub struct HotfixConfig {
@@ -11,23 +11,17 @@ pub struct HotfixConfig {
 }
 
 #[derive(Deserialize, Default)]
-pub struct GameVersion {
-    #[serde(flatten)]
-    pub versions: HashMap<String, HotfixConfig>,
-}
+pub struct GameVersion(pub HashMap<String, HotfixConfig>);
 
 impl GameVersion {
-    pub fn from_file(file_path: &str) -> Self {
-        let hotfix_json_data = fs::read_to_string(file_path);
-        match hotfix_json_data {
-            Ok(data) => serde_json::from_str(&data).unwrap_or_default(),
-            Err(_) => Self::default(),
-        }
+    pub async fn from_file(file_path: &str) -> Self {
+        serde_json::from_str(&fs::read_to_string(file_path).await.unwrap_or_default())
+            .unwrap_or_default()
     }
 
     pub fn get_hotfix_by_version(&self, version: &Option<String>) -> HotfixConfig {
         match version {
-            Some(v) => self.versions.get(v).cloned().unwrap_or_default(),
+            Some(v) => self.0.get(v).cloned().unwrap_or_default(),
             None => HotfixConfig::default(),
         }
     }

@@ -35,7 +35,7 @@ pub async fn handle_connection(mut socket: TcpStream) -> tokio::io::Result<()> {
 
                 info!("Received: {}", cmd);
 
-                let response = ping_pong(cmd, body);
+                let response = ping_pong(cmd, body).await;
 
                 if !response.is_empty() {
                     info!("Handled: {}", cmd);

@@ -13,8 +13,16 @@ readme.workspace = true
 bytes.workspace = true
 tokio.workspace = true
 sr-proto.workspace = true
-cfg-utility.workspace = true
+configs.workspace = true
 tracing.workspace = true
 tracing-subscriber.workspace = true
 paste.workspace = true
 ansi_term.workspace = true
+
+[[bin]]
+name = "game-server"
+path = "src/main.rs"
+
+[lib]
+name = "game_server"
+path = "src/lib.rs"

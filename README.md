@@ -1,43 +1,69 @@
-# QingqueSR - 3.0.0
+# qingque-sr
 
-Ever wanted a private server that is quick to update when the game updates, but doesn't sacrifice too much features?
+A minimal private server for simulating Memory of Chaos through Calyx.
 
-A server that's modular enough and feature complete-ish for battle simulation?
+## Project Overview
+### License
+MIT
 
-QingqueSR got you covered.
+### Crates
+- **configs:** Utility for parsing config files
+- **game-server, sdk-server, sr-proto:** Should be obvious
+- **srtools-manager:** An app to help with managing config.jsons(s) from https://srtools.pages.dev/
+- **uni-server:** game-server & sdk-server as one binary
 
 ## Tutorial
 
-This tutorial assumes you have basic knowledge of terminal usage and traffic redirection via a proxy.
+This tutorial assumes you have basic knowledge of a terminal and proxies.
 
 ### Prerequisites
 
 #### Proxy Setup (For Windows)
-- Download the proxy tool from [here](https://git.xeondev.com/YYHEggEgg/FireflySR.Tool.Proxy/releases/download/v2.0.0/FireflySR.Tool.Proxy_win-x64.zip).
+- Download the `FireflySR.Tool.Proxy` from [here](https://git.xeondev.com/YYHEggEgg/FireflySR.Tool.Proxy/releases/download/v2.0.0/FireflySR.Tool.Proxy_win-x64.zip). No need to configure anything, you can just extract and run. When asked about root certificate, let it install.
 
 - If you experience internet connectivity issues after playing, manually disable the proxy in your Windows settings.
+
+#### Proxy Setup (For Linux)
+- Install `mitmproxy` and their certificate. Set HTTP_PROXY and HTTPS_PROXY env var of the game to the `mitmproxy` server. Run it with this script:
+
+```python
+from mitmproxy import http
+
+def request(flow: http.HTTPFlow) -> None:
+    target_hosts = [
+        ".hoyoverse.com",
+        ".mihoyo.com",
+        ".bhsr.com",
+        ".starrails.com",
+        ".mob.com",
+        ".hyg.com"
+    ]
+
+    if any(flow.request.pretty_host.endswith(host) for host in target_hosts):
+        flow.request.scheme = "http"
+        flow.request.host = "127.0.0.1"
+        flow.request.port = 21000
+```
 
 ---
 
 ### Installation Options
 
-#### Option 1: Prebuilt (Windows Only)
+#### Option 1: Prebuilt
 
-1. Download the prebuilt version that matches your SR version from [here](https://github.com/f2pqingque/sr/releases).
+1. Download the prebuilt version that matches your SR version from [here](https://github.com/yuvlian/qingque-sr/releases).
 
 2. Extract the ZIP file.
 
-3. Edit configuration files in the `_cfg` folder as needed (refer to the README in that folder). The server will fallback to default config when a file in `_cfg` is invalid or missing.
+3. Edit configuration files in the `_configs_` folder as needed (refer to the README in that folder). The server will fallback to default config when a file in `_configs_` is invalid or missing.
 
-4. Run the following executables:
-   - `game-server.exe`
-   - `sdk-server.exe`
+4. Run `uni-server`
 
-5. Make sure game traffic is being redirected and have fun.
+5. Make sure game traffic is being redirected by your proxy, launch the game and finally, have fun.
 
-- If you want to see the logs when the server panics, run the binary through cmd.
+- If you want to see the logs when the server panics, run the binary through terminal.
 
-- You can use `cfg-manager.exe` to easily manage config.json(s).
+- You can use `srtools-manager` to easily manage the config.json(s) from https://srtools.pages.dev/
 
 #### Option 2: Build from Source
 
@@ -47,16 +73,11 @@ This tutorial assumes you have basic knowledge of terminal usage and traffic red
 
 2. Clone the repository:
    ```bash
-   git clone https://github.com/f2pqingque/sr.git
+   git clone --recursive https://github.com/yuvlian/qingque-sr
    ```
-3. cd into `sr`
+3. cd into `qingque-sr`
 
-4. If you want to use your own protobufs:
-   - Clone `https://github.com/f2pqingque/sr-proto.git` too
-   - Change dependency source in root Cargo.toml
-   - Place your proto file in the `sr-proto` folder, and adjust the `build.rs` file accordingly.
-
-5. Edit configuration files in the `_cfg` folder as needed (refer to the README in that folder).
+4. Edit configuration files in the `_configs_` folder as needed (refer to the README in that folder). You can do this after compiling, doesn't matter.
 
 6. Build and run the server:
    ```bash
@@ -65,25 +86,14 @@ This tutorial assumes you have basic knowledge of terminal usage and traffic red
    ```bash
    cargo run --release --bin sdk-server
    ```
-
-7. Build and run config.json manager (optional):
+   Or if you prefer a single binary,
    ```bash
-   cargo run --release --bin cfg-manager
+   cargo run --release --bin uni-server
    ```
 
-8. Share prebuilt (optional):
+7. Build and run SRTools Manager (optional):
    ```bash
-   rustc pub.rs
-   ./pub.exe [VERSION]
+   cargo run --release --bin srtools-manager
    ```
 
----
-
-## Credits
-
-- **QingqueSR Developer**: Yulian
-- **QingqueSR Maintainer**: Naruse
-- **SRTools Author**: Amizing25
-- **Protobufs**: Amizing25 & Lukopa
-
----
+8. Make sure game traffic is being redirected by your proxy, launch the game and finally, have fun.

@@ -1,8 +1,9 @@
 use crate::utils::time;
-use sr_proto::{PlayerHeartBeatCsReq, PlayerHeartBeatScRsp, decode};
+use sr_proto::{PlayerHeartBeatCsReq, PlayerHeartBeatScRsp};
+use sr_proto::prost::Message;
 
-pub fn handle(req: &[u8]) -> PlayerHeartBeatScRsp {
-    let req: PlayerHeartBeatCsReq = decode(req);
+pub async fn handle(req: &[u8]) -> PlayerHeartBeatScRsp {
+    let req = PlayerHeartBeatCsReq::decode(req).unwrap_or_default();
 
     PlayerHeartBeatScRsp {
         download_data: None,
