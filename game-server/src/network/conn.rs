@@ -4,7 +4,8 @@ use tokio::{
     net::TcpStream,
 };
 
-use crate::network::packet::{TAIL_MAGIC_BYTES, decode_bytes};
+use crate::handlers::check_dummy;
+use crate::network::packet::{TAIL_MAGIC_BYTES, decode_bytes, encode_packet_raw};
 use crate::network::router::ping_pong;
 use tracing::info;
 
@@ -35,7 +36,10 @@ pub async fn handle_connection(mut socket: TcpStream) -> tokio::io::Result<()> {
 
                 info!("Received: {}", cmd);
 
-                let response = ping_pong(cmd, body).await;
+                let response = match check_dummy(cmd) {
+                    Some(dummy_cmd) => encode_packet_raw(dummy_cmd, Vec::new()),
+                    _ => ping_pong(cmd, body).await,
+                };
 
                 if !response.is_empty() {
                     info!("Handled: {}", cmd);

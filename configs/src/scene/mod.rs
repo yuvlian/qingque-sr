@@ -1,6 +1,6 @@
 use serde::Deserialize;
 use sr_proto::{
-    AvatarType, MotionInfo, SceneActorInfo, SceneEntityInfo, SceneEntityGroupInfo, SceneInfo,
+    AvatarType, MotionInfo, SceneActorInfo, SceneEntityGroupInfo, SceneEntityInfo, SceneInfo,
     ScenePropInfo, Vector,
 };
 use tokio::fs;

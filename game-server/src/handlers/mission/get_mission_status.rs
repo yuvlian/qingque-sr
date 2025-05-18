@@ -1,5 +1,5 @@
-use sr_proto::{GetMissionStatusCsReq, GetMissionStatusScRsp, Mission, MissionStatus};
 use sr_proto::prost::Message;
+use sr_proto::{GetMissionStatusCsReq, GetMissionStatusScRsp, Mission, MissionStatus};
 
 pub async fn handle(req: &[u8]) -> GetMissionStatusScRsp {
     let req = GetMissionStatusCsReq::decode(req).unwrap_or_default();

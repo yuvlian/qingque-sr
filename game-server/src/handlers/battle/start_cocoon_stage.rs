@@ -1,7 +1,7 @@
 use crate::utils::time;
 use configs::srtools::SrToolsConfig;
-use sr_proto::{SceneBattleInfo, StartCocoonStageCsReq, StartCocoonStageScRsp};
 use sr_proto::prost::Message;
+use sr_proto::{SceneBattleInfo, StartCocoonStageCsReq, StartCocoonStageScRsp};
 
 pub async fn handle(req: &[u8]) -> StartCocoonStageScRsp {
     let cfg = SrToolsConfig::from_file("_configs_/config.json").await;

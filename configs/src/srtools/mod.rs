@@ -1,7 +1,7 @@
 use serde::Deserialize;
 use sr_proto::{
-    SpBarInfo, AvatarSkillTree, AvatarType, BattleAvatar, BattleBuff, BattleEquipment,
-    BattleRelic, RelicAffix, SceneMonster, SceneMonsterWave, SceneMonsterWaveParam,
+    AvatarSkillTree, AvatarType, BattleAvatar, BattleBuff, BattleEquipment, BattleRelic,
+    RelicAffix, SceneMonster, SceneMonsterWave, SceneMonsterWaveParam, SpBarInfo,
 };
 use std::collections::HashMap;
 use tokio::fs;

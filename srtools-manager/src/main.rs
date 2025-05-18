@@ -66,12 +66,12 @@ impl eframe::App for ConfigManager {
                         .hint_text("search for config")
                         .id_source("search_box"),
                 );
-                
+
                 if search_response.gained_focus() {
                     self.files = get_files_in_srtools();
                     self.show_config_list = true;
                 }
-                
+
                 if search_response.clicked() {
                     self.show_config_list = true;
                 }

@@ -57,8 +57,7 @@ pub fn decode_bytes(buffer: &[u8]) -> (u16, &[u8]) {
     (cmd, body_data)
 }
 
-pub fn encode_packet<T: Message>(cmd_id: u16, data: T) -> Vec<u8> {
-    let data = data.encode_to_vec();
+pub fn encode_packet_raw(cmd_id: u16, data: Vec<u8>) -> Vec<u8> {
     let packet_len = 12 + data.len() + 4;
     let mut buffer = Vec::with_capacity(packet_len);
 
@@ -70,4 +69,9 @@ pub fn encode_packet<T: Message>(cmd_id: u16, data: T) -> Vec<u8> {
     buffer.extend_from_slice(&TAIL_MAGIC_BYTES);
 
     buffer
+}
+
+pub fn encode_packet<T: Message>(cmd_id: u16, data: T) -> Vec<u8> {
+    let data = data.encode_to_vec();
+    encode_packet_raw(cmd_id, data)
 }

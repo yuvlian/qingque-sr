@@ -1,6 +1,6 @@
 use serde::Deserialize;
 use sr_proto::{
-    SpBarInfo, Avatar, AvatarType, Gender, LineupAvatar, LineupInfo, MultiPathAvatarType,
+    Avatar, AvatarType, Gender, LineupAvatar, LineupInfo, MultiPathAvatarType, SpBarInfo,
 };
 use tokio::fs;
 

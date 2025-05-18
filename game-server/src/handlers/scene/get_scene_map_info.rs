@@ -1,5 +1,5 @@
-use sr_proto::{GetSceneMapInfoCsReq, GetSceneMapInfoScRsp, SceneMapInfo};
 use sr_proto::prost::Message;
+use sr_proto::{GetSceneMapInfoCsReq, GetSceneMapInfoScRsp, SceneMapInfo};
 
 pub async fn handle(req: &[u8]) -> GetSceneMapInfoScRsp {
     let req = GetSceneMapInfoCsReq::decode(req).unwrap_or_default();
