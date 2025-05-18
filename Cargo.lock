@@ -729,7 +729,7 @@ dependencies = [
 
 [[package]]
 name = "configs"
-version = "3.2.0"
+version = "3.3.0"
 dependencies = [
  "serde",
  "serde_json",
@@ -1288,7 +1288,7 @@ dependencies = [
 
 [[package]]
 name = "game-server"
-version = "3.2.0"
+version = "3.3.0"
 dependencies = [
  "ansi_term",
  "bytes",
@@ -2983,7 +2983,7 @@ dependencies = [
 
 [[package]]
 name = "sdk-server"
-version = "3.2.0"
+version = "3.3.0"
 dependencies = [
  "ansi_term",
  "axum",
@@ -3213,7 +3213,7 @@ dependencies = [
 
 [[package]]
 name = "srtools-manager"
-version = "3.2.0"
+version = "3.3.0"
 dependencies = [
  "eframe",
  "egui",
@@ -3587,7 +3587,7 @@ dependencies = [
 
 [[package]]
 name = "uni-server"
-version = "3.2.0"
+version = "3.3.0"
 dependencies = [
  "ansi_term",
  "game-server",
