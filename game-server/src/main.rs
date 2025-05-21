@@ -1,19 +1,17 @@
 use configs::server::ServerConfig;
+use configs::logger::init_tracing;
 use tokio::net::TcpListener;
 use tracing::{error, info};
 
 mod handlers;
 mod network;
-mod utils;
+mod util;
 
 use network::conn;
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> tokio::io::Result<()> {
-    #[cfg(target_os = "windows")]
-    ansi_term::enable_ansi_support().expect("failed to enable ansi");
-
-    tracing_subscriber::fmt().init();
+    init_tracing();
 
     let addr = {
         let cfg = ServerConfig::from_file("_configs_/server.toml").await;

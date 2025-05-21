@@ -4,7 +4,7 @@ use tracing::{error, info};
 
 mod handlers;
 mod network;
-mod utils;
+mod util;
 
 use network::conn;
 

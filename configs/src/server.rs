@@ -8,6 +8,7 @@ pub struct ServerConfig {
     pub game_server_host: String,
     pub game_server_port: u32,
     pub dispatch_url: String,
+    pub enable_auto_hotfix: bool,
     pub env_type: String,
 }
 
@@ -19,6 +20,7 @@ impl Default for ServerConfig {
             game_server_host: String::from("127.0.0.1"),
             game_server_port: 23301,
             dispatch_url: String::from("http://127.0.0.1:21000/query_gateway"),
+            enable_auto_hotfix: false,
             env_type: String::from("2"),
         }
     }

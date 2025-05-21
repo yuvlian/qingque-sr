@@ -12,4 +12,4 @@ readme.workspace = true
 [dependencies]
 egui.workspace = true
 eframe.workspace = true
-open = "5.3.2"
+open.workspace = true

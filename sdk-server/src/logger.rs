@@ -7,7 +7,7 @@ pub async fn log_requests(req: Request, next: Next) -> Response {
     let response = next.run(req).await;
     let status = response.status();
 
-    info!("{} {} - {}", method, uri, status);
+    info!("{} - {} {}", status, method, uri);
 
     response
 }

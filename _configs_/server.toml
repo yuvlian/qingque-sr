@@ -5,6 +5,7 @@ game_server_host = "127.0.0.1"
 game_server_port = 23301
 
 dispatch_url = "http://127.0.0.1:21000/query_gateway"
+enable_auto_hotfix = false
 
 # try changing to "9" or "21" if you get login issues
 env_type = "2"

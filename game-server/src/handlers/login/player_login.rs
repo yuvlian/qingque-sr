@@ -1,4 +1,4 @@
-use crate::utils::time;
+use crate::util::time;
 use sr_proto::{PlayerBasicInfo, PlayerLoginScRsp};
 
 pub async fn handle(_: &[u8]) -> PlayerLoginScRsp {

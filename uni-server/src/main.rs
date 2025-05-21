@@ -1,12 +1,10 @@
+use configs::logger::init_tracing;
 use game_server::start_game_server;
 use sdk_server::start_sdk_server;
 use tokio::runtime::Builder;
 
 fn main() {
-    #[cfg(target_os = "windows")]
-    ansi_term::enable_ansi_support().expect("failed to enable ansi");
-
-    tracing_subscriber::fmt().init();
+    init_tracing();
 
     let game_sv_thread = std::thread::spawn(|| {
         let rt = Builder::new_current_thread().enable_all().build().unwrap();
