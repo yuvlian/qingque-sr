@@ -148,6 +148,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "amia-packet"
+version = "0.1.0"
+source = "git+https://github.com/yuvlian/amia-codec?rev=2cdfba2#2cdfba22559825b8218f4fc9a6434f73f83b14ab"
+dependencies = [
+ "byteorder",
+ "tokio",
+]
+
+[[package]]
 name = "android-activity"
 version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -618,6 +627,12 @@ dependencies = [
  "quote",
  "syn",
 ]
+
+[[package]]
+name = "byteorder"
+version = "1.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1fd0f2584146f6f2ef48085050886acf353beff7305ebd1ae69500e27c67f64b"
 
 [[package]]
 name = "byteorder-lite"
@@ -1323,6 +1338,7 @@ dependencies = [
 name = "game-server"
 version = "3.3.0"
 dependencies = [
+ "amia-packet",
  "bytes",
  "configs",
  "paste",
@@ -3494,6 +3510,7 @@ dependencies = [
  "heck",
  "prost",
  "prost-build",
+ "prost-types",
  "regex",
 ]
 

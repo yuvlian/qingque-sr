@@ -16,6 +16,7 @@ sr-proto.workspace = true
 configs.workspace = true
 paste.workspace = true
 tracing.workspace = true
+amia-packet.workspace = true
 
 [[bin]]
 name = "game-server"

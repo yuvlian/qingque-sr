@@ -1,13 +1,12 @@
-use configs::server::ServerConfig;
 use configs::logger::init_tracing;
+use configs::server::ServerConfig;
 use tokio::net::TcpListener;
 use tracing::{error, info};
 
-mod handlers;
-mod network;
+mod cmd;
+mod conn;
+mod packet;
 mod util;
-
-use network::conn;
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> tokio::io::Result<()> {

@@ -2,11 +2,10 @@ use configs::server::ServerConfig;
 use tokio::net::TcpListener;
 use tracing::{error, info};
 
-mod handlers;
-mod network;
+mod cmd;
+mod conn;
+mod packet;
 mod util;
-
-use network::conn;
 
 pub async fn start_game_server() -> tokio::io::Result<()> {
     let addr = {
