@@ -7,10 +7,10 @@ use sr_proto::cmd::{
 };
 use sr_proto::prost::Message;
 use sr_proto::{
-    AvatarPathChangedNotify, AvatarType, ChatMessageData, GetPrivateChatHistoryCsReq,
-    GetPrivateChatHistoryScRsp, LineupAvatar, LineupInfo, MsgType, MultiPathAvatarInfo,
-    MultiPathAvatarType, PlayerSyncScNotify, RevcMsgScNotify, SendMsgCsReq, SendMsgScRsp,
-    SpBarInfo, SyncLineupNotify,
+    Avatar, AvatarPathChangedNotify, AvatarSync, AvatarType, ChatMessageData,
+    GetPrivateChatHistoryCsReq, GetPrivateChatHistoryScRsp, LineupAvatar, LineupInfo, MsgType,
+    MultiPathAvatarInfo, MultiPathAvatarType, PlayerSyncScNotify, RevcMsgScNotify, SendMsgCsReq,
+    SendMsgScRsp, SpBarInfo, SyncLineupNotify,
 };
 
 pub async fn get_private_chat_history(req: &[u8], sink: &mut PacketSink) {
@@ -54,7 +54,7 @@ pub async fn send_msg(req: &[u8], sink: &mut PacketSink) {
             hnbepabnbng: req.hnbepabnbng,
             ..Default::default()
         };
-    
+
         sink.push_message(REVC_MSG_SC_NOTIFY, notify);
 
         return;
@@ -90,6 +90,16 @@ pub async fn send_msg(req: &[u8], sink: &mut PacketSink) {
                         rank: 6,
                         ..Default::default()
                     }],
+                    avatar_sync: Some(AvatarSync {
+                        avatar_list: vec![Avatar {
+                            promotion: 6,
+                            rank: 6,
+                            exp: 0,
+                            level: 80,
+                            base_avatar_id: 8001,
+                            ..Default::default()
+                        }],
+                    }),
                     ..Default::default()
                 };
 
@@ -119,6 +129,16 @@ pub async fn send_msg(req: &[u8], sink: &mut PacketSink) {
                         rank: 6,
                         ..Default::default()
                     }],
+                    avatar_sync: Some(AvatarSync {
+                        avatar_list: vec![Avatar {
+                            promotion: 6,
+                            rank: 6,
+                            exp: 0,
+                            level: 80,
+                            base_avatar_id: 1001,
+                            ..Default::default()
+                        }],
+                    }),
                     ..Default::default()
                 };
 

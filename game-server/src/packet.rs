@@ -95,6 +95,7 @@ handle_map![
     // item
     get_bag;
     // lineup
+    change_lineup_leader;
     get_all_lineup_data;
     get_cur_lineup_data;
     // mission
