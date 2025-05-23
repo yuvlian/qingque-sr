@@ -9,6 +9,13 @@ const OS_PROD_HOST: &str = "prod-official-asia-dp01.starrails.com";
 const OS_BETA_HOST: &str = "beta-release01-asia.starrails.com";
 
 pub async fn try_get_and_update(version: &str, dispatch_seed: &str) -> Result<GameVersion, String> {
+    let mut current_hotfix = GameVersion::from_file("_configs_/hotfix.json").await;
+
+    if let Some(_) = current_hotfix.0.get(version) {
+        tracing::info!("hotfix already exists. no need autohotfix.");
+        return Ok(current_hotfix);
+    }
+
     let host = match version {
         v if v.starts_with("CNPROD") => CN_PROD_HOST,
         v if v.starts_with("CNBETA") => CN_BETA_HOST,
@@ -45,8 +52,6 @@ pub async fn try_get_and_update(version: &str, dispatch_seed: &str) -> Result<Ga
         &gateserver.lua_url,
         &gateserver.mdk_res_version,
     );
-
-    let mut current_hotfix = GameVersion::from_file("_configs_/hotfix.json").await;
 
     let new_config = HotfixConfig {
         asset_bundle_url: gateserver.asset_bundle_url,

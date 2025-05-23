@@ -750,7 +750,7 @@ dependencies = [
 
 [[package]]
 name = "configs"
-version = "3.3.0"
+version = "0.1.0"
 dependencies = [
  "ansi_term",
  "serde",
@@ -1336,12 +1336,13 @@ dependencies = [
 
 [[package]]
 name = "game-server"
-version = "3.3.0"
+version = "0.1.0"
 dependencies = [
  "amia-packet",
  "bytes",
  "configs",
  "paste",
+ "serde_json",
  "sr-proto",
  "tokio",
  "tracing",
@@ -3264,7 +3265,7 @@ dependencies = [
 
 [[package]]
 name = "sdk-server"
-version = "3.3.0"
+version = "0.1.0"
 dependencies = [
  "axum",
  "configs",
@@ -3510,13 +3511,12 @@ dependencies = [
  "heck",
  "prost",
  "prost-build",
- "prost-types",
  "regex",
 ]
 
 [[package]]
 name = "srtools-manager"
-version = "3.3.0"
+version = "0.1.0"
 dependencies = [
  "eframe",
  "egui",
@@ -3966,7 +3966,7 @@ dependencies = [
 
 [[package]]
 name = "uni-server"
-version = "3.3.0"
+version = "0.1.0"
 dependencies = [
  "configs",
  "game-server",

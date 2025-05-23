@@ -4,15 +4,10 @@ members = ["game-server", "sdk-server", "configs", "srtools-manager", "uni-serve
 exclude = ["sr-proto"]
 
 [workspace.package]
-# name = "qingque-sr"
-version = "3.3.0" # this is based on hsr version
+version = "0.1.0"
 edition = "2024"
-authors = ["Yulian <yuvlian@naver.com>"]
 license = "MIT"
-description = "hsr ps"
 repository = "https://github.com/yuvlian/qingque-sr"
-homepage = "https://github.com/yuvlian/qingque-sr"
-readme = "README.md"
 
 [workspace.dependencies]
 amia-packet = { git = "https://github.com/yuvlian/amia-codec", package = "amia-packet", rev = "2cdfba2", features = ["tokio"]}
