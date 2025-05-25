@@ -59,7 +59,7 @@ async fn on_combo_granter_login() -> Json<Value> {
     }))
 }
 
-const ON_MA_PASSPORT_LOGIN_ROUTE: &str = "/{product}/account/ma-passport/api/appLoginByPassword";
+const ON_MA_PASSPORT_LOGIN_ROUTE: &str = "/{product}/account/{passport}/api/appLoginByPassword";
 async fn on_ma_passport_login() -> Json<Value> {
     Json(json!({
         "data": {
