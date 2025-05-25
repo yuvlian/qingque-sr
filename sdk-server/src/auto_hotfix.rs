@@ -8,7 +8,12 @@ const CN_BETA_HOST: &str = "beta-release01-cn.bhsr.com";
 const OS_PROD_HOST: &str = "prod-official-asia-dp01.starrails.com";
 const OS_BETA_HOST: &str = "beta-release01-asia.starrails.com";
 
-pub async fn try_get_and_update(version: &str, dispatch_seed: &str) -> Result<GameVersion, String> {
+pub async fn try_get_and_update(
+    version: &str,
+    dispatch_seed: &str,
+) -> Result<HotfixConfig, String> {
+    let mut current_hotfix = GameVersion::from_file("_configs_/hotfix.json").await;
+
     let host = match version {
         v if v.starts_with("CNPROD") => CN_PROD_HOST,
         v if v.starts_with("CNBETA") => CN_BETA_HOST,
@@ -46,7 +51,17 @@ pub async fn try_get_and_update(version: &str, dispatch_seed: &str) -> Result<Ga
         &gateserver.mdk_res_version,
     );
 
-    let mut current_hotfix = GameVersion::from_file("_configs_/hotfix.json").await;
+    if let Some(v) = current_hotfix.0.get(version) {
+        if v.asset_bundle_url == gateserver.asset_bundle_url
+            && v.ex_resource_url == gateserver.ex_resource_url
+            && v.ifix_url == gateserver.ifix_url
+            && v.lua_url == gateserver.lua_url
+            && v.lua_version == gateserver.mdk_res_version
+        {
+            tracing::info!("hotfix already exists and no change, skipping");
+            return Ok(v.to_owned());
+        }
+    }
 
     let new_config = HotfixConfig {
         asset_bundle_url: gateserver.asset_bundle_url,
@@ -56,7 +71,7 @@ pub async fn try_get_and_update(version: &str, dispatch_seed: &str) -> Result<Ga
         lua_version: gateserver.mdk_res_version,
     };
 
-    current_hotfix.insert_hotfix_by_version(version, new_config);
+    current_hotfix.insert_hotfix_by_version(version, new_config.clone());
 
     if let Err(e) = current_hotfix.save_to_file("_configs_/hotfix.json").await {
         tracing::warn!(
@@ -65,5 +80,5 @@ pub async fn try_get_and_update(version: &str, dispatch_seed: &str) -> Result<Ga
         );
     }
 
-    Ok(current_hotfix)
+    Ok(new_config)
 }

@@ -1,3 +1,4 @@
+use crate::{ENHANCED_IDS, REMEMBRANCE_IDS};
 use serde::Deserialize;
 use sr_proto::{
     AvatarSkillTree, AvatarType, BattleAvatar, BattleBuff, BattleEquipment, BattleRelic,
@@ -7,7 +8,7 @@ use std::collections::HashMap;
 use tokio::fs;
 
 macro_rules! trace {
-    ($timed_id:expr; $($point:literal $level:literal);* $(;)?) => {{
+    ($timed_id:expr; $($point:expr, $level:literal);* $(;)?) => {{
         vec![
             $(
                 AvatarSkillTree {
@@ -102,54 +103,75 @@ impl SrToolsConfig {
         fn create_max_trace(avatar_id: u32) -> Vec<AvatarSkillTree> {
             let timed_id = avatar_id * 1000;
             match avatar_id {
-                // Remembrance characters
-                // Fucking annoying...
-                8007 | 8008 | 1402 | 1407 => {
+                v if REMEMBRANCE_IDS.contains(&v) => {
                     trace![
                         timed_id;
-                        1 6;
-                        2 10;
-                        3 10;
-                        4 10;
-                        7 1;
-                        101 1;
-                        102 1;
-                        103 1;
-                        201 1;
-                        202 1;
-                        203 1;
-                        204 1;
-                        205 1;
-                        206 1;
-                        207 1;
-                        208 1;
-                        209 1;
-                        210 1;
-                        301 5;
-                        302 5;
+                        1, 6;
+                        2, 10;
+                        3, 10;
+                        4, 10;
+                        7, 1;
+                        101, 1;
+                        102, 1;
+                        103, 1;
+                        201, 1;
+                        202, 1;
+                        203, 1;
+                        204, 1;
+                        205, 1;
+                        206, 1;
+                        207, 1;
+                        208, 1;
+                        209, 1;
+                        210, 1;
+                        301, 5;
+                        302, 5;
+                    ]
+                }
+                v if ENHANCED_IDS.contains(&v) => {
+                    trace![
+                        timed_id;
+                        (1 + 10000000), 6;
+                        (2 + 10000000), 10;
+                        (3 + 10000000), 10;
+                        (4 + 10000000), 10;
+                        (7 + 10000000), 1;
+                        (101 + 10000000), 1;
+                        (102 + 10000000), 1;
+                        (103 + 10000000), 1;
+                        (201 + 10000000), 1;
+                        (202 + 10000000), 1;
+                        (203 + 10000000), 1;
+                        (204 + 10000000), 1;
+                        (205 + 10000000), 1;
+                        (206 + 10000000), 1;
+                        (207 + 10000000), 1;
+                        (208 + 10000000), 1;
+                        (209 + 10000000), 1;
+                        (210 + 10000000), 1;
                     ]
                 }
                 _ => {
                     trace![
                         timed_id;
-                        1 6;
-                        2 10;
-                        3 10;
-                        4 10;
-                        7 1;
-                        101 1;
-                        102 1;
-                        103 1;
-                        201 1;
-                        202 1;
-                        203 1;
-                        204 1;
-                        205 1;
-                        206 1;
-                        207 1;
-                        208 1;
-                        209 1;
-                        210 1;
+                        1, 6;
+                        2, 10;
+                        3, 10;
+                        4, 10;
+                        7, 1;
+                        101, 1;
+                        102, 1;
+                        103, 1;
+                        201, 1;
+                        202, 1;
+                        203, 1;
+                        204, 1;
+                        205, 1;
+                        206, 1;
+                        207, 1;
+                        208, 1;
+                        209, 1;
+                        210, 1;
                     ]
                 }
             }
@@ -296,6 +318,7 @@ impl SrToolsConfig {
             .iter()
             .enumerate()
             .map(|(i, av)| BattleAvatar {
+                enhanced_id: if ENHANCED_IDS.contains(&av.id) { 1 } else { 0 },
                 avatar_type: AvatarType::AvatarFormalType.into(),
                 id: av.id,
                 level: av.level,

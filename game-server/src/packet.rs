@@ -1,4 +1,7 @@
-use crate::cmd::{avatar::*, battle::*, item::*, lineup::*, mission::*, player::*, scene::*};
+use crate::cmd::{
+    avatar::*, battle::*, /* chat::*, friend::*, */ item::*, lineup::*, mission::*, player::*,
+    scene::*,
+};
 use amia_packet::net_packet::NetPacket;
 use paste::paste;
 use sr_proto::prost::Message;
@@ -80,23 +83,38 @@ macro_rules! handle_map {
 handle_map![
     // avatar
     get_avatar_data;
+    set_avatar_enhanced_id;
+
     // battle
     pve_battle_result;
     start_cocoon_stage;
+
+    // chat
+    // get_private_chat_history;
+    // send_msg;
+
+    // friend
+    // get_friend_list_info;
+    // get_friend_login_info;
+
     // item
     get_bag;
+
     // lineup
+    change_lineup_leader;
     get_all_lineup_data;
     get_cur_lineup_data;
+
     // mission
     get_mission_status;
+
     // player
     get_basic_info;
-    get_multi_path_avatar_info;
     player_get_token;
     player_heart_beat;
     player_login;
     player_login_finish;
+
     // scene
     get_cur_scene_info;
     get_scene_map_info;

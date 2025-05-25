@@ -3,9 +3,7 @@ use amia_packet::net_packet::NetPacket;
 use tokio::net::TcpStream;
 
 pub async fn handle_connection(mut stream: TcpStream) -> tokio::io::Result<()> {
-    // this lets us send notify without needing to pass tcpstream
-    // gonna use this for commands later
-    let mut packet_sink = PacketSink::with_capacity(1);
+    let mut packet_sink = PacketSink::with_capacity(5);
 
     loop {
         packet_sink.clear();

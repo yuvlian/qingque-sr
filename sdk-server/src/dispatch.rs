@@ -1,6 +1,6 @@
 use crate::auto_hotfix;
 use axum::{Router, extract::Query, routing::get};
-use configs::hotfix::GameVersion;
+use configs::hotfix::{GameVersion, HotfixConfig};
 use configs::server::ServerConfig;
 use serde::Deserialize;
 use sr_proto::prost::Message;
@@ -48,19 +48,19 @@ async fn on_query_gateway(Query(q): Query<Gateway>) -> String {
     let version = q.version.unwrap_or_default();
     let dispatch_seed = q.dispatch_seed.unwrap_or_default();
 
-    let game_version = if !server_config.enable_auto_hotfix {
-        GameVersion::from_file("_configs_/hotfix.json").await
+    let hotfix = if !server_config.enable_auto_hotfix {
+        GameVersion::from_file("_configs_/hotfix.json")
+            .await
+            .get_hotfix_by_version(&version)
     } else {
         match auto_hotfix::try_get_and_update(&version, &dispatch_seed).await {
             Ok(v) => v,
             Err(e) => {
                 tracing::error!("failed auto hotfix: {}", e);
-                GameVersion::default()
+                HotfixConfig::default()
             }
         }
     };
-
-    let hotfix = game_version.get_hotfix_by_version(&version);
 
     rbase64::encode(
         &GateServer {

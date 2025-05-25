@@ -32,6 +32,7 @@ async fn main() -> tokio::io::Result<()> {
         tokio::spawn(async move {
             if let Err(e) = conn::handle_connection(socket).await {
                 error!("Connection error: {}", e);
+                info!("Client ({}) disconnected.", cl_addr);
             }
         });
     }
