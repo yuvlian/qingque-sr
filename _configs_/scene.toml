@@ -1,19 +1,17 @@
-[scene_config]
-plane_id = 20101
+plane_id = 20313
 
-[scene_config.player]
-x = 4480
-y = 19364
-z = -550
-# i'm not sure if base_avatar_id actually does anything
-base_avatar_id = 1201
+[player]
+x = 40748
+y = 192819
+z = 439218
+base_avatar_id = 1014
 map_layer = 2
 
-[scene_config.calyx]
-x = 4480
-y = 18354
-z = -570
-group_id = 19
+[calyx]
+x = 31440
+y = 192820
+z = 433790
+group_id = 186
 inst_id = 300001
-entity_id = 228
+entity_id = 1337
 prop_id = 808
