@@ -17,12 +17,10 @@ if you're building from source do: `cargo run --release srtools-manager`
 ## `hotfix.json`
 configuration for hotfix links.
 
-hotfix is not needed if you play on production, as you can obtain the update by logging into the official server.
-
-if you need a tool to grab this, i have one: https://github.com/yuvlian/fetch-hotfix-hsr (no prebuilt)
+check server.toml for more info
 
 ## `scene.toml`
 configuration for player position, calyx position, and map.
 
 ## `server.toml`
-configuration for where the servers should bind to.
+configuration for where the servers should bind to and other misc stuff.

@@ -1,6 +1,6 @@
 # qingque-sr
 
-A minimal private server for simulating Memory of Chaos through Calyx.
+A minimal private server for simulating Memory of Chaos through Calyx. The code sucks, I know.
 
 ## Project Overview
 ### License
@@ -10,6 +10,7 @@ MIT
 - **configs:** Utility for parsing config files
 - **game-server, sdk-server, sr-proto:** Should be obvious
 - **srtools-manager:** An app to help with managing config.jsons(s) from https://srtools.pages.dev/
+- **heartxecutor:** Something to help with executing luas.
 - **uni-server:** game-server & sdk-server as one binary
 
 ## Tutorial
