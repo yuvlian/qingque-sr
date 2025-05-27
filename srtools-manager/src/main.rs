@@ -7,7 +7,7 @@ use std::path::Path;
 fn main() -> Result<(), eframe::Error> {
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
-            .with_inner_size(egui::vec2(400.0, 304.0))
+            .with_inner_size(egui::vec2(800.0, 600.0))
             .with_resizable(true)
             .with_decorations(true),
         centered: true,
@@ -120,10 +120,8 @@ impl eframe::App for ConfigManager {
             ui.push_id("logs_scroll", |ui| {
                 egui::ScrollArea::vertical().show(ui, |ui| {
                     egui::TextEdit::multiline(&mut self.logs)
-                        .font(egui::TextStyle::Monospace)
                         .code_editor()
                         .desired_rows(10)
-                        .lock_focus(true)
                         .show(ui);
                 });
             });
