@@ -66,6 +66,8 @@ def request(flow: http.HTTPFlow) -> None:
 
 - You can use `srtools-manager` to easily manage the config.json(s) from https://srtools.pages.dev/
 
+- You can use `heartxecutor` to run lua scripts.
+
 #### Option 2: Build from Source
 
 1. Install the following tools:
@@ -83,8 +85,6 @@ def request(flow: http.HTTPFlow) -> None:
 6. Build and run the server:
    ```bash
    cargo run --release --bin game-server
-   ```
-   ```bash
    cargo run --release --bin sdk-server
    ```
    Or if you prefer a single binary,
@@ -92,9 +92,10 @@ def request(flow: http.HTTPFlow) -> None:
    cargo run --release --bin uni-server
    ```
 
-7. Build and run SRTools Manager (optional):
+7. Build and run SRTools Manager & heartxecutor (optional):
    ```bash
    cargo run --release --bin srtools-manager
+   cargo run --release --bin heartxecutor
    ```
 
 8. Make sure game traffic is being redirected by your proxy, launch the game and finally, have fun.
