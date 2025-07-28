@@ -21,7 +21,11 @@ func (s *SRToolsLite) GetCycleCount() uint32 {
 }
 
 func (s *SRToolsLite) GetBattleBuffs() []*pb.BattleBuff {
-	var buffs []*pb.BattleBuff
+	totalBuffs := 0
+	for _, av := range s.AvatarConfig {
+		totalBuffs += len(av.BuffIDList)
+	}
+	buffs := make([]*pb.BattleBuff, 0, totalBuffs)
 
 	for i, av := range s.AvatarConfig {
 		for _, buffID := range av.BuffIDList {
@@ -52,10 +56,10 @@ func (s *SRToolsLite) GetBattleBuffs() []*pb.BattleBuff {
 }
 
 func (s *SRToolsLite) GetBattleWaves() []*pb.SceneMonsterWave {
-	var waves []*pb.SceneMonsterWave
+	waves := make([]*pb.SceneMonsterWave, 0, len(s.BattleConfig.MonsterWave))
 
 	for _, monsterIDs := range s.BattleConfig.MonsterWave {
-		var monsters []*pb.SceneMonster
+		monsters := make([]*pb.SceneMonster, 0, len(monsterIDs))
 		for _, monsterID := range monsterIDs {
 			monsters = append(monsters, &pb.SceneMonster{
 				MonsterId: monsterID,
@@ -76,7 +80,7 @@ func (s *SRToolsLite) GetBattleWaves() []*pb.SceneMonsterWave {
 }
 
 func buildTrace(timedID uint32, entries ...[2]uint32) []*pb.AvatarSkillTree {
-	var trace []*pb.AvatarSkillTree
+	trace := make([]*pb.AvatarSkillTree, 0, len(entries))
 	for _, entry := range entries {
 		pointOffset := entry[0]
 		level := entry[1]
@@ -220,7 +224,7 @@ func parseRelicString(s string) (uint32, uint32, uint32, uint32, [3]uint32, [3]u
 func (a *AvatarConfig) GetBattleRelics() ([]*pb.BattleRelic, []string) {
 	relicStrings := a.Relics
 	avatarID := a.ID
-	var relics []*pb.BattleRelic
+	relics := make([]*pb.BattleRelic, 0, len(relicStrings))
 	var errors []string
 
 	for _, rstring := range relicStrings {
@@ -256,7 +260,7 @@ func (a *AvatarConfig) GetEnergy() *pb.SpBarInfo {
 }
 
 func (s *SRToolsLite) GetBattleAvatars() ([]*pb.BattleAvatar, []string) {
-	var battleAvatars []*pb.BattleAvatar
+	battleAvatars := make([]*pb.BattleAvatar, 0, len(s.AvatarConfig))
 	var errors []string
 
 	for i, avatar := range s.AvatarConfig {

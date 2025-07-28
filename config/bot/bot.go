@@ -1,6 +1,10 @@
 package bot
 
-import "github.com/yuvlian/qingque-sr/config"
+import (
+	"time"
+
+	"github.com/yuvlian/qingque-sr/config"
+)
 
 type Bot struct {
 	Uid          uint32
@@ -18,6 +22,7 @@ func (h Bot) Save(filePath string) error {
 }
 
 var Loaded = createDefault()
+var LastOnlineTime = time.Now()
 
 func Init(filePath string) error {
 	return config.InitLoaded(filePath, &Loaded)

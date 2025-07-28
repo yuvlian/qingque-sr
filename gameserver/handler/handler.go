@@ -5,6 +5,8 @@ import (
 
 	"github.com/yuvlian/qingque-sr/gameserver/handler/avatar"
 	"github.com/yuvlian/qingque-sr/gameserver/handler/battle"
+	"github.com/yuvlian/qingque-sr/gameserver/handler/chat"
+	"github.com/yuvlian/qingque-sr/gameserver/handler/friend"
 	"github.com/yuvlian/qingque-sr/gameserver/handler/lineup"
 	"github.com/yuvlian/qingque-sr/gameserver/handler/mission"
 	"github.com/yuvlian/qingque-sr/gameserver/handler/player"
@@ -58,17 +60,21 @@ var dummyMap = map[uint16]uint16{
 }
 
 var handlerMap = map[uint16]func(*session.Session) error{
-	cid.GetAvatarDataCsReq:      avatar.GetAvatarData,
-	cid.PVEBattleResultCsReq:    battle.PveBattleResult,
-	cid.StartCocoonStageCsReq:   battle.StartCocoonStage,
-	cid.ChangeLineupLeaderCsReq: lineup.ChangeLineupLeader,
-	cid.GetAllLineupDataCsReq:   lineup.GetAllLineupData,
-	cid.GetCurLineupDataCsReq:   lineup.GetCurLineupData,
-	cid.GetMissionStatusCsReq:   mission.GetMissionStatus,
-	cid.PlayerGetTokenCsReq:     player.PlayerGetToken,
-	cid.PlayerHeartBeatCsReq:    player.PlayerHeartBeat,
-	cid.PlayerLoginCsReq:        player.PlayerLogin,
-	cid.GetCurSceneInfoCsReq:    scene.GetCurSceneInfo,
+	cid.GetAvatarDataCsReq:         avatar.GetAvatarData,
+	cid.PVEBattleResultCsReq:       battle.PveBattleResult,
+	cid.StartCocoonStageCsReq:      battle.StartCocoonStage,
+	cid.GetChatFriendHistoryCsReq:  chat.GetChatFriendHistory,
+	cid.GetLoginChatInfoCsReq:      chat.GetLoginChatInfo,
+	cid.GetPrivateChatHistoryCsReq: chat.GetPrivateChatHistory,
+	cid.GetFriendListInfoCsReq:     friend.GetFriendListInfo,
+	cid.ChangeLineupLeaderCsReq:    lineup.ChangeLineupLeader,
+	cid.GetAllLineupDataCsReq:      lineup.GetAllLineupData,
+	cid.GetCurLineupDataCsReq:      lineup.GetCurLineupData,
+	cid.GetMissionStatusCsReq:      mission.GetMissionStatus,
+	cid.PlayerGetTokenCsReq:        player.PlayerGetToken,
+	cid.PlayerHeartBeatCsReq:       player.PlayerHeartBeat,
+	cid.PlayerLoginCsReq:           player.PlayerLogin,
+	cid.GetCurSceneInfoCsReq:       scene.GetCurSceneInfo,
 }
 
 func SessionHandler(s *session.Session) error {

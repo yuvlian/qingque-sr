@@ -93,7 +93,8 @@ func ParseCommand(input string) (Command, error) {
 }
 
 func GetChatHistory() []string {
-	history := []string{"Available Commands:"}
+	history := make([]string, 1, len(commands)+1)
+	history[0] = "Available Commands:"
 	for _, meta := range commands {
 		history = append(history, meta.Header)
 	}

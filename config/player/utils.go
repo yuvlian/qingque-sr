@@ -14,13 +14,16 @@ func (p *Player) GetTbGender() pb.Gender {
 }
 
 func (p *Player) GetCurLineup() *pb.LineupInfo {
-	var avList []*pb.LineupAvatar
+	avList := make([]*pb.LineupAvatar, 0, 4)
 	maxEnergy := &pb.SpBarInfo{
 		CurSp: 10000,
 		MaxSp: 10000,
 	}
 
 	for i, id := range p.Lineup {
+		if i >= 4 {
+			break
+		}
 		avatar := &pb.LineupAvatar{
 			Id:         id,
 			Hp:         10000,
@@ -38,7 +41,7 @@ func (p *Player) GetCurLineup() *pb.LineupInfo {
 }
 
 func (p *Player) GetAvatars() []*pb.Avatar {
-	var avatars []*pb.Avatar
+	avatars := make([]*pb.Avatar, 0, len(p.AvatarList))
 
 	for _, id := range p.AvatarList {
 		avatar := &pb.Avatar{

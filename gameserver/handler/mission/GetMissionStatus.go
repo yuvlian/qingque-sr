@@ -12,19 +12,18 @@ func GetMissionStatus(s *session.Session) error {
 		return err
 	}
 
+	subMissions := make([]*pb.Mission, 0, len(req.SubMissionIdList))
+	for _, id := range req.SubMissionIdList {
+		subMissions = append(subMissions, &pb.Mission{
+			Id:       id,
+			Progress: 1,
+			Status:   pb.MissionStatus_MISSION_FINISH,
+		})
+	}
+
 	rsp := &pb.GetMissionStatusScRsp{
 		FinishedMainMissionIdList: req.MainMissionIdList,
-		SubMissionStatusList: func() []*pb.Mission {
-			list := make([]*pb.Mission, 0, len(req.SubMissionIdList))
-			for _, id := range req.SubMissionIdList {
-				list = append(list, &pb.Mission{
-					Id:       id,
-					Progress: 1,
-					Status:   pb.MissionStatus_MISSION_FINISH,
-				})
-			}
-			return list
-		}(),
+		SubMissionStatusList:      subMissions,
 	}
 	return s.Send(cid.GetMissionStatusScRsp, rsp)
 }
