@@ -1,7 +1,0 @@
-[submodule "sr-proto"]
-	path = sr-proto
-	url = https://github.com/yuvlian/sr-proto
-	branch = main
-[submodule "heartxecutor"]
-	path = heartxecutor
-	url = https://github.com/yuvlian/heartxecutor

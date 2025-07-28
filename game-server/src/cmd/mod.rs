@@ -1,9 +1,0 @@
-pub mod avatar;
-pub mod battle;
-pub mod chat;
-pub mod friend;
-pub mod item;
-pub mod lineup;
-pub mod mission;
-pub mod player;
-pub mod scene;

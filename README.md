@@ -1,31 +1,82 @@
-# qingque-sr
+# QingqueSR
 
-A minimal private server for simulating Memory of Chaos through Calyx. The code sucks, I know.
+MIT licensed smol PS for moc simulation.
+raw protobufs are available~
+
+## Screenshots :3
+<img src="screenshots/overworld.PNG" alt="overworld" width="360"/>
+<img src="screenshots/sp.PNG" alt="infinite-sp" width="360"/>
+
+---
 
 ## Project Overview
-### License
-MIT
 
-### Crates
-- **configs:** Utility for parsing config files
-- **game-server, sdk-server, sr-proto:** Should be obvious
-- **srtools-manager:** An app to help with managing config.jsons(s) from https://srtools.pages.dev/
-- **heartxecutor:** Something to help with executing luas.
-- **uni-server:** game-server & sdk-server as one binary
+### Packages
 
-## Tutorial
+**cmd**  
+Program entrypoint.
 
-This tutorial assumes you have basic knowledge of a terminal and proxies.
+**config**  
+Anything used for the config files.
 
-### Prerequisites
+Honestly, I liked working on this very much because of how composable it was.
+
+Currently there is:
+- `hotfix.json` - Hotfix for query_gateway
+- `lx.json` - For lua "execution"
+- `player.json` - Player data (uid, username, character, etc.)
+- `ports.json` - Ports for the servers
+- `scene.json` - Map, player position, and calyx position
+- `config.json` - [SRTools](https://srtools.pages.dev/) config Popura edition
+
+**gameserver**  
+TCP. Basic. Calyx moc simulator. But atleast you can run lua nicely.
+
+Currently there is no ingame commands yet, but I plan to add some later on for modifying the things in player.json.
+
+You can find the handler list in [here](gameserver/handler/handler.go).
+
+**pb**  
+Protocol buffers. Feel free to take the raw protobufs from here.
+
+**sdkserver**  
+HTTP server.
+
+Nothing special about it. Auth is hardcoded and all that. There is, however, auto hotfix.
+
+Lua "Executor" and the SRTools Manager is also implemented here (mostly because I couldn't find an `egui` in Go).
+
+**setup.go**  
+This will automatically compile the protobufs, generate cmd id file, and compile the server.
+
+---
+
+# Tutorial
+
+## Prerequisites
+
+### Building From Source
+> You can skip this part if you want to use prebuilt.
+
+- **Go** v1.24.5
+- **protoc** v31.1
+- **protoc-gen-go** v1.36.6
+
+These versions are pulled out of my ass (aka what I used while developing this). You can probably use older or newer ones.
+
+Not making a detailed tutorial for installing these because you should know how to if you want to build from source.
+
+### Playing With The Server
+- Proxy (or a redirect patch, I guess)
 
 #### Proxy Setup (For Windows)
-- Download the `FireflySR.Tool.Proxy` from [here](https://git.xeondev.com/YYHEggEgg/FireflySR.Tool.Proxy/releases/download/v2.0.0/FireflySR.Tool.Proxy_win-x64.zip). No need to configure anything, you can just extract and run. When asked about root certificate, let it install.
-
-- If you experience internet connectivity issues after playing, manually disable the proxy in your Windows settings.
+1. Download the `FireflySR.Tool.Proxy` from [here](https://git.xeondev.com/YYHEggEgg/FireflySR.Tool.Proxy/releases/download/v2.0.0/FireflySR.Tool.Proxy_win-x64.zip)
+2. No need to configure anything, you can just extract and run
+3. When asked about root certificate, let it install
+4. If you experience internet connectivity issues after playing, manually disable the proxy in your Windows settings
 
 #### Proxy Setup (For Linux)
-- Install `mitmproxy` and their certificate. Set HTTP_PROXY and HTTPS_PROXY env var of the game to the `mitmproxy` server. Run it with this script:
+Install `mitmproxy` and their certificate. Set HTTP_PROXY and HTTPS_PROXY env var of the game to the `mitmproxy` server. Run it with this script:
 
 ```python
 from mitmproxy import http
@@ -46,56 +97,41 @@ def request(flow: http.HTTPFlow) -> None:
         flow.request.port = 21000
 ```
 
+You can also use process specific capture instead of using env vars, I suppose.
+
 ---
 
-### Installation Options
+## Installation
 
-#### Option 1: Prebuilt (Linux/Windows)
+### Prebuilt
+1. Download the `{game_version}.zip` (**NOT THE SOURCE CODE!!**) from [here](https://github.com/yuvlian/qingque-sr/releases)
+2. Extract the ZIP file
+3. Run the `server` binary (exe, whatever)
+4. Make sure the proxy is properly redirecting game traffic to the server
+5. Go have fun
 
-1. Download the prebuilt version that matches your SR version from [here](https://github.com/yuvlian/qingque-sr/releases).
+### Building From Source
+1. Make sure you have the prerequisites
+2. Clone this repository
+3. Run `go mod tidy`
+4. Run `go run setup.go`
+5. Run `go run cmd/server/main.go` or `./cmd/server/main.exe` or whatever
+6. Make sure the proxy is properly redirecting game traffic to the server
+7. Go have fun
 
-2. Extract the ZIP file.
+---
 
-3. Edit configuration files in the `_configs_` folder as needed (refer to the README in that folder). The server will fallback to default config when a file in `_configs_` is invalid or missing.
+## Epic Notes Time!!
+- **Very important:** Go's json library does NOT validate the jsons. So if your json is fucked up, it won't tell you, but there will be signs.
+- You can "execute" lua through `http://127.0.0.1:21000/lua_executor`
+- There's also `/srtools_manager`, so you don't have to overwrite your `config.json` manually. 
+- Make sure you choose `config.json` from https://srtools.pages.dev/ and not `freesr-data.json` (I am too lazy to implement that one)
 
-4. Run `uni-server`
+---
 
-5. Make sure game traffic is being redirected by your proxy, launch the game and finally, have fun.
+## Credits
+**Me, Yulian.** I made the code, duh.
 
-- If you want to see the logs when the server panics, run the binary through terminal.
+**Naruse.** For protos & helping migrate old code.
 
-- You can use `srtools-manager` to easily manage the config.json(s) from https://srtools.pages.dev/
-
-- You can use `heartxecutor` to run lua scripts.
-
-#### Option 2: Build from Source
-
-1. Install the following tools:
-   - [Rust](https://www.rust-lang.org/)
-   - `protoc` (Protocol Buffers compiler)
-
-2. Clone the repository:
-   ```bash
-   git clone --recursive https://github.com/yuvlian/qingque-sr
-   ```
-3. cd into `qingque-sr`
-
-4. Edit configuration files in the `_configs_` folder as needed (refer to the README in that folder). You can do this after compiling, doesn't matter.
-
-6. Build and run the server:
-   ```bash
-   cargo run --release --bin game-server
-   cargo run --release --bin sdk-server
-   ```
-   Or if you prefer a single binary,
-   ```bash
-   cargo run --release --bin uni-server
-   ```
-
-7. Build and run SRTools Manager & heartxecutor (optional):
-   ```bash
-   cargo run --release --bin srtools-manager
-   cargo run --release --bin heartxecutor
-   ```
-
-8. Make sure game traffic is being redirected by your proxy, launch the game and finally, have fun.
+**Lukopa.** Very fun lua scripts. I'm not gonna share them :3

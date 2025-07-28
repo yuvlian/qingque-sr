@@ -1,9 +1,0 @@
-{
-  "CNBETAWin3.3.51": {
-    "asset_bundle_url": "https://autopatchcn.bhsr.com/asb/BetaLive/output_10451237_a3aa836fce75_f560b891c0d21e",
-    "ex_resource_url": "https://autopatchcn.bhsr.com/design_data/BetaLive/output_10468394_4baf03542d7e_a112f51cd16438",
-    "ifix_url": "https://autopatchcn.bhsr.com/ifix/BetaLive/output_10429797_be4a832b1c47_f58faff155c2c4",
-    "lua_url": "https://autopatchcn.bhsr.com/lua/BetaLive/output_10434495_6bff50432edd_1641e3e19f1244",
-    "lua_version": "10434495"
-  }
-}

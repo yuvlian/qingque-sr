@@ -1,4 +1,9 @@
-release/
-target/
-pub.exe
-ch_ids.py
+*.pb.go
+main*
+!main.go
+*.json
+**/cid
+/srtcfgs
+/luas
+*.sum
+/iloveqingque
