@@ -4,6 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+
+	"github.com/yuvlian/qingque-sr/gameserver/session"
+	"github.com/yuvlian/qingque-sr/pb"
 )
 
 type Command struct {
@@ -16,8 +19,11 @@ type CommandMeta struct {
 	Header      string
 	Description string
 	ArgCount    int
+	Execute     func(s *session.Session, cmd Command, notify *pb.RevcMsgScNotify) error
 }
 
+var cmdsInitialized = false
+var commandNames = ""
 var commands = map[string]CommandMeta{
 	"help": {
 		Name:        "help",
@@ -45,7 +51,7 @@ var commands = map[string]CommandMeta{
 	},
 }
 
-func getCommandList() string {
+func concatCommandNames() string {
 	names := make([]string, 0, len(commands))
 	for name := range commands {
 		names = append(names, name)
@@ -56,7 +62,7 @@ func getCommandList() string {
 func (c *Command) validate() error {
 	meta, exists := commands[c.Name]
 	if !exists {
-		return fmt.Errorf("unknown command: %s. available commands: %s", c.Name, getCommandList())
+		return fmt.Errorf("unknown command: %s. available commands: %s", c.Name, commandNames)
 	}
 
 	argLen := len(c.Args)
@@ -77,7 +83,7 @@ func (c *Command) validate() error {
 	return nil
 }
 
-func ParseCommand(input string) (Command, error) {
+func parseCommand(input string) (Command, error) {
 	parts := strings.Fields(input)
 	if len(parts) == 0 {
 		return Command{}, errors.New("input cannot be empty")

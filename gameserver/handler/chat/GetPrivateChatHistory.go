@@ -1,6 +1,8 @@
 package chat
 
 import (
+	"fmt"
+
 	"github.com/yuvlian/qingque-sr/config/bot"
 	"github.com/yuvlian/qingque-sr/gameserver/session"
 	"github.com/yuvlian/qingque-sr/pb"
@@ -13,11 +15,21 @@ func GetPrivateChatHistory(s *session.Session) error {
 		return err
 	}
 
+	rsp := &pb.GetPrivateChatHistoryScRsp{
+		ContactSide: req.ContactSide,
+	}
+
+	if req.ContactSide != bot.Loaded.Uid {
+		fmt.Println("got something besides bot's uid?")
+		return s.Send(cid.GetPrivateChatHistoryScRsp, rsp)
+	}
+
 	chatHistory := bot.GetChatHistory()
 	createTime := uint64(bot.LastOnlineTime.UnixMilli())
-	messages := make([]*pb.ChatMessageData, len(chatHistory))
+
+	rsp.ChatMessageList = make([]*pb.ChatMessageData, len(chatHistory))
 	for i, msg := range chatHistory {
-		messages[i] = &pb.ChatMessageData{
+		rsp.ChatMessageList[i] = &pb.ChatMessageData{
 			MessageType: pb.MsgType_MSG_TYPE_CUSTOM_TEXT,
 			CreateTime:  createTime + uint64(i),
 			Content:     msg,
@@ -25,10 +37,5 @@ func GetPrivateChatHistory(s *session.Session) error {
 		}
 	}
 
-	rsp := &pb.GetPrivateChatHistoryScRsp{
-		ContactSide:     req.ContactSide,
-		TargetSide:      bot.Loaded.Uid,
-		ChatMessageList: messages,
-	}
 	return s.Send(cid.GetPrivateChatHistoryScRsp, rsp)
 }

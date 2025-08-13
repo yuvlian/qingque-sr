@@ -66,6 +66,7 @@ var handlerMap = map[uint16]func(*session.Session) error{
 	cid.GetChatFriendHistoryCsReq:  chat.GetChatFriendHistory,
 	cid.GetLoginChatInfoCsReq:      chat.GetLoginChatInfo,
 	cid.GetPrivateChatHistoryCsReq: chat.GetPrivateChatHistory,
+	cid.SendMsgCsReq:               chat.SendMsg,
 	cid.GetFriendListInfoCsReq:     friend.GetFriendListInfo,
 	cid.ChangeLineupLeaderCsReq:    lineup.ChangeLineupLeader,
 	cid.GetAllLineupDataCsReq:      lineup.GetAllLineupData,

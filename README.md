@@ -126,6 +126,7 @@ You can also use process specific capture instead of using env vars, I suppose.
 - You can "execute" lua through `http://127.0.0.1:21000/lua_executor`
 - There's also `/srtools_manager`, so you don't have to overwrite your `config.json` manually. 
 - Make sure you choose `config.json` from https://srtools.pages.dev/ and not `freesr-data.json` (I am too lazy to implement that one)
+- Traces are hardcoded to 6/10/10/10 because not all e3 or e5 is the same
 
 ---
 

@@ -13,9 +13,9 @@ func PlayerLogin(s *session.Session) error {
 	rsp := &pb.PlayerLoginScRsp{
 		BasicInfo: &pb.PlayerBasicInfo{
 			Nickname:   player.Loaded.Username,
-			Level:      10,
+			Level:      61,
 			Stamina:    240,
-			WorldLevel: 1,
+			WorldLevel: 5,
 		},
 		ServerTimestampMs: uint64(time.Now().UnixMilli()),
 		Stamina:           240,

@@ -16,12 +16,15 @@ func GetFriendListInfo(s *session.Session) error {
 		Nickname:       bot.Loaded.Username,
 		ChatBubbleId:   bot.Loaded.ChatBubbleID,
 		OnlineStatus:   pb.FriendOnlineStatus_FRIEND_ONLINE_STATUS_ONLINE,
+		Level:          40,
+		Signature:      "github.com/yuvlian/qingque-sr",
 	}
 	rsp := &pb.GetFriendListInfoScRsp{
 		FriendList: []*pb.FriendSimpleInfo{
 			&pb.FriendSimpleInfo{
 				PlayerInfo: botPlayerInfo,
 				CreateTime: createTime,
+				IsMarked:   true,
 			},
 		},
 	}

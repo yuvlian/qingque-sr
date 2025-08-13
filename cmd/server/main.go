@@ -16,6 +16,7 @@ import (
 )
 
 func initOrWarn(name string, fn func(string) error, path string) {
+	fmt.Println("initializing " + path + "...")
 	if err := fn(path); err != nil {
 		fmt.Printf("failed to init %s (%s): %v\n", name, path, err)
 		fmt.Printf("creating a default file for %s\n", name)
@@ -23,15 +24,17 @@ func initOrWarn(name string, fn func(string) error, path string) {
 }
 
 func main() {
+	fmt.Print("!! https://github.com/yuvlian/qingque-sr !!\n\n")
 	initOrWarn("Player", player.Init, config.PlayerFilePath)
 	initOrWarn("Bot", bot.Init, config.BotFilePath)
 	bot.AssertNotEqualUid(player.Loaded.Uid)
+	bot.InitCommandRunner()
 	initOrWarn("Hotfix", hotfix.Init, config.HotfixFilePath)
 	initOrWarn("Ports", ports.Init, config.PortsFilePath)
 	initOrWarn("SRToolsLite", srtools.Init, config.SRToolsLiteFilePath)
 	initOrWarn("Scene", scene.Init, config.SceneFilePath)
 	initOrWarn("Lx", lx.Init, config.LxFilePath)
-
+	fmt.Print("\n")
 	go sdkserver.Start()
 	gameserver.Start()
 }
